@@ -1,0 +1,26 @@
+.news-content{
+	width:960px;
+	margin:0 auto;
+}
+.news-title{
+	width:100%;
+	color:rgb(1,82,144);
+	display: inline-block;
+	text-align: center;
+	font-size: 25px;
+	margin-top: 40px;
+}
+.news-date{
+	width:954px;
+	padding-right: 6px;
+	text-align: right;
+	display: inline-block;
+	color:rgb(185,185,185);
+}
+.news-article{
+	text-indent: 2rem;
+	line-height: 25px;
+	text-align: left;
+	display: block;
+	color:rgb(185,185,185);
+}

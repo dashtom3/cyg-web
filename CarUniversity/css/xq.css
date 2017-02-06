@@ -224,3 +224,13 @@
 	color:white;
 	font-size: 15px;
 }
+.but-left{
+	float:left;
+}
+.but-content{
+	float:left;
+	margin-left:54px;
+}
+.but-right{
+	float:right;
+}
