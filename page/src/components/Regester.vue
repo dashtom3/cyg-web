@@ -3,10 +3,7 @@
     <div class="regester-content2">
 			<span class="regester-title">新用户注册</span>
 			<div class="person-type">
-				<button>学生</button>
-				<button>教工</button>
-				<button>校友</button>
-				<button>企业</button>
+				<button v-for="item in items.item"  :class="{'active':items.active,'unactive':!items.active}"  v-on:click="personKind(item)">{{item}}</button>
 			</div>
 			<!--个人信息-->
 
@@ -14,52 +11,48 @@
 				<span class="person-information">1.个人信息</span>
 				<div class="person-name">
 					<span >姓名</span>
-					<input type="text" name=""  placeholder="不可更改"/>
+					<input type="text" name=""  placeholder="不可更改" v-model="user.name" />
 				</div>
 				<div class="person-number">
 					<span >学号</span>
-					<input type="text" name="" class="person-number" value="" placeholder="不可更改"/>
+					<input type="text" name="" class="person-number" value="" placeholder="不可更改" v-model="user.id" />
 				</div>
 				<div class="regester-ma">
 					<div class="person-ma">
 						<span>密码</span>
-						<input type="text" name=""  value="" placeholder="密码"/>
+						<input type="password" name=""  value="" placeholder="密码" v-model="user.pwd" />
 					</div>
 					<div class="person-rema">
 						<span>重复密码</span>
-						<input type="text" name=""  value="" />
+						<input type="password" name=""  value="" v-model="user.rePwd" />
 					</div>
 				</div>
 			</div>
 			<div class="college">
 				<span>学院/部门/单位</span>
-				<select name="">
-					<option value="">学院/部门/单位</option>
-					<option value="">学院/部门/单位</option>
-					<option value="">学院/部门/单位</option>
+				<select name="" v-model="user.college">
+					<option v-for="college in colleges" :value="college.val">{{college.college}}</option>
 				</select>
 			</div>
 			<div class="major">
 				<span>专业方向</span>
-				<select name="" >
-					<option value="">专业方向</option>
-					<option value="">专业方向</option>
-					<option value="">专业方向</option>
-				</select>
+				<!-- <select name="" v-model="user.major">
+					<option value="" v-for="major in majors" :value="major.value">{{major.marjor}}</option>
+				</select> -->
 			</div>
 			<div class="regester-person-bottom">
 				<div class="emal">
 					<span >电子邮件</span>
-					<input type="text" name=""  value="" />
+					<input type="text" name=""  value="" v-model="user.email" />
 				</div>
 				<div class="call-number">
 					<span >联系电话</span>
-					<input type="text" name=""  value="" />
+					<input type="text" name=""  value="" v-model="user.phone" />
 				</div>
 			</div>
 			<div class="summary">
 				<span>个人简介</span>
-				<textarea name="" placeholder="个人简介，专业特长"></textarea>
+				<textarea name="" placeholder="个人简介，专业特长" v-model="user.summary" ></textarea>
 			</div>
 			<div class="selfdom">
 				<span class="self-title">2.个性标签</span>
@@ -91,18 +84,79 @@
 					<button>仿真计算</button>
 					<button>autoCAD</button>
 				</div>
-				<button class="complete">完成</button>
+				<button class="complete" v-on:click="regester">完成</button>
 			</div>
 		</div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+import Vue from 'vue'
 export default {
   name: 'regester-content',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      active: false,
+      items: {
+        active: false,
+        item: ['学生', '教工', '校友', '企业']
+      },
+      colleges: [
+        {val: '0', college: '小学'},
+        {val: '1', college: '初中'},
+        {val: '2', college: '高中'}
+      ],
+      user: {
+        personType: '',
+        name: '',
+        id: '',
+        majors: '',
+        major: '',
+        college: '',
+        pwd: '',
+        rePwd: '',
+        email: '',
+        phone: '',
+        summary: ''
+      }
+    }
+  },
+  methods: {
+    personKind: function (item) {
+      var self = this
+      this.$nextTick(function () {
+        Vue.set(self.user, 'personType', item)
+        // this.items.forEach(function (item) {
+        //   Vue.set(item, 'active', false)
+        // })
+        Vue.set(item, 'active', true)
+      })
+    },
+    college: function (event) {
+      console.log(event)
+    },
+    regester: function () {
+      // 收集用户注册的信息
+      var data = {
+        person: this.user.personType,
+        name: this.user.name,
+        id: this.user.id,
+        pwd: this.user.pwd,
+        rePwd: this.user.rePwd,
+        email: this.user.email,
+        phone: this.user.phone,
+        summary: this.user.summary
+      }
+      console.log(data)
+      axios.post('api/user/register', data)
+      .then(function (result) {
+        console.log(result)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
     }
   }
 }
@@ -150,7 +204,7 @@ export default {
 	color:white;
 	font-family: "微软雅黑";
 }
-.person-type button:focus{
+.person-type button.active{
 	background:rgb(4,177,243);
 }
 

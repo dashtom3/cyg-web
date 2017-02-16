@@ -9,6 +9,8 @@ import Square from 'components/Project-square'
 import Gwfc from 'components/Gwfc'
 import download from 'components/download'
 import personal from 'components/Personal'
+import login from 'components/Login'
+import regester from 'components/regester'
 import vueTap from 'v-tap'
 // import fastclick from 'fastclick'
 import Vuex from 'vuex'
@@ -36,8 +38,14 @@ const router = new VueRouter({
     path: '/download',
     component: download
   }, {
+    path: '/login',
+    component: login
+  }, {
     path: '/personal',
     component: personal
+  }, {
+    path: '/regester',
+    component: regester
   }]
 })
 new Vue({
