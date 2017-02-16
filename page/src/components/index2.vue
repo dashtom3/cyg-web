@@ -94,9 +94,14 @@ export default {
   data () {
     return {
       items: [
+        { year: '2016-12', day: '25', msg: 'nihaoa' },
         { year: '2016-12', day: '25', msg: 'nihaoa' }
       ],
       projects: [
+        {
+          name: '项目名项目名项目名项目名项目名项目名项目名项',
+          main: '关键词'
+        },
         {
           name: '项目名项目名项目名项目名项目名项目名项目名项',
           main: '关键词'

@@ -1,5 +1,4 @@
 <template>
-
   <div class="login">
     <div class="login2">
 			<div class="user-number">
@@ -21,10 +20,13 @@
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
-  name: 'login'
+  name: 'login',
+  data () {
+    return {
+
+    }
+  }
 }
 </script>
 
@@ -32,8 +34,9 @@ export default {
 <style scoped>
 .login{
 	background:url(../img/logback.png) no-repeat;
-	min-width: 960px;
-	min-height: 620px;
+	width: 1366px;
+	height: 768px;
+  margin:auto;
   overflow: hidden;
 }
 .login2{
@@ -42,11 +45,8 @@ export default {
 	background:url(../img/logwite.png) no-repeat;
 	background-size: 255px 303px;
 	float:left;
-	left:50%;
-	top:50%;
-	position:fixed;
-	margin-left: -123px;
-	margin-top: -101px;
+	margin-left: 40%;
+	margin-top: 15%;
 }
 .user-number{
 	width:211px;

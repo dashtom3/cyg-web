@@ -8,8 +8,14 @@ import Notice from 'components/Notice'
 import Square from 'components/Project-square'
 import Gwfc from 'components/Gwfc'
 import download from 'components/download'
+import Login from 'components/login'
 import personal from 'components/Personal'
+import Rewrite from 'components/Rewrite'
+import Management from 'components/Management'
 import vueTap from 'v-tap'
+import regester from 'components/Regester'
+import Communicate from 'components/Communicate'
+import Knot from 'components/Knot'
 // import fastclick from 'fastclick'
 import Vuex from 'vuex'
 
@@ -38,6 +44,24 @@ const router = new VueRouter({
   }, {
     path: '/personal',
     component: personal
+  }, {
+    path: '/login',
+    component: Login
+  }, {
+    path: '/rewrite',
+    component: Rewrite
+  }, {
+    path: '/Knot',
+    component: Knot
+  }, {
+    path: '/Management',
+    component: Management
+  }, {
+    path: '/Communicate',
+    component: Communicate
+  }, {
+    path: '/regester',
+    component: regester
   }]
 })
 new Vue({

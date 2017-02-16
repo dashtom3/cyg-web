@@ -3,13 +3,9 @@
     <div class="regester-content2">
 			<span class="regester-title">新用户注册</span>
 			<div class="person-type">
-				<button>学生</button>
-				<button>教工</button>
-				<button>校友</button>
-				<button>企业</button>
+				<button v-for="(btn_t, index) in btn_ts" class="{ "person-type2": isActive}" @click="toggle">{{btn_t.type}}</button>
 			</div>
 			<!--个人信息-->
-
 			<div class="regester-top">
 				<span class="person-information">1.个人信息</span>
 				<div class="person-name">
@@ -64,32 +60,16 @@
 			<div class="selfdom">
 				<span class="self-title">2.个性标签</span>
 				<div class="self-flex">
-					<button>文</button>
-					<button>理</button>
-					<button>工</button>
-					<button>农</button>
-					<button>医</button>
+					<button v-for="self in selfs1">{{self1.title1}}</button>
 				</div>
 				<div class="self-flex">
-					<button>财务管理</button>
-					<button>团队管理</button>
-					<button>宣传联络</button>
-					<button>问卷星</button>
-					<button>公众号管理</button>
+					<button v-for="self in selfs2">{{self2.title2}}</button>
 				</div>
 				<div class="self-flex">
-					<button>计算机编程</button>
-					<button>摄影</button>
-					<button>体育运动 </button>
-					<button>信息检索</button>
-					<button>报告撰写</button>
+					<button v-for="self in selfs3">{{self3.title3}}</button>
 				</div>
 				<div class="self-flex">
-					<button>结构建模</button>
-					<button>有限元分析</button>
-					<button>matlab</button>
-					<button>仿真计算</button>
-					<button>autoCAD</button>
+					<button v-for="self in selfs4">{{self4.title4}}</button>
 				</div>
 				<button class="complete">完成</button>
 			</div>
@@ -102,7 +82,46 @@ export default {
   name: 'regester-content',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      isActive: false,
+      btn_ts: [
+        {type: '学生'},
+        {type: '教工'},
+        {type: '校友'},
+        {type: '企业'}
+      ],
+      selfs1: [
+        {title1: '文'},
+        {title1: '理'},
+        {title1: '工'},
+        {title1: '农'},
+        {title1: '医'}
+      ],
+      selfs2: [
+        {title2: '财务管理'},
+        {title2: '团队管理'},
+        {title2: '宣传联络'},
+        {title2: '农'},
+        {title2: '医'}
+      ],
+      selfs3: [
+        {title3: '文'},
+        {title3: '理'},
+        {title3: '工'},
+        {title3: '农'},
+        {title3: '医'}
+      ],
+      selfs4: [
+        {title4: '文'},
+        {title4: '理'},
+        {title4: '工'},
+        {title4: '农'},
+        {title4: '医'}
+      ]
+    }
+  },
+  methods: {
+    toggle: function () {
+      this.isActive = true
     }
   }
 }
@@ -150,7 +169,7 @@ export default {
 	color:white;
 	font-family: "微软雅黑";
 }
-.person-type button:focus{
+.person-type2 {
 	background:rgb(4,177,243);
 }
 

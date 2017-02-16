@@ -1,23 +1,5 @@
 <template>
   <div class="management">
-		<div class="header">
-			<div class="nav">
-	            <div class="nav-left">
-					<img src="../img/logo.png" class="logo"/>
-					<a href="javascript:;"><span>同济大学汽车学院</span></a>
-	            </div>
-				<ul class="nav-content">
-					<li><a href="javascript:;">新闻通知</a></li>
-					<li><a href="javascript:;">项目广场</a></li>
-					<li><a href="javascript:;">过往风采</a></li>
-					<li><a href="javascript:;">资料下载</a></li>
-				</ul>
-				<div class="nav-right">
-					<input type="text" placeholder="点击搜索" id="inp" />
-					<span><a href="javascript:;">个人中心</a></span>
-				</div>
-			</div>
-		</div>
 		<!--中间部分-->
 		<div class="management-content">
 			<div class="management-left">
@@ -68,12 +50,6 @@
 					</li>
 				</ul>
 			</div>
-		</div>
-		<!--底部-->
-		<div class="footer">
-			<span class="footer-span1">版权信息</span><br/>
-			<span class="footer-span2">版权信息版权信息版权信息</span><br/>
-			<span class="footer-span2">版权信息版权信息版权信息</span>
 		</div>
   </div>
 </template>
