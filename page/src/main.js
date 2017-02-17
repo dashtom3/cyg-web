@@ -11,6 +11,7 @@ import download from 'components/download'
 import personal from 'components/Personal'
 import login from 'components/Login'
 import regester from 'components/regester'
+import newsDetial from 'components/News'
 import vueTap from 'v-tap'
 // import fastclick from 'fastclick'
 import Vuex from 'vuex'
@@ -46,6 +47,9 @@ const router = new VueRouter({
   }, {
     path: '/regester',
     component: regester
+  }, {
+    path: '/newsDetial',
+    component: newsDetial
   }]
 })
 new Vue({

@@ -3,10 +3,8 @@
     <div class="regester-content2">
 			<span class="regester-title">新用户注册</span>
 			<div class="person-type">
-				<button v-for="item in items.item"  :class="{'active':items.active,'unactive':!items.active}"  v-on:click="personKind(item)">{{item}}</button>
+				<button v-for="(item, index) in items" :class="{ 'active': index==shishi }"  v-on:click="personKind(item.val, index)">{{item.data}}</button>
 			</div>
-			<!--个人信息-->
-
 			<div class="regester-top">
 				<span class="person-information">1.个人信息</span>
 				<div class="person-name">
@@ -36,9 +34,9 @@
 			</div>
 			<div class="major">
 				<span>专业方向</span>
-				<!-- <select name="" v-model="user.major">
-					<option value="" v-for="major in majors" :value="major.value">{{major.marjor}}</option>
-				</select> -->
+				<select name="" v-model="user.major">
+					<option v-for="major in majors" :value="major.val">{{major.major}}</option>
+				</select>
 			</div>
 			<div class="regester-person-bottom">
 				<div class="emal">
@@ -47,43 +45,18 @@
 				</div>
 				<div class="call-number">
 					<span >联系电话</span>
-					<input type="text" name=""  value="" v-model="user.phone" />
+					<input type="text" name=""  value="" v-model="user.telephone" />
 				</div>
 			</div>
 			<div class="summary">
 				<span>个人简介</span>
-				<textarea name="" placeholder="个人简介，专业特长" v-model="user.summary" ></textarea>
+				<textarea name="" placeholder="个人简介，专业特长" v-model="user.personalbrief" ></textarea>
 			</div>
 			<div class="selfdom">
 				<span class="self-title">2.个性标签</span>
-				<div class="self-flex">
-					<button>文</button>
-					<button>理</button>
-					<button>工</button>
-					<button>农</button>
-					<button>医</button>
-				</div>
-				<div class="self-flex">
-					<button>财务管理</button>
-					<button>团队管理</button>
-					<button>宣传联络</button>
-					<button>问卷星</button>
-					<button>公众号管理</button>
-				</div>
-				<div class="self-flex">
-					<button>计算机编程</button>
-					<button>摄影</button>
-					<button>体育运动 </button>
-					<button>信息检索</button>
-					<button>报告撰写</button>
-				</div>
-				<div class="self-flex">
-					<button>结构建模</button>
-					<button>有限元分析</button>
-					<button>matlab</button>
-					<button>仿真计算</button>
-					<button>autoCAD</button>
-				</div>
+  				<div class="self-flex" v-for="(self, index) in selfs">
+  					<button v-for="self_btn in self.self_btns" v-on:click="selfDom" :class="{ 'active': isActive }">{{self_btn}}</button>
+  				</div>
 				<button class="complete" v-on:click="regester">完成</button>
 			</div>
 		</div>
@@ -98,59 +71,100 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      active: false,
       items: {
-        active: false,
-        item: ['学生', '教工', '校友', '企业']
+        student: {
+          data: '学生',
+          isActive: 0,
+          val: 0
+        },
+        teacher: {
+          data: '教工',
+          isActive: 1,
+          val: 1
+        },
+        friends: {
+          data: '校友',
+          isActive: 2,
+          val: 2
+        },
+        company: {
+          data: '企业',
+          isActive: 3,
+          val: 3
+        }
       },
+      shishi: -1,
+      index: 0,
       colleges: [
         {val: '0', college: '小学'},
         {val: '1', college: '初中'},
         {val: '2', college: '高中'}
       ],
+      isActive: false,
+      majors: [
+        {val: '0', major: '小学'},
+        {val: '1', major: '初中'},
+        {val: '2', major: '高中'}
+      ],
+      selfs: [
+        { self_btns: ['文', '理', '工', '农', '医'] },
+        { self_btns: ['财务管理', '团队管理', '宣传管理', '问卷星', '公众号管理'] },
+        { self_btns: ['计算机编程', '摄影', '体育运动', '信息检索', '报告撰写'] },
+        { self_btns: ['结构建模', '有限元分析', 'matlab', '仿真计算', 'autoCAD'] }
+      ],
       user: {
         personType: '',
         name: '',
         id: '',
-        majors: '',
         major: '',
         college: '',
         pwd: '',
         rePwd: '',
         email: '',
-        phone: '',
-        summary: ''
+        telephone: '',
+        personalbrief: '',
+        selfs: ''
       }
     }
   },
   methods: {
-    personKind: function (item) {
-      var self = this
-      this.$nextTick(function () {
-        Vue.set(self.user, 'personType', item)
-        // this.items.forEach(function (item) {
-        //   Vue.set(item, 'active', false)
-        // })
-        Vue.set(item, 'active', true)
-      })
+    personKind: function (val, index) {
+      this.shishi = index
+      console.log(val)
+      Vue.set(this.user, 'personType', val)
     },
-    college: function (event) {
-      console.log(event)
+    isShow: function () {
+      console.log(123)
+    },
+    selfDom: function (event) {
+      console.log(event.target)
+      event.target.isActive = !event.target.isActive
     },
     regester: function () {
       // 收集用户注册的信息
       var data = {
-        person: this.user.personType,
+        personType: this.user.personType,
         name: this.user.name,
         id: this.user.id,
         pwd: this.user.pwd,
-        rePwd: this.user.rePwd,
+        college: this.user.college,
+        major: this.user.major,
         email: this.user.email,
-        phone: this.user.phone,
-        summary: this.user.summary
+        telephone: this.user.telephone,
+        personalbrief: this.user.personalbrief
       }
       console.log(data)
-      axios.post('api/user/register', data)
+      var personalMsg = new FormData()
+      personalMsg.append('usertype', this.user.personType)
+      personalMsg.append('username', this.user.name)
+      personalMsg.append('studentid', this.user.id)
+      personalMsg.append('password', this.user.pwd)
+      personalMsg.append('department', this.user.college)
+      personalMsg.append('major', this.user.major)
+      personalMsg.append('email', this.user.email)
+      personalMsg.append('telephone', this.user.telephone)
+      personalMsg.append('personalbrief', this.user.personalbrief)
+      axios.post('http://123.56.220.72:8080/Student/api/user/register', personalMsg)
       .then(function (result) {
         console.log(result)
       })
@@ -580,7 +594,7 @@ export default {
 	border: 2px solid rgb(126,128,132);
 	outline: none;
 }
-.self-flex button:focus{
+.self-flex button.active{
 	border:4px solid white;
 	color:white;
 }
