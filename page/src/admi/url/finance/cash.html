@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../js/layui/css/layui.css">
+    <link rel="stylesheet" href="../../css/business_center.css">
+    <link rel="stylesheet" href="../../css/order/group.css">
+    <style>
+        .layui-table th,table{
+            text-align: center;
+        }
+        .layui-form-label{
+            width: 160px;
+        }
+    </style>
+</head>
+<body>
+<div class="content-show">
+    <div class="page">
+        <form action="" class="layui-form time">
+            <div class="layui-tab">
+                <h1 style="font-size: 20px">商户提现</h1>
+                <hr>
+                <div class="layui-form-item">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th>提现银行名称</th>
+                            <th>提现银行账号</th>
+                            <th>可用提余额</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>中国工商银行</td>
+                            <td>5566998785158446562</td>
+                            <td>￥0</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">提现金额：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="title" id="title" required  lay-verify="required" placeholder="请输入提现金额" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">短信验证码：</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="name" id="name"  placeholder="请输入验证码" autocomplete="off" class="layui-input">
+                    </div>
+                    <div class="layui-input-mid sendMsg">
+                        <button type="button" class="btn layui-btn layui-btn-warm send " onclick="sendMsg(this)">发送验证码</button>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn layui-btn-warm" lay-submit="" lay-filter="demo2">提交申请</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/layui/lay/dest/layui.all.js"></script>
+<script src="../../js/layui/laydate/laydate.js"></script>
+<script src="../../js/business_center.js"></script>
+<script type = "text/javascript" >
+    laydate({
+        elem: '#beginTime',
+        format:   'YYYY-MM-DD hh:mm'
+    });
+    laydate({
+        elem: '#endTime',
+        format:   'YYYY-MM-DD hh:mm'
+    });
+    function sendMsg(obj){
+        $(obj).addClass("layui-btn-disabled");
+    }
+</script >
+</html>

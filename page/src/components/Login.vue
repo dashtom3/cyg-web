@@ -15,6 +15,7 @@
 			<a href="javascript:;"><span class="click-regester" @click="goRegester">点击注册</span></a>
 			<button type="button" class="user-login" @click="btn">登录</button>
       <!-- <forgetPwd v-if=""></forgetPwd> -->
+      <goRegester :food="go" v-if="go" ref="goto"></goRegester>
 	</div>
 </div>
 </div>
@@ -22,6 +23,7 @@
 
 <script>
 import axios from 'axios'
+import goRegester from './Regester'
 // import router from '../main'
 export default {
   name: 'login',
@@ -35,10 +37,14 @@ export default {
   },
   methods: {
     btn: function () {
-      var data = { name: this.people.name, pwd: this.people.pwd }
-      axios.post('api/user/login', data)
+      var self = this
+      var zipFormData = new FormData()
+      zipFormData.append('studentid', this.people.name)
+      zipFormData.append('password', this.people.pwd)
+      axios.post('http://123.56.220.72:8080/Student/api/user/login', zipFormData)
       .then(function (result) {
-        console.log(result)
+        console.log(self.people.name)
+        self.$router.push({ path: '/personal' })
       })
       .catch(function (error) {
         console.log(error)
@@ -48,8 +54,15 @@ export default {
       this.$router.push({ path: '/forgetPwd' })
     },
     goRegester: function () {
+      var self = this
+      this.$nextTick(() => {
+        self.$refs.isShow.isShow()
+      })
       this.$router.push({ path: 'regester' })
     }
+  },
+  components: {
+    goRegester
   }
 }
 </script>
@@ -58,8 +71,8 @@ export default {
 <style scoped>
 .login{
 	background:url(../img/logback.png) no-repeat;
-	min-width: 960px;
-	min-height: 620px;
+	width: 100%;
+	height: 765px;
   overflow: hidden;
 }
 .login2{
@@ -68,11 +81,8 @@ export default {
 	background:url(../img/logwite.png) no-repeat;
 	background-size: 255px 303px;
 	float:left;
-	left:50%;
-	top:50%;
-	position:fixed;
-	margin-left: -123px;
-	margin-top: -101px;
+	margin-left: 580px;
+  margin-top: 200px;
 }
 .user-number{
 	width:211px;

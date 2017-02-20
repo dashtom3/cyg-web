@@ -1,0 +1,35 @@
+.btn-group{
+    float: right;
+}
+.btn-publish{
+    color: white;
+    background-color: #ff7200;
+    border-color: #da3f02;
+    filter: progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#FFFF8901', endColorstr='#FFFF7200');
+    background-image: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiP…dpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==);
+    background-size: 100%;
+    background-image: -moz-linear-gradient(top, #ff8901, #ff7200);
+    background-image: -webkit-linear-gradient(top, #ff8901, #ff7200);
+    background-image: linear-gradient(to bottom, #ff8901, #ff7200);
+    display: inline-block;
+    vertical-align: middle;
+    padding: 7px 20px 6px;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.5;
+    font-family: 'SimSun', Arial;
+    letter-spacing: .1em;
+    text-align: center;
+    text-decoration: none;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    background-repeat: repeat-x;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    -moz-user-select: -moz-none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}

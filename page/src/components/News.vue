@@ -1,6 +1,6 @@
 <template>
 		<!--中间新闻内容部分-->
-		<div class="news-content">
+		<div class="news-content newDetial" v-show="showDetail">
 			<span class="news-title">这是一个长长的新闻标题</span>
 			<span class="news-date">2016-11-20</span>
 			<span class="news-article">
@@ -9,17 +9,12 @@
 				这里是新闻内容这里是新闻内容这里是新闻内容这里是新闻内容这里是新闻内容这里是新闻内容
 				这里是新闻内容这里是新闻内容这里是新闻内容这里是新闻内容这里是新闻内容这里是新闻内容。
 			</span>
-		</div>
+			</div>
 </template>
 
 <script>
 export default {
-  name: 'news',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
-  }
+  name: 'news'
 }
 </script>
 

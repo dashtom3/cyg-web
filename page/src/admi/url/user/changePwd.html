@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../js/layui/css/layui.css">
+    <link rel="stylesheet" href="../../css/business_center.css">
+    <link rel="stylesheet" href="../../css/order/group.css">
+    <style>
+        .layui-table th,table{
+            text-align: center;
+        }
+        .layui-form-label{
+            width: 160px;
+        }
+    </style>
+</head>
+<body>
+<div class="content-show">
+    <div class="page">
+        <div class="layui-tab">
+            <h1 style="font-size: 20px">修改密码</h1>
+            <hr>
+            <form action="" class="layui-form">
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <h3 style="color: red;font-size: 18px">* 修改密码前，请确保已将新密码告知所有使用方，密码修改成功后，所有账号需输入新密码再次登录。</h3>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">原密码：</label>
+                        <div class="layui-input-inline">
+                            <input type="password" name="old" id="old" required  lay-verify="required" placeholder="请输入原密码" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">新密码：</label>
+                        <div class="layui-input-inline">
+                            <input type="password" name="new" id="new" required lay-verify="required" placeholder="请输入新密码" autocomplete="off" class="layui-input" minlength="6" maxlength="16" pattern="(?!^[0-9]+$)(?!^[A-z]+$)(?!^[^A-z0-9]+$)^.{6,16}$">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">6到16个字符，可使用字母、数字或符号的任意组合</div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">确认新密码：</label>
+                        <div class="layui-input-inline">
+                            <input type="password" name="newPwd" id="newPwd" required lay-verify="regPwd" placeholder="确认密码" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn layui-btn-warm" lay-submit="" lay-filter="demo2">确认</button>
+                        </div>
+                    </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/layui/lay/dest/layui.all.js"></script>
+<script src="../../js/layui/laydate/laydate.js"></script>
+<script src="../../js/business_center.js"></script>
+<script type="text/javascript">
+    layui.use(['form', 'jquery'], function() {
+        var $ = layui.jquery;
+        var form = layui.form();
+        form.verify({
+            regPwd: function(value) {
+                //获取密码
+                var pwd = $("#new").val();
+                if(!new RegExp(pwd).test(value)) {
+                    return '两次输入的密码不一致';
+                }
+            }
+        });
+    });
+</script>
+</html>

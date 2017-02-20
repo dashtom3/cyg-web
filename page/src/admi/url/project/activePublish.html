@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>发布</title>
+    <link rel="stylesheet" href="../../js/layui/css/layui.css">
+    <link rel="stylesheet" href="../../css/business_center.css">
+    <link rel="stylesheet" href="../../js/kindeditor/themes/default/default.css">
+    <link rel="stylesheet" href="../../css/project/publish.css">
+</head>
+<body  scroll='no'>
+<div class="content-show">
+    <div class="page">
+        <div class="layui-tab">
+            <h1 style="font-size: 20px">新增活动</h1>
+            <hr>
+            <form action="" class="layui-form" method="post">
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+                        <div class="other-store">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">活动名称：</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="title" id="title" required  lay-verify="required" placeholder="请输入活动名称" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">活动图片：</label>
+                                <div class="layui-input-block">
+                                    <a href=""><img src="" alt="">上传图片</a>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">活动开始时间：</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="beginGroup" required  lay-verify="required"  autocomplete="off" class="layui-input" id="beginActive">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">活动结束时间：</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="endGroup" required lay-verify="required" autocomplete="off" class="layui-input" id="endActive">
+                                </div>
+                                <!--<div class="layui-form-mid layui-word-aux">[ 用于消费券、邮件、短信列表展示的显示,字数不得超过20个字 ]</div>-->
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">报名开始时间：</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="beginGroup" required  lay-verify="required"  autocomplete="off" class="layui-input" id="beginGroup">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">报名结束时间：</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="endGroup" required lay-verify="required" autocomplete="off" class="layui-input" id="endGroup">
+                                </div>
+                                <!--<div class="layui-form-mid layui-word-aux">[ 用于消费券、邮件、短信列表展示的显示,字数不得超过20个字 ]</div>-->
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">活动名额：</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="name" id="name" required lay-verify="required" placeholder="请输入简介名称" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">消费积分：</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="name" id="cost" required lay-verify="required" placeholder="请输入简介名称" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">经验限制：</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="name" id="expor" required lay-verify="required" placeholder="请输入简介名称" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">选择城市：</label>
+                                <div class="layui-input-inline">
+                                    <select name="city" lay-verify="required" id="city">
+                                        <option value="">选择城市</option>
+                                        <option value="0">北京</option>
+                                        <option value="1">上海</option>
+                                        <option value="2">广州</option>
+                                        <option value="3">深圳</option>
+                                        <option value="4">杭州</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">地图选点：</label>
+                                <div class="layui-input-inline">
+                                    <button>点击</button>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">支持门店：</label>
+                                <div class="layui-input-block">
+                                    <input type="checkbox" name="switch" lay-skin="switch" id="stores">
+                                    <div class="layui-form-mid layui-word-aux">百度烤肉</div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">活动描述：</label>
+                                <div class="layui-input-inline">
+                                    <textarea class="layui-textarea layui-hide" name="content" lay-verify="content" id="buy"></textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">报名配置：</label>
+                                <div class="layui-input-blcok pz">
+                                    <div><a href="javascript:;" onclick="addPz()">【添加】</a></div>
+                                    <div id="submit_conf_row"></div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn layui-btn-warm first"  lay-filter="formDemo">提交</button>
+                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-tab-item">
+                        <div class="other-store">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">团购总数：</label>
+                                <div class="layui-input-inline">
+                                    <input type="number" class="layui-input" id="allNum">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">会员最低购买数量：</label>
+                                <div class="layui-input-inline">
+                                    <input type="number" class="layui-input" id="minNum">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">会员最高购买数量：</label>
+                                <div class="layui-input-inline">
+                                    <input type="number" class="layui-input" id="maxNum">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">原价：</label>
+                                <div class="layui-input-inline">
+                                    <input type="number" class="layui-input" id="price">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">团购价：</label>
+                                <div class="layui-input-inline">
+                                    <input type="number" class="layui-input" id="groupPrice">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">商户结算价：</label>
+                                <div class="layui-input-inline">
+                                    <input type="number" class="layui-input" id="accounts">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn layui-btn-warm second"  lay-filter="formDemo">切换</button>
+                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-tab-item">
+                        <div class="other-store" style="height: 550px">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">是否支持退款：</label>
+                                <div class="layui-input-inline">
+                                    <select name="city" lay-verify="required">
+                                        <option value="0">是</option>
+                                        <option value="1">否</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">是否配送：</label>
+                                <div class="layui-input-inline">
+                                    <select name="city" lay-verify="required">
+                                        <option value="8">是</option>
+                                        <option value="9">否</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">消费券商品类型：</label>
+                                <div class="layui-input-inline">
+                                    <select name="city" lay-verify="required">
+                                        <option value="" selected="selected">==请选择分类==</option>
+                                        <option value="8">|--餐饮美食</option>
+                                        <option value="9">|--休闲娱乐</option>
+                                        <option value="10">|--生活服务</option>
+                                        <option value="11">|--酒店旅游</option>
+                                        <option value="13">|--爱车学车</option>
+                                        <option value="14">|--都市丽人</option>
+                                        <option value="15">|--我要结婚</option>
+                                        <option value="16">|--医疗健康</option>
+                                        <option value="17">|--母婴亲子</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button class="layui-btn layui-btn-warm" lay-submit="" lay-filter="demo1">提交</button>
+                                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/kindeditor/kindeditor-min.js"></script>
+<script src="../../js/kindeditor/lang/zh_CN.js"></script>
+<script src="../../js/business_center.js"></script>
+<script src="../../js/publish.js"></script>
+<script>
+    //增加配置
+    function addPz(){
+        var h =$(".pz").height();
+        $(".pz").siblings("label").height(h);
+        var html = '<div class="submit_item"><input type="hidden" name="field_id[]" /> &nbsp;字段显示:<input type="text" class="ui-textbox" name="field_show_name[]" value=""> &nbsp;类型:<select class="filter_select small" name="field_type[]" onchange="change_type(this);" style="display: inline-block"><option value="0">用户填写</option><option value="1">预选下拉</option></select><span style="display: none;" class="yx"> &nbsp;预选内容:<input type="text" class="ui-textbox" name="value_scope[]" placeholder="用空格分隔" value=""> </span> <a href="javascript:void(0);" onclick="remove_row(this);">[ - ]</a><div style="height:5px;"></div></div>';
+        $("#submit_conf_row").append(html);
+    }
+    //select选择框
+    function change_type(obj){
+        console.log(obj.value);
+        obj.value==1?$(obj).siblings(".yx").show():$(obj).siblings(".yx").hide();
+    }
+    // 删除按钮
+    function remove_row(obj){
+        var h =$(".pz").height();
+        $(".pz").siblings("label").height(h);
+        $(obj).parent().remove();
+    }
+</script>
+</html>

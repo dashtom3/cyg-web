@@ -1,0 +1,24 @@
+.file-preview{
+    border:none;
+}
+.file-preview-frame img{
+    height: 30px!important;
+}
+.close,.fileinput-upload-button,.kv-file-upload,.file-upload-indicator{
+    display: none;
+}
+.file-preview-frame{
+    height: auto;
+}
+.layui-form-label{
+    width: 160px;
+}
+#LAY_layedit_1,#LAY_layedit_2,#LAY_layedit_3,#LAY_layedit_4{
+    height: 100px!important;
+}
+#LAY_layedit_1 body,#LAY_layedit_2 body{
+    min-height: 100px!important;
+}
+#kind+.layui-unselect dl.layui-anim{
+    max-height: 180px!important;
+}

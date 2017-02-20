@@ -17,10 +17,6 @@ import Personal from 'components/Personal'
 import Square from 'components/Project-square'
 import Rewrite from 'components/Rewrite'
 import Xq from 'components/Xq'
-import Users from 'components/Adm-users'
-import Projects from 'components/Adm-projects'
-import Post from 'components/Adm-post'
-import Admnews from 'components/Adm-news'
 Vue.use(Router)
 
 export default new Router({
@@ -109,26 +105,6 @@ export default new Router({
       path: '/xq',
       name: 'Xq',
       component: Xq
-    },
-    {
-      path: '/adm-users',
-      name: 'Adm-users',
-      component: Users
-    },
-    {
-      path: '/adm-projects',
-      name: 'Adm-projects',
-      component: Projects
-    },
-    {
-      path: '/adm-post',
-      name: 'Adm-post',
-      component: Post
-    },
-    {
-      path: '/adm-news',
-      name: 'Adm-news',
-      component: Admnews
     }
   ]
 })

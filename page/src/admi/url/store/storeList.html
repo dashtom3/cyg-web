@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../js/layui/css/layui.css">
+    <link rel="stylesheet" href="../../css/business_center.css">
+</head>
+<body>
+<div class="content-show">
+    <div class="page">
+        <div class="layui-tab">
+            <ul class="layui-tab-title">
+                <li class="layui-this">已发布上线</li>
+                <li>审核记录</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <form action="" class="layui-form">
+                        <div class="other-store">
+                            <table class="layui-table">
+                                <thead>
+                                <tr>
+                                    <th>序号</th>
+									<th>姓名</th>
+									<th>学号</th>
+									<th>学院/部门/单位</th>
+									<th>专业方向</th>
+									<th>电子邮件</th>
+									<th>联系电话</th>
+									<th>个性标签</th>
+									<th>操作</th>>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>1</td>
+									<td>小李</td>
+									<td>243242</td>
+									<td>同济大学软件学院</td>
+									<td>软件开发</td>
+									<td>443242@163.com</td>
+									<td>3423423424</td>
+									<td>理  软件设计</td>
+                                    <td>
+                                        <button class="layui-btn layui-btn-small layui-btn-normal"><a href="">审核修改</a></button>
+                                        <button class="layui-btn layui-btn-small layui-btn-warm"><a href="updata.html">资料更新</a></button>
+                                        <button class="layui-btn layui-btn-small layui-btn-danger"><a href="">下架</a></button>
+                                        <button class="layui-btn layui-btn-small"><a href="">预览</a></button>
+                                    </td>
+                                </tr>
+                                <!--<tr>-->
+                                    <!--<td>贤心</td>-->
+                                    <!--<td>2016-11-29</td>-->
+                                    <!--<td>人生就像是一场修行</td>-->
+                                    <!--<td>人生就像是一场修行</td>-->
+                                <!--</tr>-->
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-tab-item">
+                    <form action="" class="layui-form">
+                        <div class="other-store">
+                            <h1>请选择分店</h1>
+                            <div class="layui-form-item">
+                                <div class="layui-input-inline">
+                                    <select name="stroes" id="">
+                                        <option value="">百度烤肉</option>
+                                        <option value="">百度烤肉</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <h1>请先验证消费券，再接待</h1>
+                            <div class="layui-form-item">
+                                <div class="layui-input-inline">
+                                    <input type="text" name="quan1" lay-verify="required"  placeholder="请输入消费券" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-inline">
+                                    <input type="text" name="quan2" lay-verify="required"  placeholder="请输入消费券" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-inline">
+                                    <input type="text" name="quan3" placeholder="请输入消费券" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-inline">
+                                    <input type="text" name="quan4" placeholder="请输入消费券" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-inline">
+                                    <button class="layui-btn layui-btn-warm" lay-submit="" lay-filter="demo2">验证消费券</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="layui-tab-item">内容3</div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/layui/lay/dest/layui.all.js"></script>
+<script src="../../js/business_center.js"></script>
+</html>

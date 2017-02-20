@@ -1,8 +1,8 @@
 <template>
   <div>
-    <v-header></v-header>
+    <v-header v-if="isShow"></v-header>
     <router-view></router-view>
-    <v-footer></v-footer>
+    <v-footer v-if="isShow"></v-footer>
 </div>
 </template>
 
@@ -12,6 +12,16 @@ import footer from 'components/footer'
 
 export default {
   name: 'app',
+  data () {
+    return {
+      isShow: true
+    }
+  },
+  methods: {
+    isShow: function () {
+      this.isShow = !this.isShow
+    }
+  },
   components: {
     'v-header': header,
     'v-footer': footer

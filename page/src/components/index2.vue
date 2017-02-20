@@ -11,10 +11,9 @@
 	<!--新闻中心，项目广场，过往项目-->
 	<div class="content">
 		<div class="content-left">
-
 			<span class="bt1">新闻中心</span>
       <ul id="example1">
-        <li v-for="item in items">
+        <li v-for="item in items" v-on:click="goNewsDetial(item.NewsId)">
          <div class="date-d">
            <span class="date-yearmonth">{{item.year}}</span>
            <span class="date-day">{{item.day}}</span>
@@ -24,7 +23,7 @@
          </span></a>
        </li>
       </ul>
-			<a href="javascript:;" class="show-more">查看更多</a>
+			<a href="javascript:;" class="show-more" v-on:click="goNews">查看更多</a>
 		</div>
 		<div class="content-right">
 			<span class="bt2">项目广场</span>
@@ -38,7 +37,7 @@
 					</div>
 				</li>
 			</ul>
-			<a href="javascript:;" class="show-whole">查看全部</a>
+			<a href="javascript:;" class="show-whole" v-on:click="goNews">查看全部</a>
 		</div>
 		<div class="content-bottom">
 			<span class="bt3">过往项目</span>
@@ -76,7 +75,7 @@
 		</div>
 	</div>
   <!-- 新闻详情 -->
-  <!-- <newDetial v-if=""></newDetial> -->
+  <newDetial v-if="selectNew" :new="selectedNew" ref="news"></newDetial>
   <!-- 项目详情 -->
   <!-- <projectDetial></projectDetial> -->
 </div>
@@ -84,25 +83,58 @@
 
 <script>
 // import axios from 'axios'
+import newDetial from 'components/News'
+// import projectDetial from 'components/Details'
 
 export default {
-  // created () {
-  //   axios.get('http://139.224.59.3:8080/Tea/api/reserve/listByRoom?room=0').then((res) => {
-  //     console.log(res)
-  //   })
-  // },
+  created () {
+    // axios.post('http://123.56.220.72:8080/Student/api/news/getNewsList').then((res) => {
+    //   console.log(res)
+    //   this.newsList = res.data
+    // })
+    // axios.post('http://123.56.220.72:8080/Student/api/items/getNewsList').then((res) => {
+    //   // console.log(res)
+    //   this.projectsList = res.data
+    // })
+  },
   data () {
     return {
       items: [
-        { year: '2016-12', day: '25', msg: 'nihaoa' }
+        { year: '2016-12', day: '25', msg: 'nihaoa', NewsId: '2' },
+        { year: '2016-12', day: '25', msg: 'nihaoa', NewsId: '3' }
       ],
       projects: [
         {
           name: '项目名项目名项目名项目名项目名项目名项目名项',
           main: '关键词'
         }
-      ]
+      ],
+      selectedNew: '',
+      newsList: [],
+      projectsList: []
     }
+  },
+  methods: {
+    // 进入新闻详情页
+    goNewsDetial: function (news) {
+      this.selectedNew = news
+      this.$nextTick(() => {
+        this.$refs.news.showToggle()
+      })
+      console.log(news)
+    },
+    // 点击更多新闻
+    goNews: function () {
+      this.$router.path({ path: '/notice' })
+    },
+    // 点击更多项目
+    goProgect: function () {
+      this.$router.path({ path: '/square' })
+    }
+  },
+  components: {
+    newDetial
+    // projectDetial
   }
 }
 </script>

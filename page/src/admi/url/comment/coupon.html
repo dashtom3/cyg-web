@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../js/layui/css/layui.css">
+    <link rel="stylesheet" href="../../css/business_center.css">
+    <link rel="stylesheet" href="../../css/order/group.css">
+    <style>
+        .layui-table th,table{
+            text-align: center;
+        }
+        .layui-form-label{
+            width: 160px;
+        }
+        #commentKinds,#grade{
+            background-color: #f8f8f8;
+            padding: 5px;
+            border-radius: 7px;
+            font-weight: 200;
+        }
+    </style>
+</head>
+<body>
+<div class="content-show">
+    <div class="page">
+        <form action="">
+            <div class="layui-tab">
+                <h1 style="font-size: 20px">优惠券点评管理</h1>
+                <hr>
+                <div class="layui-form-item">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th>
+                                <select name="city" lay-verify="required" id="commentKinds">
+                                    <option value="">全部</option>
+                                    <option value="0">好评</option>
+                                    <option value="1">中评</option>
+                                    <option value="2">差评</option>
+                                </select>
+                            </th>
+                            <th>
+                                <select name="city" lay-verify="required" id="grade">
+                                    <option value="">评论内容</option>
+                                    <option value="0">有图</option>
+                                    <option value="1">无图</option>
+                                </select>
+                            </th>
+                            <th>评论人</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>很好</td>
+                            <td>很好</td>
+                            <td>小明</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/layui/lay/dest/layui.all.js"></script>
+<script src="../../js/layui/laydate/laydate.js"></script>
+<script src="../../js/business_center.js"></script>
+<script type = "text/javascript" >
+    laydate({
+        elem: '#beginTime',
+        format:   'YYYY-MM-DD hh:mm'
+    });
+    laydate({
+        elem: '#endTime',
+        format:   'YYYY-MM-DD hh:mm'
+    });
+    function addCard(){
+        $('.add').show();
+    }
+    function deleteCard(obj){
+        $(obj).parent().parent().remove();
+    }
+    //    $('#addCard').click(function(){
+    //        $('.add').show();
+    //    })
+</script >
+</html>

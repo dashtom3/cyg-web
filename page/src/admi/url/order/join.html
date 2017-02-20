@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../js/layui/css/layui.css">
+    <link rel="stylesheet" href="../../css/business_center.css">
+    <link rel="stylesheet" href="../../css/order/group.css">
+    <style>
+        .layui-table th,table{
+            text-align: center;
+        }
+        .layui-form-label{
+            width: 160px;
+        }
+    </style>
+</head>
+<body>
+<div class="content-show">
+    <div class="page">
+        <form action="" class="layui-form time">
+            <div class="layui-tab">
+                <h1 style="font-size: 20px">活动报名</h1>
+                <hr>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <div class="layui-input-inline w230">
+                            <input type="text" name="beginTime" placeholder="活动起始日期" autocomplete="off" lay-verify="required" class="layui-input" id="beginTime">
+                        </div>
+                        <div class="layui-form-mid">-</div>
+                        <div class="layui-input-inline w230">
+                            <input type="text" name="endTime" placeholder="活动截止日期" autocomplete="off" lay-verify="required" class="layui-input" id="endTime">
+                        </div>
+                        <div class="layui-form-mid">名称</div>
+                        <div class="layui-input-inline w230">
+                            <input type="text" name="name" placeholder="活动名称" autocomplete="off" lay-verify="required" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline">
+                            <button class="layui-btn layui-btn-warm" lay-submit="" lay-filter="demo2">搜索</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th>项目名称</th>
+                            <th>活动开始时间</th>
+                            <th>活动结束时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>旅行</td>
+                            <td>2016-11-20</td>
+                            <td>2016-111-22</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </form>
+        <div>
+            <ul class="pagination">
+                <li class="disabled"><span>&laquo;</span></li>
+                <li class="active"><span>1</span></li>
+                <li><a href="/manage/supplier/apply.html?page=2">2</a></li>
+                <li><a href="/manage/supplier/apply.html?page=2">&raquo;</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/layui/lay/dest/layui.all.js"></script>
+<script src="../../js/layui/laydate/laydate.js"></script>
+<script src="../../js/business_center.js"></script>
+<script type = "text/javascript" >
+    laydate({
+        elem: '#beginTime',
+        format:   'YYYY-MM-DD hh:mm'
+    });
+    laydate({
+        elem: '#endTime',
+        format:   'YYYY-MM-DD hh:mm'
+    });
+</script >
+</html>

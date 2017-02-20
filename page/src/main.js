@@ -10,7 +10,12 @@ import Gwfc from 'components/Gwfc'
 import download from 'components/download'
 import personal from 'components/Personal'
 import login from 'components/Login'
-import regester from 'components/regester'
+import Regester from 'components/Regester'
+import newsDetial from 'components/News'
+import admUsers from 'components/Adm-users'
+import admNews from 'components/Adm-news'
+import admPost from 'components/Adm-post'
+import admProjects from 'components/Adm-projects'
 import vueTap from 'v-tap'
 // import fastclick from 'fastclick'
 import Vuex from 'vuex'
@@ -45,7 +50,22 @@ const router = new VueRouter({
     component: personal
   }, {
     path: '/regester',
-    component: regester
+    component: Regester
+  }, {
+    path: '/newsDetial',
+    component: newsDetial
+  }, {
+    path: '/Adm-users',
+    component: admUsers
+  }, {
+    path: '/Adm-news',
+    component: admNews
+  }, {
+    path: '/Adm-post',
+    component: admPost
+  }, {
+    path: '/Adm-projects',
+    component: admProjects
   }]
 })
 new Vue({
