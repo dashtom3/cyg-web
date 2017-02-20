@@ -137,12 +137,18 @@
 </template>
 
 <script>
+import header from './header'
+import footer from './footer'
 export default {
   name: 'xq',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
     }
+  },
+  components: {
+    'v-header': header,
+    'v-footer': footer
   }
 }
 </script>

@@ -55,7 +55,7 @@
 			<div class="selfdom">
 				<span class="self-title">2.个性标签</span>
   				<div class="self-flex" v-for="(self, index) in selfs">
-  					<button v-for="self_btn in self.self_btns" v-on:click="selfDom" :class="{ 'active': isActive }">{{self_btn}}</button>
+  					<button v-for="self_btn in self.self_btns" v-on:click="selfDom(self_btn)" :class="{ 'active': isActive }">{{self_btn}}</button>
   				</div>
 				<button class="complete" v-on:click="regester">完成</button>
 			</div>
@@ -72,7 +72,6 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      isShow: '',
       items: {
         student: {
           data: '学生',
@@ -129,23 +128,23 @@ export default {
       }
     }
   },
+  created () {
+    this.isShow = false
+  },
   methods: {
     personKind: function (val, index) {
       this.shishi = index
       console.log(val)
       Vue.set(this.user, 'personType', val)
     },
-    isShow: function () {
-      this.isShow = !this.isShow
-    },
     selfDom: function (event) {
-      console.log(event.target)
-      event.target.isActive = !event.target.isActive
+      console.log(event)
+      // event.target.isActive = !event.target.isActive
     },
     regester: function () {
       // 收集用户注册的信息
       var data = {
-        personType: this.user.personType,
+        usertype: this.user.personType,
         name: this.user.name,
         id: this.user.id,
         pwd: this.user.pwd,
@@ -157,7 +156,7 @@ export default {
       }
       console.log(data)
       var personalMsg = new FormData()
-      personalMsg.append('usertype', this.user.personType)
+      personalMsg.append('usertype', this.user.usertype)
       personalMsg.append('username', this.user.name)
       personalMsg.append('studentid', this.user.id)
       personalMsg.append('password', this.user.pwd)

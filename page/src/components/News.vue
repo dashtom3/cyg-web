@@ -1,21 +1,29 @@
 <template>
 		<!--中间新闻内容部分-->
+		<div>
+			<v-header></v-header>
 		<div class="news-content">
-			<span class="news-title"></span>
-			<span class="news-date"></span>
+			<span class="news-title">{{news.title}}</span>
+			<span class="news-date">{{news.time | time}}</span>
 			<span class="news-article">
+				{{news.contents}}
 			</span>
 			</div>
+			<v-footer></v-footer>
+		</div>
 </template>
 
 <script>
 import axios from 'axios'
+import header from './header'
+import footer from './footer'
 export default {
   created () {
+    var self = this
     axios.get('http://123.56.220.72:8080/Student/api/news/getbyid?newsid=' + this.newsId + '&token=')
     .then(function (res) {
       console.log(res.data.data)
-      this.news = res.data.data
+      self.news = res.data.data
     })
   },
   data () {
@@ -23,6 +31,10 @@ export default {
       news: '{}',
       newsId: this.$route.params.id
     }
+  },
+  components: {
+    'v-header': header,
+    'v-footer': footer
   }
 }
 </script>

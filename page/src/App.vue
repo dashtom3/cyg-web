@@ -1,25 +1,16 @@
 <template>
   <div>
-    <v-header v-if="isShow"></v-header>
     <router-view></router-view>
-    <v-footer v-if="isShow"></v-footer>
 </div>
 </template>
 
 <script>
-import header from 'components/header'
-import footer from 'components/footer'
-
 export default {
   name: 'app',
   data () {
     return {
       isShow: true
     }
-  },
-  components: {
-    'v-header': header,
-    'v-footer': footer
   }
 }
 </script>

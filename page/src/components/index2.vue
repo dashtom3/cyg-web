@@ -1,6 +1,7 @@
 <template>
 	<!--banner图展部分-->
   <div>
+    <v-header></v-header>
 	<div class="banner">
 		<ul class="banner-img">
 			<li></li>
@@ -28,10 +29,10 @@
 		<div class="content-right">
 			<span class="bt2">项目广场</span>
 			<ul>
-        <li v-for="project in projectsList" v-on:click="goProjectsDetial(project.itemid)">
+        <li v-for="(project, index) in projectsList" v-on:click="goProjectsDetial(project.itemid)">
 					<a href="javascript:;"><span class="project-name">{{project.itemname}}</span></a>
 					<div class="main-words">
-						<a href="javascript:;"><span class="main-words1">{{project.keywords}}</span></a>
+						<a href="javascript:;" v-for="keyword in keywords[index]"><span class="main-words1">{{keyword}}</span></a>
 					</div>
 				</li>
 			</ul>
@@ -72,11 +73,14 @@
 			<a href="javascript:;" class="show-wholetwo">查看全部</a>
 		</div>
 	</div>
+  <v-footer></v-footer>
 </div>
 </template>
 
 <script>
 import axios from 'axios'
+import header from './header'
+import footer from './footer'
 export default {
   created () {
     axios.post('http://123.56.220.72:8080/Student/api/news/getNewsList').then((res) => {
@@ -84,10 +88,14 @@ export default {
       this.newsList = res.data.data
     })
     axios.post('http://123.56.220.72:8080/Student/api/items/getItemsList').then((res) => {
-      // console.log(res)
       this.projectsList = res.data.data
-      // this.keywords = JSON.parse(res.data.data.keywords)
-      // console.log(res.data.data[0].keywords)
+      // console.log(res)
+      // console.log(res.data.data)
+      var self = this
+      for (let index in res.data.data) {
+        self.keywords.push(JSON.parse(res.data.data[index].keywords))
+      }
+      this.keywords = self.keywords
     })
   },
   data () {
@@ -114,6 +122,10 @@ export default {
     goProgect: function () {
       this.$router.push({ path: '/square' })
     }
+  },
+  components: {
+    'v-header': header,
+    'v-footer': footer
   }
 }
 </script>
