@@ -1,20 +1,41 @@
 <template>
 		<!--中间新闻内容部分-->
-		<div class="news-content newDetial" v-show="showDetail">
-			<span class="news-title">这是一个长长的新闻标题</span>
-			<span class="news-date">2016-11-20</span>
+		<div>
+			<v-header></v-header>
+		<div class="news-content">
+			<span class="news-title">{{news.title}}</span>
+			<span class="news-date">{{news.time | time}}</span>
 			<span class="news-article">
-				这里是新闻内容这里是新闻内容这里是新闻内容这里是新闻内容这里是新闻内容这里是新闻内容
-				这里是新闻内容这里是新闻内容这里是新闻内容这里是新闻内容这里是新闻内容这里是新闻内容
-				这里是新闻内容这里是新闻内容这里是新闻内容这里是新闻内容这里是新闻内容这里是新闻内容
-				这里是新闻内容这里是新闻内容这里是新闻内容这里是新闻内容这里是新闻内容这里是新闻内容。
+				{{news.contents}}
 			</span>
 			</div>
+			<v-footer></v-footer>
+		</div>
 </template>
 
 <script>
+import axios from 'axios'
+import header from './header'
+import footer from './footer'
 export default {
-  name: 'news'
+  created () {
+    var self = this
+    axios.get('http://123.56.220.72:8080/Student/api/news/getbyid?newsid=' + this.newsId + '&token=')
+    .then(function (res) {
+      console.log(res.data.data)
+      self.news = res.data.data
+    })
+  },
+  data () {
+    return {
+      news: '{}',
+      newsId: this.$route.params.id
+    }
+  },
+  components: {
+    'v-header': header,
+    'v-footer': footer
+  }
 }
 </script>
 

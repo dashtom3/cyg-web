@@ -1,5 +1,6 @@
 <template>
 <div>
+  <v-header></v-header>
   <div class="login">
     <div class="login2">
 			<div class="user-number" prop="name">
@@ -14,16 +15,18 @@
 			<a href="javascript:;"><span class="forget" @click="forgetPwd">忘记密码?</span></a>
 			<a href="javascript:;"><span class="click-regester" @click="goRegester">点击注册</span></a>
 			<button type="button" class="user-login" @click="btn">登录</button>
-      <!-- <forgetPwd v-if=""></forgetPwd> -->
-      <goRegester :food="go" v-if="go" ref="goto"></goRegester>
 	</div>
 </div>
+<v-footer></v-footer>
 </div>
 </template>
 
 <script>
 import axios from 'axios'
 import goRegester from './Regester'
+import header from './header'
+import footer from './footer'
+// import goRegester from './Regester'
 // import router from '../main'
 export default {
   name: 'login',
@@ -32,7 +35,8 @@ export default {
       people: {
         name: '',
         pwd: ''
-      }
+      },
+      isShow: false
     }
   },
   methods: {
@@ -54,21 +58,24 @@ export default {
       this.$router.push({ path: '/forgetPwd' })
     },
     goRegester: function () {
-      var self = this
-      this.$nextTick(() => {
-        self.$refs.isShow.isShow()
-      })
       this.$router.push({ path: 'regester' })
     }
   },
   components: {
-    goRegester
+    'v-header': header,
+    'v-footer': footer
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.header{
+  display: none
+}
+.footer{
+  display: none
+}
 .login{
 	background:url(../img/logback.png) no-repeat;
 	width: 100%;

@@ -1,5 +1,6 @@
 <template>
   <div class="notice">
+    <v-header></v-header>
 		<!--中间部分-->
 		<div class="notice-content">
 			<div class="notice-left">
@@ -28,31 +29,40 @@
 			<!--右边项目-->
 			<div class="notice-right-part">
 				<ul>
-          <li v-for="noticeitem in noticeitems" >
+          <li v-for="news in newsList" >
 						<div class="notice-date">
-							<span>{{ noticeitem.year }}<br/><span class="notice-date-day">{{ noticeitem.day }}<span></span>
+							<span>{{ news.time | year }}<br/><span class="notice-date-day">{{ news.time | day }}<span></span>
 						</div>
-						<span class="notice-title">{{ noticeitem.title }}</span>
+						<span class="notice-title">{{ news.title }}</span>
 					</li>
 				</ul>
 			</div>
 		</div>
 		<!--底部-->
-
+    <v-footer></v-footer>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+import header from './header'
+import footer from './footer'
 export default {
   name: 'notice',
   data () {
     return {
-      noticeitems: [
-        { year: '2016.12.', day: '25', title: '这是一条新闻标题这是一条新闻标题这是一条新闻标题' },
-        { year: '2016.12.', day: '25', title: '这是一条新闻标题这是一条新闻标题这是一条新闻标题' },
-        { year: '2016.12.', day: '25', title: '这是一条新闻标题这是一条新闻标题这是一条新闻标题' }
-      ]
+      newsList: []
     }
+  },
+  created () {
+    axios.post('http://123.56.220.72:8080/Student/api/news/getNewsList').then((res) => {
+      // console.log(res.data)
+      this.newsList = res.data.data
+    })
+  },
+  components: {
+    'v-header': header,
+    'v-footer': footer
   }
 }
 </script>

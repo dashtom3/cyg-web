@@ -77,7 +77,7 @@
 									<td>{{admNew.title}}</td>
 									<td>{{admNew.type}}</td>
 									<td>
-										<a href="#myModal" role="button" data-toggle="modal">删除</a>
+										<a href="#myModal" role="button" v-on:click="del($index)">删除</a>
 										<button class="adm-pass">通过</button>
 									</td>
 								</tr>
@@ -133,6 +133,11 @@ export default {
       admNews: [
         {time: '发布时间', title: '这是一个新闻标题', type: '状态'}
       ]
+    }
+  },
+  methods: {
+    del: function (item) {
+      console.log(item)
     }
   }
 }

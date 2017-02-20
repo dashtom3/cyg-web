@@ -1,38 +1,15 @@
 <template>
+  <div>
+  <v-header></v-header>
   <div class="details">
-    <!--导航栏-->
-		<div class="header">
-			<div class="nav">
-				<!--
-	            	logo图
-	            -->
-	            <div class="nav-left">
-					<img src="../img/logo.png" class="logo"/>
-					<a href="javascript:;"><span>同济大学汽车学院</span></a>
-	            </div>
-				<ul class="nav-content">
-					<li><a href="javascript:;">新闻通知</a></li>
-					<li><a href="javascript:;">项目广场</a></li>
-					<li><a href="javascript:;">过往风采</a></li>
-					<li><a href="javascript:;">材料下载</a></li>
-				</ul>
-				<div class="nav-right">
-					<input type="text" placeholder="点击搜索" id="inp" />
-					<span><a href="javascript:;">个人中心</a></span>
-				</div>
-			</div>
 			<!--头部分-->
 			<div class="details-content">
 				<div class="details-content-top">
 					<span class="join">立即加入</span>
 					<div class="details-top-right">
-						<span class="project-topname">这里是大写加粗的项目名</span>
+						<span class="project-topname">{{project.itemname}}</span>
 						<div class="detail-key">
-							<button>关键词</button>
-							<button>关键词</button>
-							<button>关键词</button>
-							<button>关键词</button>
-							<button>关键词</button>
+							<button v-for="keyword in keywords">{{keyword}}</button>
 						</div>
 					</div>
 				</div>
@@ -42,23 +19,21 @@
 					<div class="detail-middle-left">
 						<div class="detail-middle-project">
 							<div class="middle-project-top">
-								<span class="middle-project-title">这是一个非常非常有趣的项目名</span>
+								<span class="middle-project-title">{{project.itemname}}</span>
 							</div>
 							<div class="middle-project-content">
 								<ul>
-									<li><span>负责人:&nbsp;&nbsp;</span><span class="detail-leader">小明</span></li>
-									<li><span>指导老师:&nbsp;&nbsp;</span><span class="detail-teacher">某某</span></li>
-									<li><span>姓名:&nbsp;&nbsp;</span><span class="detail-name">啦啦</span></li>
-									<li><span>学号:&nbsp;&nbsp;</span><span class="detail-number">1234</span></li>
-									<li><span>联系方式:&nbsp;&nbsp;</span><span class="detail-call"></span></li>
-									<li><span>邮箱:&nbsp;&nbsp;</span><span class="detail-email"></span></li>
+									<li><span>负责人:&nbsp;&nbsp;</span><span class="detail-leader">{{project.itemleader}}</span></li>
+									<li><span>指导老师:&nbsp;&nbsp;</span><span class="detail-teacher">{{project.teacher}}</span></li>
+									<li><span>姓名:&nbsp;&nbsp;</span><span class="detail-name"></span></li>
+									<li><span>学号:&nbsp;&nbsp;</span><span class="detail-number">{{project.userid}}</span></li>
+									<li><span>联系方式:&nbsp;&nbsp;</span><span class="detail-call">{{project.telephone}}</span></li>
+									<li><span>邮箱:&nbsp;&nbsp;</span><span class="detail-email">{{project.email}}</span></li>
 								</ul>
 								<div class="detail-introduction">
 									<span class="detail-introduction-title">这里是项目简介</span>
 									<p>
-										这里是项目简介这里是项目简介这里是项目简介这里是项目简介这里
-										是项目简介这里是项目简介这里是项目简介这里是项目简介
-										这里是项目简介这里是项目简介这里是项目简介这里是项目简介
+										{{project.itembrief}}
 									</p>
 								</div>
 							</div>
@@ -80,22 +55,22 @@
 						<div class="detail-recruit">
 							<div class="recruit-top">
 								<div class="recruit-number">
-									<span class="recruit-number-left">2</span>
+									<span class="recruit-number-left">{{project.nowpeople}}</span>
 									<span>/</span>
-									<span class="recruit-number-right">10</span>
+									<span class="recruit-number-right">{{project.allpeople}}</span>
 								</div>
 								<span class="recruit-title">招募情况</span>
 							</div>
 							<div class="recruit-bottom">
-								<span class="requirement">成员要求</span>
+								<span class="requirement">{{project.memberdemand}}</span>
 								<ul>
-									<li>专业方向: <span class="recruit-major"></span></li>
-									<li>所需技能: <span class="recruit-skill"></span></li>
-									<li>负责任务: <span class="recruit-duty"></span></li>
-									<li>年级: <span class="recruit-class"></span></li>
-									<li>性别: <span class="recruit-sex"></span></li>
-									<li>学制: <span class="recruit-system"></span></li>
-									<li>籍贯: <span class="recruit-place"></span></li>
+									<li>专业方向: <span class="recruit-major">{{expectresult.major}}</span></li>
+									<li>所需技能: <span class="recruit-skill">{{expectresult.skill}}</span></li>
+									<li>负责任务: <span class="recruit-duty">{{expectresult.mission}}</span></li>
+									<li>年级: <span class="recruit-class">{{expectresult.grade}}</span></li>
+									<li>性别: <span class="recruit-sex">{{expectresult.sex}}</span></li>
+									<li>学制: <span class="recruit-system">{{expectresult.edu_length}}</span></li>
+									<li>籍贯: <span class="recruit-place">{{expectresult.place}}</span></li>
 								</ul>
 							</div>
 						</div>
@@ -106,14 +81,12 @@
 						<!--项目开类型-->
 						<div class="details-type">
 							<div class="details-type-top">
-								<span class="details-type-date1">2016.2.29</span>
-								<span class="details-type-date2">2016.4.30</span>
+								<span class="details-type-date1">{{project.starttime | time}}</span>
+								<span class="details-type-date2">{{project.endtime | time}}</span>
 							</div>
 							<div class="details-type-bottom">
 								<ul>
-									<li>项目类型</li>
-									<li>项目类型</li>
-									<li>项目类型</li>
+									<li>{{type}}</li>
 								</ul>
 							</div>
 						</div>
@@ -122,25 +95,47 @@
 					<div class="details-words">
 						<span class="detail-basic-title">这里是我们的已有基础</span>
 						<p>
-							这里是我们的已有基础这里是我们的已有基础这里是我们的已有基础
-						这里是我们的已有基础这里是我们的已有基础这里是我们的已有基础这里是
-						我们的已有基础这里是我们的已有基础这里是我们的已有基础
+							{{project.exitbasic}}
 						</p>
 					</div>
 					<a href="javascript:;" class="details-foot">返回过往风采</a>
 				</div>
 			</div>
 		</div>
+    <v-footer></v-footer>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+import header from './header'
+import footer from './footer'
 export default {
   name: 'details',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      projectId: this.$route.params.id,
+      project: {},
+      keywords: [],
+      expectresult: [],
+      type: ''
     }
+  },
+  components: {
+    'v-header': header,
+    'v-footer': footer
+  },
+  created () {
+    var self = this
+    axios.post('http://123.56.220.72:8080/Student/api/items/getbyid/?itemsid=' + this.projectId)
+    .then(function (res) {
+      // console.log(res.data.data.type)
+      self.project = res.data.data
+      self.keywords = JSON.parse(res.data.data.keywords)
+      self.expectresult = JSON.parse(res.data.data.expectresult)
+      res.data.data.type ? self.type = '申请项目' : self.type = '结题项目'
+    })
   }
 }
 </script>
