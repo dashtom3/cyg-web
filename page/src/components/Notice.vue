@@ -29,7 +29,7 @@
 			<!--右边项目-->
 			<div class="notice-right-part">
 				<ul>
-          <li v-for="news in newsList" >
+          <li v-for="news in newsList" v-on:click="goNewsDetial(news.newsid)">
 						<div class="notice-date">
 							<span>{{ news.time | year }}<br/><span class="notice-date-day">{{ news.time | day }}<span></span>
 						</div>
@@ -63,6 +63,11 @@ export default {
   components: {
     'v-header': header,
     'v-footer': footer
+  },
+  methods: {
+    goNewsDetial: function (newsId) {
+      this.$router.push({name: 'newsDetial', params: { id: newsId }})
+    }
   }
 }
 </script>

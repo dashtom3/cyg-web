@@ -1,5 +1,7 @@
 <template>
   <!--中间部分-->
+  <div>
+    <v-header></v-header>
   <div class="download-content">
     <!--左边上半部分-->
     <div class="download-left">
@@ -30,9 +32,14 @@
       </ul>
     </div>
   </div>
+  <v-footer></v-footer>
+</div>
 </template>
 
 <script>
+// import axios from 'axios'
+import header from './header'
+import footer from './footer'
 export default {
   name: 'download',
   data () {
@@ -44,6 +51,10 @@ export default {
         }
       ]
     }
+  },
+  components: {
+    'v-header': header,
+    'v-footer': footer
   }
 }
 </script>

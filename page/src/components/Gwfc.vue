@@ -1,5 +1,7 @@
 <template>
 	<!--左边过往风采-->
+	<div>
+		<v-header></v-header>
 	<div class="content-fc">
 		<div class="content-fc-left">
 			<div class="content-left-fctop">
@@ -50,26 +52,46 @@
 					</tr>
 					<tr v-for="(item,index) in items">
 						<td>{{index+1}}</td>
-						<td class="td-title">{{item.title}}</td>
-						<td>{{item.type}}</td>
-						<td>{{item.major}}</td>
+						<td class="td-title">{{item.itemname}}</td>
+						<td>{{type}}</td>
+						<td><span v-for="keyword in keywords[index]">{{keyword}}</span></td>
 					</tr>
 				</table>
 			</div>
 		</div>
 	</div>
+	<v-footer></v-footer>
+</div>
 </template>
 
 <script>
+import axios from 'axios'
+import header from './header'
+import footer from './footer'
 export default {
   name: 'gwfc',
   data () {
     return {
-      items: [
-        {title: '这是一个长长的项目标题', type: 'sitp', major: '调研，受电弓'},
-        {title: '这是一个长长的项目标题', type: 'sitp', major: '调研，受电弓'}
-      ]
+      items: [],
+      type: '',
+      keywords: []
     }
+  },
+  components: {
+    'v-header': header,
+    'v-footer': footer
+  },
+  created () {
+    var self = this
+    axios.post('http://123.56.220.72:8080/Student/api/items/getItemsList')
+    .then(function (res) {
+      console.log(res.data.data[0].keywords)
+      self.items = res.data.data
+      res.data.data.type ? self.type = '申请项目' : self.type = '结题项目'
+      for (let index in res.data.data) {
+        self.keywords.push(JSON.parse(res.data.data[index].keywords))
+      }
+    })
   }
 }
 </script>

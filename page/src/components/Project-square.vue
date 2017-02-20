@@ -1,5 +1,7 @@
 <template>
 		<!--中间部分-->
+		<div>
+			<v-header></v-header>
 		<div class="square-content">
 			<!--左边上半部分-->
 			<div class="square-left">
@@ -20,7 +22,7 @@
 				</div>
 				<!--左边下半部分-->
 				<div class="square-b">
-					<button class="square-post">发起项目</button>
+					<button class="square-post" v-on:click="publish">发起项目</button>
 					<div class="square-left-project">
 						<div class="square-source">
 							<span class="square-source-words">项目来源:</span>
@@ -50,40 +52,20 @@
 			<!--右半部分-->
 			<div class="square-right">
 				<ul>
-					<li>
+					<li v-for="project in projects" v-on:click="goProjectsDetial(project.itemid)">
 						<div class="square-project">
 							<span class="square-rank">No.100</span>
-							<span class="square-project-name">这里是项目名这里是项目名这里是项目名</span>
+							<span class="square-project-name">{{project.itemname}}</span>
 						</div>
 						<div class="square-project-information">
 							<span>起止时间:</span>&nbsp;
-							<span class="square-date">2014.12.25-2016.12.25</span>&nbsp;
+							<span class="square-date">{{project.starttime | time}}--{{project.endtime | time}}</span>&nbsp;
 							<span class="square-date-right-border">|</span>&nbsp;
 							<span>负责人:</span>&nbsp;
-							<span class="square-responsible-name">某某某</span>&nbsp;
+							<span class="square-responsible-name">{{project.itemleader}}</span>&nbsp;
 							<span class="square-date-right-border">|</span>&nbsp;
 							<span>招募人数: </span>
-							<span class="square-state">3</span>&nbsp;
-							<span class="square-date-right-border">|</span><br/>
-							项目来源:&nbsp;&nbsp;<span class="square-source-id">大学生创业项目</span>&nbsp;
-							<span class="square-date-right-border">|</span>&nbsp;
-							学科方向:&nbsp;&nbsp;<span>整车</span>
-						</div>
-					</li>
-					<li>
-						<div class="square-project">
-							<span class="square-rank">No.2</span>
-							<span class="square-project-name">这里是项目名这里是项目名这里是项目</span>
-						</div>
-						<div class="square-project-information">
-							<span>起止时间:</span>&nbsp;
-							<span class="square-date">2014.12.25-2016.12.25</span>&nbsp;
-							<span class="square-date-right-border">|</span>&nbsp;
-							<span>负责人:</span>&nbsp;
-							<span class="square-responsible-name">某某某</span>&nbsp;
-							<span class="square-date-right-border">|</span>&nbsp;
-							<span>招募人数: </span>
-							<span class="square-state">3</span>&nbsp;
+							<span class="square-state">{{project.nowpeople}}</span>&nbsp;
 							<span class="square-date-right-border">|</span><br/>
 							项目来源:&nbsp;&nbsp;<span class="square-source-id">大学生创业项目</span>&nbsp;
 							<span class="square-date-right-border">|</span>&nbsp;
@@ -103,21 +85,41 @@
 				</div>
 			</div>
 		</div>
+		<v-footer></v-footer>
+	</div>
 </template>
 
 <script>
 import header from './header'
 import footer from './footer'
+import axios from 'axios'
 export default {
   name: 'square',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      projects: []
     }
   },
   components: {
     'v-header': header,
     'v-footer': footer
+  },
+  methods: {
+    publish: function () {
+      this.$router.push('/knot')
+    },
+    goProjectsDetial: function (itemid) {
+      this.$router.push({name: 'projectDetial', params: { id: itemid }})
+    }
+  },
+  created () {
+    var self = this
+    axios.post('http://123.56.220.72:8080/Student/api/items/getItemsList')
+    .then(function (res) {
+      console.log(res)
+      self.projects = res.data.data
+    })
   }
 }
 </script>

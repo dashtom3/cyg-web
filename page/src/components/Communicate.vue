@@ -16,7 +16,7 @@
 						<span class="communicate-theme">111</span>
 						<span>主题</span>&nbsp;
 						<span>/</span>&nbsp;
-						<span class="communicate-answer">333</span>
+						<span class="communicate-answer">{{communicate.replyQuantity}}</span>
 						<span>回复</span>
 						<span>)</span>
 					</div>
@@ -57,54 +57,14 @@
 					</tr>
 					<tr>
 						<td class="table-tr-first">
-							[<span class="table-show">公告</span>]
+							[<span class="table-show">{{}}</span>]
 						</td>
 						<td class="table-tr-second">
-							<span>我要发一个重要的公告</span>
+							<span></span>
 						</td>
 						<td>
-							<span class="table-pereson">管理员</span><br/>
-							<span class="person-date">2016-04-26 14:30</span>
-						</td>
-						<td>
-							<span class="answer-number">10</span><br/>
-							<span class="read-number">110</span>
-						</td>
-						<td>
-							<span class="answer-words">啦啦啦啦</span><br/>
-							<span class="answer-words-date">2016-04-26 14:30</span>
-						</td>
-					</tr>
-					<tr>
-						<td class="table-tr-first">
-							[<span class="table-project">项目</span>]
-						</td>
-						<td>
-							<span class="table-tr-second">完全不知道这是什么项目</span>
-						</td>
-						<td>
-							<span class="table-pereson">管理员</span><br/>
-							<span class="person-date">2016-04-26 14:30</span>
-						</td>
-						<td>
-							<span class="answer-number">10</span><br/>
-							<span class="read-number">110</span>
-						</td>
-						<td>
-							<span class="answer-words">啦啦啦啦</span><br/>
-							<span class="answer-words-date">2016-04-26 14:30</span>
-						</td>
-					</tr>
-					<tr>
-						<td class="table-tr-first">
-							[<span>展示</span>]
-						</td>
-						<td class="table-tr-second">
-							<span>完全不知道这是什么项目</span>
-						</td>
-						<td>
-							<span class="table-pereson">管理员</span><br/>
-							<span class="person-date">2016-04-26 14:30</span>
+							<span class="table-pereson"></span><br/>
+							<span class="person-date"></span>
 						</td>
 						<td>
 							<span class="answer-number">10</span><br/>
@@ -141,12 +101,22 @@
 <script>
 import header from './header'
 import footer from './footer'
+import axios from 'axios'
 export default {
   name: 'communicate',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      communicate: []
     }
+  },
+  created () {
+    var self = this
+    axios.post('http://123.56.220.72:8080/Student/api/communication/getCommunicationList')
+    .then(function (res) {
+      console.log(res)
+      self.communicate = res.data.data
+    })
   },
   components: {
     'v-header': header,

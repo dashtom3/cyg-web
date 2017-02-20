@@ -15,6 +15,9 @@ import newsDetial from 'components/News'
 import projectsDetial from 'components/Details'
 import vueTap from 'v-tap'
 import admNews from 'components/Adm-news'
+import communicate from 'components/Communicate'
+import knot from 'components/Knot'
+import update from 'components/Rewrite'
 // import fastclick from 'fastclick'
 import Vuex from 'vuex'
 
@@ -69,6 +72,18 @@ const router = new VueRouter({
     path: '/projectsDetial/:id',
     name: 'projectDetial',
     component: projectsDetial
+  }, {
+    path: '/communicate',
+    name: 'communicate',
+    component: communicate
+  }, {
+    path: '/knot',
+    name: 'knot',
+    component: knot
+  }, {
+    path: '/update',
+    name: 'update',
+    components: update
   }]
 })
 new Vue({

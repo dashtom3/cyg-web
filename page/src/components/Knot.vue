@@ -5,15 +5,15 @@
 			<div class="kont-top-left">
 				<div class="knot-project">
 					<span>项目名称 :</span>
-					<input type="text" name="" id="" value="" />
+					<input type="text" name="" id="" value="" v-model="project.itemname" />
 				</div>
 				<div class="knot-leader">
 					<span>项目负责人 :</span>
-					<input type="text" name="" id="" value="" />
+					<input type="text" name="" id="" value="" v-model="project.itemleader" />
 				</div>
 				<div class="knot-teacher">
 					<span>指导老师 :</span>
-					<input type="text" name="" id="" value="" />
+					<input type="text" name="" id="" value="" v-model="project.teacher" />
 				</div>
 				<div class="knot-project-type">
 					<span>项目类型 :</span>
@@ -25,23 +25,23 @@
 				</div>
 				<div class="knot-key">
 					<span>关键词 :</span>
-					<input type="text" name="" id="" value="" />
+					<input type="text" name="" id="" value="" v-model="project.keywords" />
 				</div>
 				<span class="knot-introduce">项目介绍</span>
 			</div>
-			<textarea name="" placeholder="项目简介，限150字" class="knot-introduce-t"></textarea>
+			<textarea name="" placeholder="项目简介，限150字" class="knot-introduce-t" v-model="project.itembrief"></textarea>
 			<span class="knot-result">研究成果</span>
-			<textarea name="" placeholder="限100字" class="knot-result-t"></textarea>
+			<textarea name="" placeholder="限100字" class="knot-result-t" v-model="project.itemresult"></textarea>
 			<span class="knot-innovation">创新特色</span>
-			<textarea name="" placeholder="限100字" class="knot-innovation-t"></textarea>
+			<textarea name="" placeholder="限100字" class="knot-innovation-t" v-model="project.innovate"></textarea>
 			<div class="knot-bottom">
 				<div class="knot-cycle">
 					<span>项目周期 :</span>
-					<input type="text" name="" />
+					<input type="text" name="" v-model="project.itemcyle" />
 				</div>
 				<div class="knot-phone">
 					<span>联系方式&nbsp;:</span>
-					<input type="text" name="" />
+					<input type="text" name="" v-model="project.telephone" />
 				</div>
 				<div class="knot-file">
 					<span>附件上传</span>
@@ -50,7 +50,7 @@
 
 			</div>
 			<div class="knot-submit">
-				<input type="submit" name="" id="" value="提交申请" />
+				<input type="button" name="" id="" value="提交申请" v-on:click="apply" />
 				<button>取消</button>
 			</div>
     </div>
@@ -58,11 +58,40 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'knot-content',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      project: {
+        itemname: '',
+        itemleader: '',
+        teacher: '',
+        keywords: '',
+        itembrief: '',
+        exitbasic: '',
+        innovate: '',
+        itemcyle: '',
+        telephone: ''
+      }
+    }
+  },
+  methods: {
+    apply: function () {
+      var zipFormData = new FormData()
+      zipFormData.append('itemname', this.itemname)
+      zipFormData.append('itemleader', this.itemleader)
+      zipFormData.append('teacher', this.teacher)
+      zipFormData.append('keywords', this.keywords)
+      zipFormData.append('itembrief', this.itembrief)
+      zipFormData.append('itemcyle', this.itemcyle)
+      zipFormData.append('telephone', this.telephone)
+      zipFormData.append('email', this.email)
+      zipFormData.append('file', this.file)
+      axios.post('http://123.56.220.72:8080/Student/api/items/add', zipFormData)
+      .then(function (res) {
+        console.log(res)
+      })
     }
   }
 }
