@@ -13,13 +13,13 @@
 		<div class="content-left">
 			<span class="bt1">新闻中心</span>
       <ul id="example1">
-        <li v-for="item in items" v-on:click="goNewsDetial(item.NewsId)">
+        <li v-for="item in newsList" v-on:click="goNewsDetial(item.newsid)">
          <div class="date-d">
-           <span class="date-yearmonth">{{item.year}}</span>
-           <span class="date-day">{{item.day}}</span>
+           <span class="date-yearmonth">{{item.time | year}}</span>
+           <span class="date-day">{{item.time | day}}</span>
          </div>
          <a href="javascript:;"><span class="news-words">
-           {{item.msg}}
+           {{item.contents}}
          </span></a>
        </li>
       </ul>
@@ -28,12 +28,10 @@
 		<div class="content-right">
 			<span class="bt2">项目广场</span>
 			<ul>
-        <li v-for="project in projects">
-					<a href="javascript:;"><span class="project-name">{{project.name}}</span></a>
+        <li v-for="project in projectsList" v-on:click="goProjectsDetial(project.itemid)">
+					<a href="javascript:;"><span class="project-name">{{project.itemname}}</span></a>
 					<div class="main-words">
-						<a href="javascript:;"><span class="main-words1">{{project.main}}</span></a>
-						<a href="javascript:;"><span class="main-words1">{{project.main}}</span></a>
-						<a href="javascript:;"><span class="main-words1">{{project.main}}</span></a>
+						<a href="javascript:;"><span class="main-words1">{{project.keywords}}</span></a>
 					</div>
 				</li>
 			</ul>
@@ -74,67 +72,48 @@
 			<a href="javascript:;" class="show-wholetwo">查看全部</a>
 		</div>
 	</div>
-  <!-- 新闻详情 -->
-  <newDetial v-if="selectNew" :new="selectedNew" ref="news"></newDetial>
-  <!-- 项目详情 -->
-  <!-- <projectDetial></projectDetial> -->
 </div>
 </template>
 
 <script>
-// import axios from 'axios'
-import newDetial from 'components/News'
-// import projectDetial from 'components/Details'
-
+import axios from 'axios'
 export default {
   created () {
-    // axios.post('http://123.56.220.72:8080/Student/api/news/getNewsList').then((res) => {
-    //   console.log(res)
-    //   this.newsList = res.data
-    // })
-    // axios.post('http://123.56.220.72:8080/Student/api/items/getNewsList').then((res) => {
-    //   // console.log(res)
-    //   this.projectsList = res.data
-    // })
+    axios.post('http://123.56.220.72:8080/Student/api/news/getNewsList').then((res) => {
+      // console.log(res.data)
+      this.newsList = res.data.data
+    })
+    axios.post('http://123.56.220.72:8080/Student/api/items/getItemsList').then((res) => {
+      // console.log(res)
+      this.projectsList = res.data.data
+      // this.keywords = JSON.parse(res.data.data.keywords)
+      // console.log(res.data.data[0].keywords)
+    })
   },
   data () {
     return {
-      items: [
-        { year: '2016-12', day: '25', msg: 'nihaoa', NewsId: '2' },
-        { year: '2016-12', day: '25', msg: 'nihaoa', NewsId: '3' }
-      ],
-      projects: [
-        {
-          name: '项目名项目名项目名项目名项目名项目名项目名项',
-          main: '关键词'
-        }
-      ],
-      selectedNew: '',
       newsList: [],
-      projectsList: []
+      projectsList: [],
+      keywords: []
     }
   },
   methods: {
     // 进入新闻详情页
-    goNewsDetial: function (news) {
-      this.selectedNew = news
-      this.$nextTick(() => {
-        this.$refs.news.showToggle()
-      })
-      console.log(news)
+    goNewsDetial: function (newsId) {
+      this.$router.push({name: 'newsDetial', params: { id: newsId }})
+    },
+    // 进入项目详情页
+    goProjectsDetial: function (itemid) {
+      this.$router.push({name: 'projectDetial', params: { id: itemid }})
     },
     // 点击更多新闻
     goNews: function () {
-      this.$router.path({ path: '/notice' })
+      this.$router.push({ path: '/notice' })
     },
     // 点击更多项目
     goProgect: function () {
-      this.$router.path({ path: '/square' })
+      this.$router.push({ path: '/square' })
     }
-  },
-  components: {
-    newDetial
-    // projectDetial
   }
 }
 </script>

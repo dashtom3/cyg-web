@@ -1,26 +1,5 @@
 <template>
   <div class="details">
-    <!--导航栏-->
-		<div class="header">
-			<div class="nav">
-				<!--
-	            	logo图
-	            -->
-	            <div class="nav-left">
-					<img src="../img/logo.png" class="logo"/>
-					<a href="javascript:;"><span>同济大学汽车学院</span></a>
-	            </div>
-				<ul class="nav-content">
-					<li><a href="javascript:;">新闻通知</a></li>
-					<li><a href="javascript:;">项目广场</a></li>
-					<li><a href="javascript:;">过往风采</a></li>
-					<li><a href="javascript:;">材料下载</a></li>
-				</ul>
-				<div class="nav-right">
-					<input type="text" placeholder="点击搜索" id="inp" />
-					<span><a href="javascript:;">个人中心</a></span>
-				</div>
-			</div>
 			<!--头部分-->
 			<div class="details-content">
 				<div class="details-content-top">
@@ -135,12 +114,22 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'details',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      projectId: this.$route.params.id,
+      project: {}
     }
+  },
+  created () {
+    axios.post('http://123.56.220.72:8080/Student/api/items/getItemsList' + this.projectId)
+    .then(function (res) {
+      console.log(res)
+      this.project = res.data.data
+    })
   }
 }
 </script>

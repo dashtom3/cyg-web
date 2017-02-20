@@ -23,7 +23,7 @@
 
 <script>
 import axios from 'axios'
-import goRegester from 'Regester'
+import goRegester from './Regester'
 // import router from '../main'
 export default {
   name: 'login',
@@ -54,10 +54,7 @@ export default {
       this.$router.push({ path: '/forgetPwd' })
     },
     goRegester: function () {
-      var self = this
-      this.$nextTick(() => {
-        self.$refs.isShow.isShow()
-      })
+      this.isShow = !this.isShow
       this.$router.push({ path: 'regester' })
     }
   },
@@ -69,6 +66,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.header{
+  display: none
+}
+.footer{
+  display: none
+}
 .login{
 	background:url(../img/logback.png) no-repeat;
 	min-width: 960px;

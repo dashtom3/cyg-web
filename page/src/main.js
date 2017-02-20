@@ -7,18 +7,29 @@ import index from 'components/index2'
 import Notice from 'components/Notice'
 import Square from 'components/Project-square'
 import Gwfc from 'components/Gwfc'
-import download from 'components/download'
+import download from 'components/Download'
 import personal from 'components/Personal'
 import login from 'components/Login'
-import regester from 'components/regester'
+import regester from 'components/Regester'
 import newsDetial from 'components/News'
+import projectsDetial from 'components/Details'
 import vueTap from 'v-tap'
+import admNews from 'components/Adm-news'
 // import fastclick from 'fastclick'
 import Vuex from 'vuex'
 
 Vue.use(vueTap)
 Vue.use(VueRouter)
 Vue.use(Vuex)
+Vue.filter('time', function (value) {
+  return new Date(parseInt(value)).getFullYear() + '-' + new Date(parseInt(value)).getMonth() + 1 + '-' + new Date(parseInt(value)).getDay()
+})
+Vue.filter('year', function (value) {
+  return new Date(parseInt(value)).getFullYear() + '-' + new Date(parseInt(value)).getMonth() + 1
+})
+Vue.filter('day', function (value) {
+  return new Date(parseInt(value)).getDay()
+})
 
 /* eslint-disable no-new */
 /* 控制路由 */
@@ -29,6 +40,9 @@ const router = new VueRouter({
   }, {
     path: '/notice',
     component: Notice
+  }, {
+    path: '/admNews',
+    component: admNews
   }, {
     path: '/square',
     component: Square
@@ -48,8 +62,13 @@ const router = new VueRouter({
     path: '/regester',
     component: regester
   }, {
-    path: '/newsDetial',
+    path: '/newsDetial/:id',
+    name: 'newsDetial',
     component: newsDetial
+  }, {
+    path: '/projectsDetial/:id',
+    name: 'projectDetial',
+    component: projectsDetial
   }]
 })
 new Vue({

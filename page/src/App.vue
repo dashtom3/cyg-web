@@ -17,11 +17,6 @@ export default {
       isShow: true
     }
   },
-  methods: {
-    isShow: function () {
-      this.isShow = !this.isShow
-    }
-  },
   components: {
     'v-header': header,
     'v-footer': footer

@@ -66,11 +66,13 @@
 <script>
 import axios from 'axios'
 import Vue from 'vue'
+// import app from '../App'
 export default {
   name: 'regester-content',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
+      isShow: '',
       items: {
         student: {
           data: '学生',
@@ -134,7 +136,7 @@ export default {
       Vue.set(this.user, 'personType', val)
     },
     isShow: function () {
-      console.log(123)
+      this.isShow = !this.isShow
     },
     selfDom: function (event) {
       console.log(event.target)

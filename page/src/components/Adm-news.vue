@@ -101,7 +101,7 @@
 									<td>状态</td>
 									<td>操作</td>
 									<td>
-										<a href="#myModal" role="button" data-toggle="modal">删除</a>
+										<a href="#myModal" role="button" v-on:click="del($index)">删除</a>
 										<button class="adm-pass">通过</button>
 									</td>
 								</tr>
@@ -156,6 +156,11 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
+    }
+  },
+  methods: {
+    del: function (item) {
+      console.log(item)
     }
   }
 }
