@@ -14,7 +14,7 @@
       </ul>
       <div class="nav-right">
         <input type="text" placeholder="点击搜索" id="inp" />
-        <span><router-link to="/personal">个人中心</router-link></span>
+        <span><router-link to="/login">登录</router-link></span>
       </div>
     </div>
   </div>

@@ -1,30 +1,54 @@
 <template>
+<div>
   <div class="login">
     <div class="login2">
-			<div class="user-number">
+			<div class="user-number" prop="name">
 				<img src="../img/r1.png"/>
-				<input type="text"  class="user-number-t" placeholder="学号" />
+				<input type="text"  class="user-number-t" placeholder="学号" v-model="people.name" />
 			</div>
-			<div class="chose">
-
-			</div>
-			<div class="user-password">
+			<div class="chose"></div>
+			<div class="user-password" prop="pwd">
 				<img src="../img/r2.png"/>
-				<input type="text"  class="user-password-b" placeholder="密码" />
+				<input type="password"  class="user-password-b" placeholder="密码" v-model="people.pwd" />
 			</div>
-			<a href="javascript:;"><span class="forget">忘记密码?</span></a>
-			<a href="javascript:;"><span class="click-regester">点击注册</span></a>
-			<input type="button" class="user-login" value="登录" />
+			<a href="javascript:;"><span class="forget" @click="forgetPwd">忘记密码?</span></a>
+			<a href="javascript:;"><span class="click-regester" @click="goRegester">点击注册</span></a>
+			<button type="button" class="user-login" @click="btn">登录</button>
+      <!-- <forgetPwd v-if=""></forgetPwd> -->
 	</div>
+</div>
 </div>
 </template>
 
 <script>
+import axios from 'axios'
+// import router from '../main'
 export default {
   name: 'login',
   data () {
     return {
-
+      people: {
+        name: '',
+        pwd: ''
+      }
+    }
+  },
+  methods: {
+    btn: function () {
+      var data = { name: this.people.name, pwd: this.people.pwd }
+      axios.post('api/user/login', data)
+      .then(function (result) {
+        console.log(result)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+    },
+    forgetPwd: function () {
+      this.$router.push({ path: '/forgetPwd' })
+    },
+    goRegester: function () {
+      this.$router.push({ path: 'regester' })
     }
   }
 }
@@ -34,9 +58,8 @@ export default {
 <style scoped>
 .login{
 	background:url(../img/logback.png) no-repeat;
-	width: 1366px;
-	height: 768px;
-  margin:auto;
+	min-width: 960px;
+	min-height: 620px;
   overflow: hidden;
 }
 .login2{
@@ -45,8 +68,11 @@ export default {
 	background:url(../img/logwite.png) no-repeat;
 	background-size: 255px 303px;
 	float:left;
-	margin-left: 40%;
-	margin-top: 15%;
+	left:50%;
+	top:50%;
+	position:fixed;
+	margin-left: -123px;
+	margin-top: -101px;
 }
 .user-number{
 	width:211px;

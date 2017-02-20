@@ -66,6 +66,7 @@ export default {
   data () {
     return {
       items: [
+        {title: '这是一个长长的项目标题', type: 'sitp', major: '调研，受电弓'},
         {title: '这是一个长长的项目标题', type: 'sitp', major: '调研，受电弓'}
       ]
     }

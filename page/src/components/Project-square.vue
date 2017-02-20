@@ -1,5 +1,4 @@
 <template>
-	<div class="square">
 		<!--中间部分-->
 		<div class="square-content">
 			<!--左边上半部分-->
@@ -51,26 +50,44 @@
 			<!--右半部分-->
 			<div class="square-right">
 				<ul>
-					<li v-for="(square, index) in squares">
+					<li>
 						<div class="square-project">
-							<span class="square-rank">No.{{index+1}}</span>
-							<span class="square-project-name">{{square.name}}</span>
+							<span class="square-rank">No.100</span>
+							<span class="square-project-name">这里是项目名这里是项目名这里是项目名</span>
 						</div>
 						<div class="square-project-information">
 							<span>起止时间:</span>&nbsp;
-							<span class="square-date">{{square.start}}</span>
-              <span class="square-date-right-border">-</span>
-              <span class="square-date2">{{square.end}}</span>&nbsp;
+							<span class="square-date">2014.12.25-2016.12.25</span>&nbsp;
 							<span class="square-date-right-border">|</span>&nbsp;
 							<span>负责人:</span>&nbsp;
-							<span class="square-responsible-name">{{square.person}}</span>&nbsp;
+							<span class="square-responsible-name">某某某</span>&nbsp;
 							<span class="square-date-right-border">|</span>&nbsp;
 							<span>招募人数: </span>
-							<span class="square-state">{{square.state}}</span>&nbsp;
+							<span class="square-state">3</span>&nbsp;
 							<span class="square-date-right-border">|</span><br/>
-							项目来源:&nbsp;&nbsp;<span class="square-source-id">{{square.source}}</span>&nbsp;
+							项目来源:&nbsp;&nbsp;<span class="square-source-id">大学生创业项目</span>&nbsp;
 							<span class="square-date-right-border">|</span>&nbsp;
-							学科方向:&nbsp;&nbsp;<span class="square-direction">{{square.direction}}</span>
+							学科方向:&nbsp;&nbsp;<span>整车</span>
+						</div>
+					</li>
+					<li>
+						<div class="square-project">
+							<span class="square-rank">No.2</span>
+							<span class="square-project-name">这里是项目名这里是项目名这里是项目</span>
+						</div>
+						<div class="square-project-information">
+							<span>起止时间:</span>&nbsp;
+							<span class="square-date">2014.12.25-2016.12.25</span>&nbsp;
+							<span class="square-date-right-border">|</span>&nbsp;
+							<span>负责人:</span>&nbsp;
+							<span class="square-responsible-name">某某某</span>&nbsp;
+							<span class="square-date-right-border">|</span>&nbsp;
+							<span>招募人数: </span>
+							<span class="square-state">3</span>&nbsp;
+							<span class="square-date-right-border">|</span><br/>
+							项目来源:&nbsp;&nbsp;<span class="square-source-id">大学生创业项目</span>&nbsp;
+							<span class="square-date-right-border">|</span>&nbsp;
+							学科方向:&nbsp;&nbsp;<span>整车</span>
 						</div>
 					</li>
 				</ul>
@@ -86,7 +103,6 @@
 				</div>
 			</div>
 		</div>
-	</div>
 </template>
 
 <script>
@@ -94,17 +110,7 @@ export default {
   name: 'square',
   data () {
     return {
-      squares: [
-        {
-          name: '这里是项目名这里是项目名这里是项目名',
-          start: '2014.12.25',
-          end: '2016.12.25',
-          person: '某某某',
-          state: '3',
-          source: '大学生创业项目',
-          direction: '整车'
-        }
-      ]
+      msg: 'Welcome to Your Vue.js App'
     }
   }
 }
