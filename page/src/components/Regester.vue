@@ -55,7 +55,7 @@
 			<div class="selfdom">
 				<span class="self-title">2.个性标签</span>
   				<div class="self-flex" v-for="(self, index) in selfs">
-  					<button class="btns" v-for="self_btn in self.self_btns" v-on:click="selfDom($event)">{{self_btn}}</button>
+  					<button class="btns" v-for="(self_btn, num) in self.self_btns" v-on:click="selfDom($event, index*5+num)">{{self_btn}}</button>
   				</div>
 				<button class="complete" v-on:click="regester">完成</button>
 			</div>
@@ -133,7 +133,12 @@ export default {
       this.shishi = index
       Vue.set(this.user, 'personType', val)
     },
-    selfDom: function (event) {
+    selfDom: function (event, index) {
+      if (this.user.selfdom.indexOf(index)) {
+        this.user.selfdom.push(index)
+      } else {
+        this.user.selfdom.splice(index, 1)
+      }
       var isActive = event.currentTarget.getAttribute('class')
       // console.log(isActive.indexOf('active'))
       isActive === 'active' ? event.currentTarget.setAttribute('class', '') : event.currentTarget.setAttribute('class', 'active')
@@ -149,25 +154,11 @@ export default {
         major: this.user.major,
         email: this.user.email,
         telephone: this.user.telephone,
-        personalbrief: this.user.personalbrief
+        personalbrief: this.user.personalbrief,
+        personaltag: this.user.selfdom
       }
       console.log(data)
-      // var btns = document.querySelectorAll('.self-flex>button')
-      // for (var i = 0; i < btns.length; i++) {
-      //   btns[i].setAttribute('indexVal', i)
-      //   console.log(btns[i])
-      // }
-      // setTimeout(function () {
-      //   var self = this
-      //   for (let index in btns) {
-      //     var cl = btns[index].getAttribute('class')
-      //     if (cl === 'active') {
-      //       // var indexVal = btns[index].getAttribute('indexVal')
-      //       self.user.selfdom.push(indexVal)
-      //     }
-      //   }
-      // },1000)
-      // console.log(this.selfdom)
+      var self = this
       var personalMsg = new FormData()
       personalMsg.append('username', this.user.name)
       personalMsg.append('studentid', this.user.id)
@@ -178,7 +169,7 @@ export default {
       personalMsg.append('email', this.user.email)
       personalMsg.append('telephone', this.user.telephone)
       personalMsg.append('personalbrief', this.user.personalbrief)
-      var self = this
+      personalMsg.append('personaltag', this.user.selfdom)
       axios.post(global.baseURL + 'api/user/register', personalMsg)
       .then(function (result) {
         console.log(result)

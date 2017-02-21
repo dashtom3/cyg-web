@@ -8,8 +8,8 @@
 					<div class="personal-username">
 						<img src=""/>
 						<div class="user-personal">
-							<span class="username-personal-name">你的名字</span><br/>
-							<span class="personal-number-fiex">账号:</span><span class="personal-number">123456789</span>
+							<span class="username-personal-name">{{personMsg.username}}</span><br/>
+							<span class="personal-number-fiex">账号:</span><span class="personal-number">{{personMsg.studentid}}</span>
 						</div>
 					</div>
 					<div class="cont-left-personright">
@@ -29,11 +29,11 @@
 				<ul>
 					<li>
 						<span>学号/工号/账号:&nbsp;</span>
-						<span class="infomation-number">6958</span>
+						<span class="infomation-number">{{personMsg.studentid}}</span>
 					</li>
 					<li>
 						<span class="infomation-left">真实姓名:&nbsp;</span>
-						<span class="infomation-name">小明</span>
+						<span class="infomation-name">{{personMsg.username}}</span>
 					</li>
 					<li>
 						<span class="infomation-left">身份:&nbsp;</span>
@@ -87,7 +87,9 @@ export default {
   name: 'personal',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      personMsg: '',
+      persontype: ''
     }
   },
   components: {
@@ -95,11 +97,27 @@ export default {
     'v-footer': footer
   },
   created () {
+    var self = this
     axios.get(global.baseURL + 'api/user/getbytoken?token=' + global.user.token)
     .then(function (res) {
       if (res.data.callStatus === 'SUCCEED') {
         console.log('你好')
         global.user.state = res.data.data.username
+        self.personMsg = res.data.data
+        var num = res.data.data.usertype
+        switch (num) {
+          case 0:
+            self.persontype = '学生'
+            break
+          case 1:
+            self.persontype = '教工'
+            break
+          case 2:
+            self.persontype = '校友'
+            break
+          default:
+            self.persontype = '企业'
+        }
       }
     })
     .catch(function (error) {

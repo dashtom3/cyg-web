@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <v-header></v-header>
-    <div class="comment">
+  <div class="test">
+    <!-- <v-header></v-header> -->
+    <!-- <div class="comment">
        <div class="pages">
            <ul>
                <li>
@@ -95,24 +95,25 @@
            <button>发布</button>
        </div>
    </div>
-    <v-footer></v-footer>
+    <v-footer></v-footer> -->
   </div>
 </template>
+
 <script>
-import header from './header'
-import footer from './footer'
+// import header from './header'
+// import footer from './footer'
 // import global from '../global/global'
 export default {
-  name: 'comment',
-  components: {
-    'v-header': header,
-    'v-footer': footer
-  }
+  name: 'test'
+  // components: {
+  //   'v-header': header,
+  //   'v-footer': footer
+  // }
 }
 </script>
 
 <style>
-body,*{
+/*body,*{
 font-family: "\5FAE\8F6F\96C5\9ED1";
 margin:0;
 padding: 0;
@@ -146,7 +147,7 @@ width: 20px;
 }
 .btn{
 /*background: url('../img/login') no-repeat -295px -22px;*/
-border: 0;
+/*border: 0;
 outline: 0;
 display: inline-block;
 zoom: 1;
@@ -155,8 +156,8 @@ padding: 0 5px;
 width: 45px;
 color: #000;
 text-decoration: none
-}
-.content-header{
+}*/
+/*.content-header{
 height: 85px;
 line-height: 85px;
 }
@@ -196,5 +197,5 @@ min-height: 170px;
 textarea{
 resize: none;
 width: 960px;
-}
+}*/
 </style>

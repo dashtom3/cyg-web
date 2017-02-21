@@ -18,7 +18,8 @@ import admNews from 'components/Adm-news'
 import communicate from 'components/Communicate'
 import knot from 'components/Knot'
 import update from 'components/Rewrite'
-import comment from 'components/comment'
+// import comment from 'components/Comment'
+import test from 'components/TestDate'
 // import fastclick from 'fastclick'
 import Vuex from 'vuex'
 
@@ -86,9 +87,8 @@ const router = new VueRouter({
     name: 'update',
     components: update
   }, {
-    path: '/comment',
-    name: 'comment',
-    components: comment
+    path: '/test',
+    components: test
   }]
 })
 new Vue({
@@ -96,7 +96,7 @@ new Vue({
   router,
   template: '<App/>',
   components: { App }
-}).$mount('#app')
+}).$mount('')
 
 /* 默认跳转 */
 router.push('index')
