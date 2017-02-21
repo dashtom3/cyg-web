@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="../../js/layui/css/layui.css">
+    <link rel="stylesheet" href="../../css/business_center.css">
+    <link rel="stylesheet" href="../../css/order/group.css">
+    <style>
+        .layui-table th,table{
+            text-align: center;
+        }
+        .layui-form-label{
+            width: 160px;
+        }
+    </style>
+</head>
+<body>
+<div class="content-show">
+    <div class="page">
+            <div class="layui-tab">
+                <h1 style="font-size: 20px">商户提现</h1>
+                <hr>
+                <div class="layui-form-item">
+                    <table class="layui-table">
+                        <thead>
+                        <tr>
+                            <th>银行名称</th>
+                            <th>银行账号</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>中国工商银行</td>
+                            <td>5566998785158446562</td>
+                            <td>
+                                <button class="layui-btn layui-btn-small layui-btn-normal" onclick="addCard()">添加</button>
+                                <button class="layui-btn layui-btn-small layui-btn-danger" onclick="deleteCard(this)">删除</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="add" style="display: none;">
+                    <form action="">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">开户行名称：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="title" id="title" required  lay-verify="required" placeholder="请输入开户行名称" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">开户行账号：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" id="backName" required lay-verify="required" placeholder="请输入开户行账号" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">真实姓名：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" id="name" required lay-verify="required" placeholder="请输入姓名" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">短信验证码：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" id="yzm" required lay-verify="required" placeholder="请输入验证码" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">
+                                <button class="btn layui-btn layui-btn-small layui-btn-danger">发送验证码</button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn layui-btn-warm" lay-submit="" lay-filter="demo2">添加</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    </div>
+</div>
+</body>
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/layui/lay/dest/layui.all.js"></script>
+<script src="../../js/layui/laydate/laydate.js"></script>
+<script src="../../js/business_center.js"></script>
+<script type = "text/javascript" >
+    laydate({
+        elem: '#beginTime',
+        format:   'YYYY-MM-DD hh:mm'
+    });
+    laydate({
+        elem: '#endTime',
+        format:   'YYYY-MM-DD hh:mm'
+    });
+    function addCard(){
+        $('.add').show();
+    }
+    function deleteCard(obj){
+        $(obj).parent().parent().remove();
+    }
+//    $('#addCard').click(function(){
+//        $('.add').show();
+//    })
+</script >
+</html>

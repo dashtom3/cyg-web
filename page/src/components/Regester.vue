@@ -71,7 +71,6 @@ export default {
   name: 'regester-content',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App',
       items: {
         student: {
           data: '学生',

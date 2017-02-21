@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="themes/default/default.css">
+</head>
+<body>
+<textarea id="remark" name="remark" style="width:800px;height:200px;"></textarea>
+</body>
+<script src="kindeditor-min.js"></script>
+<script src="lang/zh_CN.js"></script>
+<script>
+    KindEditor.ready(function(K) {
+        //通过id找到textarea
+        K.create('#remark', {
+            items : [
+                'undo','redo','fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold', 'italic', 'underline',
+                'removeformat', '|', 'justifyleft', 'justifycenter', 'justifyright', 'insertorderedlist',
+                'insertunorderedlist']
+//
+//            afterCreate : function() {
+//                this.sync();
+//            },
+//            afterBlur:function(){
+//                this.sync();
+//            }
+        });
+    });
+    function btn(){
+        var v = document.getElementById('remark').value;
+        console.log(v);
+    }
+</script>
+</html>
