@@ -81,13 +81,14 @@
 import axios from 'axios'
 import header from './header'
 import footer from './footer'
+import global from '../global/global'
 export default {
   created () {
-    axios.post('http://123.56.220.72:8080/Student/api/news/getNewsList').then((res) => {
+    axios.post(global.baseURL + 'api/news/getNewsList').then((res) => {
       // console.log(res.data)
       this.newsList = res.data.data
     })
-    axios.post('http://123.56.220.72:8080/Student/api/items/getItemsList').then((res) => {
+    axios.post(global.baseURL + 'api/items/getItemsList').then((res) => {
       this.projectsList = res.data.data
       // console.log(res)
       // console.log(res.data.data)

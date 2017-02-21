@@ -47,6 +47,7 @@
 import axios from 'axios'
 import header from './header'
 import footer from './footer'
+import global from '../global/global'
 export default {
   name: 'notice',
   data () {
@@ -55,7 +56,7 @@ export default {
     }
   },
   created () {
-    axios.post('http://123.56.220.72:8080/Student/api/news/getNewsList').then((res) => {
+    axios.post(global.baseURL + 'api/news/getNewsList').then((res) => {
       // console.log(res.data)
       this.newsList = res.data.data
     })

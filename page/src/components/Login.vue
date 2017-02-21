@@ -25,8 +25,7 @@
 import axios from 'axios'
 import header from './header'
 import footer from './footer'
-// import goRegester from './Regester'
-// import router from '../main'
+import global from '../global/global'
 export default {
   name: 'login',
   data () {
@@ -44,10 +43,17 @@ export default {
       var zipFormData = new FormData()
       zipFormData.append('studentid', this.people.name)
       zipFormData.append('password', this.people.pwd)
-      axios.post('http://123.56.220.72:8080/Student/api/user/login', zipFormData)
+      axios.post(global.baseURL + 'api/user/login', zipFormData)
       .then(function (result) {
-        console.log(self.people.name)
-        self.$router.push({ path: '/personal' })
+        console.log(result)
+        if (result.data.callStatus === 'SUCCEED') {
+          alert('登录成功')
+          global.user.token = result.data.token
+          console.log()
+          self.$router.push({ path: '/personal' })
+        } else {
+          alert('账号或密码错误')
+        }
       })
       .catch(function (error) {
         console.log(error)

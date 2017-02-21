@@ -59,6 +59,7 @@
 
 <script>
 import axios from 'axios'
+import global from '../global/global'
 export default {
   name: 'knot-content',
   data () {
@@ -88,7 +89,7 @@ export default {
       zipFormData.append('telephone', this.telephone)
       zipFormData.append('email', this.email)
       zipFormData.append('file', this.file)
-      axios.post('http://123.56.220.72:8080/Student/api/items/add', zipFormData)
+      axios.post(global.baseURL + 'api/items/add', zipFormData)
       .then(function (res) {
         console.log(res)
       })

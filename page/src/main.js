@@ -18,6 +18,7 @@ import admNews from 'components/Adm-news'
 import communicate from 'components/Communicate'
 import knot from 'components/Knot'
 import update from 'components/Rewrite'
+import comment from 'components/comment'
 // import fastclick from 'fastclick'
 import Vuex from 'vuex'
 
@@ -84,6 +85,10 @@ const router = new VueRouter({
     path: '/update',
     name: 'update',
     components: update
+  }, {
+    path: '/comment',
+    name: 'comment',
+    components: comment
   }]
 })
 new Vue({

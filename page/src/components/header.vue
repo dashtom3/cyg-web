@@ -14,7 +14,7 @@
       </ul>
       <div class="nav-right">
         <input type="text" placeholder="点击搜索" id="inp" />
-        <span><router-link to="/login">登录</router-link></span>
+        <span><router-link to="/login">{{state}}</router-link></span>
       </div>
     </div>
   </div>
@@ -22,7 +22,12 @@
 </template>
 
 <script type="text/javascript">
+import global from '../global/global'
 export default {
-
+  data () {
+    return {
+      state: global.user.state
+    }
+  }
 }
 </script>

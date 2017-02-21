@@ -21,6 +21,7 @@ import Users from 'components/Adm-users'
 import Projects from 'components/Adm-projects'
 import Post from 'components/Adm-post'
 import Admnews from 'components/Adm-news'
+import comment from 'components/comment'
 Vue.use(Router)
 
 export default new Router({
@@ -129,6 +130,11 @@ export default new Router({
       path: '/adm-news',
       name: 'Adm-news',
       component: Admnews
+    },
+    {
+      path: '/comment',
+      name: 'comment',
+      component: component
     }
   ]
 })

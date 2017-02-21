@@ -68,6 +68,7 @@
 import axios from 'axios'
 import header from './header'
 import footer from './footer'
+import global from '../global/global'
 export default {
   name: 'gwfc',
   data () {
@@ -83,7 +84,7 @@ export default {
   },
   created () {
     var self = this
-    axios.post('http://123.56.220.72:8080/Student/api/items/getItemsList')
+    axios.post(global.baseURL + 'api/items/getItemsList')
     .then(function (res) {
       console.log(res.data.data[0].keywords)
       self.items = res.data.data

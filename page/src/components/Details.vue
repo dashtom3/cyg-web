@@ -110,6 +110,7 @@
 import axios from 'axios'
 import header from './header'
 import footer from './footer'
+import global from '../global/global'
 export default {
   name: 'details',
   data () {
@@ -128,7 +129,7 @@ export default {
   },
   created () {
     var self = this
-    axios.post('http://123.56.220.72:8080/Student/api/items/getbyid/?itemsid=' + this.projectId)
+    axios.post(global.baseURL + 'api/items/getbyid/?itemsid=' + this.projectId)
     .then(function (res) {
       // console.log(res.data.data.type)
       self.project = res.data.data

@@ -1,6 +1,7 @@
 <template>
 		<!--中间部分-->
     <div>
+      <v-header></v-header>
 		<div class="personal-content">
 			<div class="personal-content-left">
 				<div class="personal-left-top">
@@ -73,16 +74,37 @@
 				<button>修改</button>
 			</div>
 		</div>
+    <v-footer></v-footer>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
+import header from 'components/header'
+import footer from 'components/footer'
+import global from '../global/global'
 export default {
   name: 'personal',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
     }
+  },
+  components: {
+    'v-header': header,
+    'v-footer': footer
+  },
+  created () {
+    axios.get(global.baseURL + 'api/user/getbytoken?token=' + global.user.token)
+    .then(function (res) {
+      if (res.data.callStatus === 'SUCCEED') {
+        console.log('你好')
+        global.user.state = res.data.data.username
+      }
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
   }
 }
 </script>

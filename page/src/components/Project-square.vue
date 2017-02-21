@@ -8,7 +8,7 @@
 				<div class="square-t">
 					<div class="personal-left-top">
 						<div class="personal-username">
-							<img src=""/>
+							<img src="/static/img/logo.67fa1eb.png"/>
 							<div class="user-personal">
 								<span class="username-personal-name">你的名字</span><br/>
 								<span class="personal-number-fiex">账号:</span><span class="personal-number">123456789</span>
@@ -74,13 +74,11 @@
 					</li>
 				</ul>
 				<div class="square-right-b">
-					&nbsp;当前是&nbsp;:&nbsp;<span>1/5</span>&nbsp;&nbsp;
-					共<span class="square-number">150</span>条信息&nbsp;&nbsp;首页&nbsp;
-					上一页&nbsp;下一页&nbsp;尾页&nbsp;跳转到:&nbsp;第
+					&nbsp;当前是&nbsp;:&nbsp;<span>{{page.currentPage}}/{{page.totalPage}}</span>&nbsp;&nbsp;
+					共<span class="square-number">{{page.totalNumber}}</span>条信息&nbsp;&nbsp;首页&nbsp;
+					<span v-on:click="prev">上一页</span>&nbsp;<span v-on:click="next">下一页</span>&nbsp;尾页&nbsp;跳转到:&nbsp;第
 					<select name="">
-						<option value="">1</option>
-						<option value="">1</option>
-						<option value="">2</option>
+						<option value="" v-for="pages in pageList" v-on:click='goPage(pages)'>{{pages}}</option>
 					</select>页
 				</div>
 			</div>
@@ -98,7 +96,9 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      projects: []
+      projects: [],
+      page: [],
+      pageList: ''
     }
   },
   components: {
@@ -111,6 +111,15 @@ export default {
     },
     goProjectsDetial: function (itemid) {
       this.$router.push({name: 'projectDetial', params: { id: itemid }})
+    },
+    prev: function () {
+      console.log('上一页')
+    },
+    next: function () {
+      console.log('下一页')
+    },
+    goPage: function (index) {
+      console.log(index)
     }
   },
   created () {
@@ -119,6 +128,8 @@ export default {
     .then(function (res) {
       console.log(res)
       self.projects = res.data.data
+      self.page = res.data
+      self.pageList = res.data.totalPage
     })
   }
 }

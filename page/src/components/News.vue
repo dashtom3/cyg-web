@@ -2,7 +2,7 @@
 		<!--中间新闻内容部分-->
 		<div>
 			<v-header></v-header>
-		<div class="news-content">
+		<div class="news-content" id="height">
 			<span class="news-title">{{news.title}}</span>
 			<span class="news-date">{{news.time | time}}</span>
 			<span class="news-article">
@@ -17,14 +17,20 @@
 import axios from 'axios'
 import header from './header'
 import footer from './footer'
+import global from '../global/global'
 export default {
   created () {
     var self = this
-    axios.get('http://123.56.220.72:8080/Student/api/news/getbyid?newsid=' + this.newsId + '&token=')
+    axios.get(global.baseURL + 'api/news/getbyid?newsid=' + this.newsId + '&token=')
     .then(function (res) {
-      console.log(res.data.data)
+      // console.log(res.data.data)
       self.news = res.data.data
     })
+    var wh = document.body.clientHeight
+    console.log(wh)
+    var dh = document.getElementById('height')
+    console.log(dh)
+    // dh.offsetHeight < wh - 247 ? dh.offsetHeight = wh - 247 : dh.offsetHeight
   },
   data () {
     return {

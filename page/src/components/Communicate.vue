@@ -15,9 +15,6 @@
 						<span>(</span>
 						<span class="communicate-theme">111</span>
 						<span>主题</span>&nbsp;
-						<span>/</span>&nbsp;
-						<span class="communicate-answer">{{communicate.replyQuantity}}</span>
-						<span>回复</span>
 						<span>)</span>
 					</div>
 				</div>
@@ -55,24 +52,24 @@
 						<th class="table-th-answer">回复/查看</th>
 						<th>最后回复</th>
 					</tr>
-					<tr>
+					<tr v-for="communicate in communicates">
 						<td class="table-tr-first">
-							[<span class="table-show">{{}}</span>]
+							[<span class="table-show">{{communicate.theme}}</span>]
 						</td>
 						<td class="table-tr-second">
-							<span></span>
+							<span>{{communicate.title}}</span>
 						</td>
 						<td>
-							<span class="table-pereson"></span><br/>
-							<span class="person-date"></span>
+							<span class="table-pereson">{{communicate.userName}}</span><br/>
+							<span class="person-date">{{communicate.publishedTime | time}}</span>
 						</td>
 						<td>
-							<span class="answer-number">10</span><br/>
+							<span class="answer-number">{{communicate.replyQuantity}}</span><br/>
 							<span class="read-number">110</span>
 						</td>
 						<td>
-							<span class="answer-words">啦啦啦啦</span><br/>
-							<span class="answer-words-date">2016-04-26 14:30</span>
+							<span class="answer-words">{{}}</span><br/>
+							<span class="answer-words-date">{{communicate.replyTime | time}}</span>
 						</td>
 					</tr>
 				</table>
@@ -83,14 +80,14 @@
 			<!--发表部分-->
 			<div class="publish">
 				<span class="publish-news">发表新帖</span>
-				<input type="text" name="" class="publish-title" value="" />
+				<input type="text" name="" class="publish-title" value="" v-model="publishCommunite.theme" />
 				<div class="publish-post">
 					<a href="javascript:;"><span class="post-pic">图片</span></a>
 					<a href="javascript:;"><span class="post-adiou">音频</span></a>
 					<a href="javascript:;"><span class="post-fu">上传附件</span></a>
 				</div>
-				<textarea name="" rows="" cols=""></textarea>
-				<button  class="publish-but">发表</button>
+				<textarea name="" rows="" cols="" v-model="publishCommunite.contents"></textarea>
+				<button  class="publish-but" v-on:click="publish">发表</button>
 			</div>
 		</div>
   </div>
@@ -102,21 +99,38 @@
 import header from './header'
 import footer from './footer'
 import axios from 'axios'
+import global from '../global/global'
 export default {
   name: 'communicate',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      communicate: []
+      communicates: '',
+      publishCommunite: {
+        theme: '',
+        contents: ''
+      }
     }
   },
   created () {
     var self = this
-    axios.post('http://123.56.220.72:8080/Student/api/communication/getCommunicationList')
+    axios.post(global.baseURL + 'api/communication/getCommunicationList')
     .then(function (res) {
-      console.log(res)
-      self.communicate = res.data.data
+      console.log(res.data.data)
+      self.communicates = res.data.data
     })
+  },
+  methods: {
+    publish: function () {
+      var zipFormData = new FormData()
+      zipFormData.append('theme', this.publishCommunite.theme)
+      zipFormData.append('contents', this.publishCommunite.contents)
+      axios.post(global.baseURL + 'api/posts/add', zipFormData)
+      .then(function (res) {
+        console.log(res)
+        console.log('发布成功')
+      })
+    }
   },
   components: {
     'v-header': header,

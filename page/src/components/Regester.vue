@@ -55,7 +55,7 @@
 			<div class="selfdom">
 				<span class="self-title">2.个性标签</span>
   				<div class="self-flex" v-for="(self, index) in selfs">
-  					<button v-for="self_btn in self.self_btns" v-on:click="selfDom(self_btn)" :class="{ 'active': isActive }">{{self_btn}}</button>
+  					<button class="btns" v-for="self_btn in self.self_btns" v-on:click="selfDom($event)">{{self_btn}}</button>
   				</div>
 				<button class="complete" v-on:click="regester">完成</button>
 			</div>
@@ -66,7 +66,7 @@
 <script>
 import axios from 'axios'
 import Vue from 'vue'
-// import app from '../App'
+import global from '../global/global'
 export default {
   name: 'regester-content',
   data () {
@@ -95,7 +95,6 @@ export default {
         }
       },
       shishi: -1,
-      index: 0,
       colleges: [
         {val: '0', college: '小学'},
         {val: '1', college: '初中'},
@@ -108,10 +107,10 @@ export default {
         {val: '2', major: '高中'}
       ],
       selfs: [
-        { self_btns: ['文', '理', '工', '农', '医'] },
-        { self_btns: ['财务管理', '团队管理', '宣传管理', '问卷星', '公众号管理'] },
-        { self_btns: ['计算机编程', '摄影', '体育运动', '信息检索', '报告撰写'] },
-        { self_btns: ['结构建模', '有限元分析', 'matlab', '仿真计算', 'autoCAD'] }
+        { self_btns: ['文', '理', '工', '农', '医'], isActive: false },
+        { self_btns: ['财务管理', '团队管理', '宣传管理', '问卷星', '公众号管理'], isActive: false },
+        { self_btns: ['计算机编程', '摄影', '体育运动', '信息检索', '报告撰写'], isActive: false },
+        { self_btns: ['结构建模', '有限元分析', 'matlab', '仿真计算', 'autoCAD'], isActive: false }
       ],
       user: {
         personType: '',
@@ -124,22 +123,20 @@ export default {
         email: '',
         telephone: '',
         personalbrief: '',
-        selfs: ''
+        selfs: '',
+        selfdom: []
       }
     }
-  },
-  created () {
-    this.isShow = false
   },
   methods: {
     personKind: function (val, index) {
       this.shishi = index
-      console.log(val)
       Vue.set(this.user, 'personType', val)
     },
     selfDom: function (event) {
-      console.log(event)
-      // event.target.isActive = !event.target.isActive
+      var isActive = event.currentTarget.getAttribute('class')
+      // console.log(isActive.indexOf('active'))
+      isActive === 'active' ? event.currentTarget.setAttribute('class', '') : event.currentTarget.setAttribute('class', 'active')
     },
     regester: function () {
       // 收集用户注册的信息
@@ -155,19 +152,43 @@ export default {
         personalbrief: this.user.personalbrief
       }
       console.log(data)
+      // var btns = document.querySelectorAll('.self-flex>button')
+      // for (var i = 0; i < btns.length; i++) {
+      //   btns[i].setAttribute('indexVal', i)
+      //   console.log(btns[i])
+      // }
+      // setTimeout(function () {
+      //   var self = this
+      //   for (let index in btns) {
+      //     var cl = btns[index].getAttribute('class')
+      //     if (cl === 'active') {
+      //       // var indexVal = btns[index].getAttribute('indexVal')
+      //       self.user.selfdom.push(indexVal)
+      //     }
+      //   }
+      // },1000)
+      // console.log(this.selfdom)
       var personalMsg = new FormData()
-      personalMsg.append('usertype', this.user.usertype)
       personalMsg.append('username', this.user.name)
       personalMsg.append('studentid', this.user.id)
+      personalMsg.append('usertype', this.user.personType)
       personalMsg.append('password', this.user.pwd)
       personalMsg.append('department', this.user.college)
       personalMsg.append('major', this.user.major)
       personalMsg.append('email', this.user.email)
       personalMsg.append('telephone', this.user.telephone)
       personalMsg.append('personalbrief', this.user.personalbrief)
-      axios.post('http://123.56.220.72:8080/Student/api/user/register', personalMsg)
+      var self = this
+      axios.post(global.baseURL + 'api/user/register', personalMsg)
       .then(function (result) {
         console.log(result)
+        console.log(result.data.callStatus)
+        if (result.data.callStatus === 'SUCCEED') {
+          alert('注册成功!!!')
+          self.$router.push('/login')
+        } else {
+          alert('注册失败')
+        }
       })
       .catch(function (error) {
         console.log(error)
