@@ -31,18 +31,19 @@
 
 		<div class="sidebar-nav">
 			<ul id="dashboard-menu" class="nav nav-list collapse in">
-        <li class="active">
-					<router-link to="/Adm-users"><a>用户列表</a></router-link>
+				<li class="active">
+					<a href="users.html">用户列表</a>
 				</li>
 				<li>
-					<router-link to="/Adm-projects"><a>项目列表</a></router-link>
+					<a href="projects.html">项目列表</a>
 				</li>
 				<li>
-					<router-link to="/Adm-news"><a>新闻列表</a></router-link>
+					<a href="adm-news.html">新闻列表</a>
 				</li>
 				<li>
-					<router-link to="/Adm-post"><a>项目发表</a></router-link>
+					<a href="adm-post.html">项目发表</a>
 				</li>
+
 			</ul>
 		</div>
 
@@ -67,15 +68,34 @@
 									<th>主题</th>
 									<th>项目</th>
 									<th>发表者</th>
-                  <th>操作</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="(admPost, index) in admPosts">
-									<td>{{index+1}}</td>
-									<td>{{admPost.type}}</td>
-									<td>{{admPost.project}}</td>
-									<td>{{admPost.poster}}</td>
+								<tr>
+									<td>1</td>
+									<td>精品</td>
+									<td>这是一个学院网站</td>
+									<td>小王</td>
+									<td>
+										<a href="#myModal" role="button" data-toggle="modal">删除</a>
+										<button class="adm-pass">通过</button>
+									</td>
+								</tr>
+								<tr>
+									<td>2</td>
+									<td>精品</td>
+									<td>这是一个学院网站</td>
+									<td>小王</td>
+									<td>
+										<a href="#myModal" role="button" data-toggle="modal">删除</a>
+										<button class="adm-pass">通过</button>
+									</td>
+								</tr>
+								<tr>
+									<td>3</td>
+									<td>精品</td>
+									<td>这是一个学院网站</td>
+									<td>小王</td>
 									<td>
 										<a href="#myModal" role="button" data-toggle="modal">删除</a>
 										<button class="adm-pass">通过</button>
@@ -108,7 +128,7 @@
 					</div>
 
 					<div class="modal small hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						<div class="modal-header">
+						<div class="modal-adm-header">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 							<h3 id="myModalLabel">确认 删除</h3>
 						</div>
@@ -131,9 +151,7 @@ export default {
   name: 'adm-post',
   data () {
     return {
-      admPosts: [
-        {type: '精品', project: '这是一个学院网站', poster: '小王'}
-      ]
+      msg: 'Welcome to Your Vue.js App'
     }
   }
 }

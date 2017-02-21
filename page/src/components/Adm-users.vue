@@ -8,6 +8,7 @@
 							<i class="icon-user"></i> Jack Smith
 							<i class="icon-caret-down"></i>
 						</a>
+
 						<ul class="dropdown-menu">
 							<li>
 								<a tabindex="-1" href="#">My Account</a>
@@ -22,24 +23,27 @@
 							</li>
 						</ul>
 					</li>
+
 				</ul>
 				<a class="brand" href="users.html">管理中心</a>
 			</div>
 		</div>
+
 		<div class="sidebar-nav">
 			<ul id="dashboard-menu" class="nav nav-list collapse in">
 				<li class="active">
-					<router-link to="/Adm-users"><a>用户列表</a></router-link>
+					<a v-link="{path: '/users'}">用户列表</a>
 				</li>
 				<li>
-					<router-link to="/Adm-projects"><a>项目列表</a></router-link>
+					<a v-link="{path: '/Projects'}">项目列表</a>
 				</li>
 				<li>
-					<router-link to="/Adm-news"><a>新闻列表</a></router-link>
+					<a v-link="{path: '/adm-news'}">新闻列表</a>
 				</li>
 				<li>
-					<router-link to="/Adm-post"><a>项目发表</a></router-link>
+					<a v-link="{path: '/adm-post'}">项目发表</a>
 				</li>
+
 			</ul>
 		</div>
 
@@ -71,17 +75,31 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="(user, index) in users">
-									<td>{{index+1}}</td>
-									<td>{{user.name}}</td>
-									<td>{{user.studentid}}</td>
-									<td>{{user.place}}</td>
-									<td>{{user.major}}</td>
-									<td>{{user.email}}</td>
-									<td>{{user.telephone}}</td>
-									<td>{{user.styles}}</td>
+								<tr>
+									<td>1</td>
+									<td>小李</td>
+									<td>243242</td>
+									<td>同济大学软件学院</td>
+									<td>软件开发</td>
+									<td>443242@163.com</td>
+									<td>3423423424</td>
+									<td>理  软件设计</td>
 									<td>
-										<a href="#myModal" role="button" data-toggle="modal" @click="del(str)">删除</a>
+										<a href="#myModal" role="button" data-toggle="modal">删除</a>
+										<button class="adm-pass">通过</button>
+									</td>
+								</tr>
+								<tr>
+									<td>2</td>
+									<td>小李</td>
+									<td>243242</td>
+									<td>同济大学软件学院</td>
+									<td>软件开发</td>
+									<td>443242@163.com</td>
+									<td>3423423424</td>
+									<td>理  软件设计</td>
+									<td>
+										<a href="#myModal" role="button" data-toggle="modal">删除</a>
 										<button class="adm-pass">通过</button>
 									</td>
 								</tr>
@@ -112,7 +130,7 @@
 					</div>
 
 					<div class="modal small hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						<div class="modal-header">
+						<div class="modal-adm-header">
 							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 							<h3 id="myModalLabel">确认 删除</h3>
 						</div>
@@ -132,14 +150,10 @@
 
 <script>
 export default {
-  name: 'adm-users',
-  data () {
-    return {
-
-    }
-  }
+  name: 'adm-users'
 }
 </script>
+
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .Adm-users{

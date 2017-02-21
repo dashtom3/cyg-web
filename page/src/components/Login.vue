@@ -23,7 +23,6 @@
 
 <script>
 import axios from 'axios'
-import goRegester from './Regester'
 import header from './header'
 import footer from './footer'
 // import goRegester from './Regester'
@@ -78,8 +77,8 @@ export default {
 }
 .login{
 	background:url(../img/logback.png) no-repeat;
-	width: 100%;
-	height: 765px;
+	min-width: 960px;
+	min-height: 620px;
   overflow: hidden;
 }
 .login2{
@@ -88,8 +87,11 @@ export default {
 	background:url(../img/logwite.png) no-repeat;
 	background-size: 255px 303px;
 	float:left;
-	margin-left: 580px;
-  margin-top: 200px;
+	left:50%;
+	top:50%;
+	position:fixed;
+	margin-left: -123px;
+	margin-top: -101px;
 }
 .user-number{
 	width:211px;

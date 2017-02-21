@@ -10,24 +10,29 @@ import Gwfc from 'components/Gwfc'
 import download from 'components/Download'
 import personal from 'components/Personal'
 import login from 'components/Login'
-import Regester from 'components/Regester'
+import regester from 'components/Regester'
 import newsDetial from 'components/News'
-import admUsers from 'components/Adm-users'
-<<<<<<< HEAD
+import projectsDetial from 'components/Details'
+import vueTap from 'v-tap'
+import admNews from 'components/Adm-news'
 import communicate from 'components/Communicate'
 import knot from 'components/Knot'
 import update from 'components/Rewrite'
-=======
-import admPost from 'components/Adm-post'
-import admProjects from 'components/Adm-projects'
-import vueTap from 'v-tap'
->>>>>>> 1c9b0b4095bda8f28361a07f119ac97a18036421
 // import fastclick from 'fastclick'
 import Vuex from 'vuex'
 
 Vue.use(vueTap)
 Vue.use(VueRouter)
 Vue.use(Vuex)
+Vue.filter('time', function (value) {
+  return new Date(parseInt(value)).getFullYear() + '-' + new Date(parseInt(value)).getMonth() + 1 + '-' + new Date(parseInt(value)).getDay()
+})
+Vue.filter('year', function (value) {
+  return new Date(parseInt(value)).getFullYear() + '-' + new Date(parseInt(value)).getMonth() + 1
+})
+Vue.filter('day', function (value) {
+  return new Date(parseInt(value)).getDay()
+})
 
 /* eslint-disable no-new */
 /* 控制路由 */
@@ -38,6 +43,9 @@ const router = new VueRouter({
   }, {
     path: '/notice',
     component: Notice
+  }, {
+    path: '/admNews',
+    component: admNews
   }, {
     path: '/square',
     component: Square
@@ -55,12 +63,12 @@ const router = new VueRouter({
     component: personal
   }, {
     path: '/regester',
-    component: Regester
+    component: regester
   }, {
-    path: '/newsDetial',
+    path: '/newsDetial/:id',
+    name: 'newsDetial',
     component: newsDetial
   }, {
-<<<<<<< HEAD
     path: '/projectsDetial/:id',
     name: 'projectDetial',
     component: projectsDetial
@@ -75,17 +83,7 @@ const router = new VueRouter({
   }, {
     path: '/update',
     name: 'update',
-    component: update
-  }, {
-    path: '/Adm-news',
-    component: admNews
-  }, {
-    path: '/Adm-post',
-    component: admPost
-  }, {
-    path: '/Adm-projects',
-    component: admProjects
->>>>>>> 1c9b0b4095bda8f28361a07f119ac97a18036421
+    components: update
   }]
 })
 new Vue({

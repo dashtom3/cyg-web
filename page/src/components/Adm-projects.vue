@@ -31,18 +31,19 @@
 
 		<div class="sidebar-nav">
 			<ul id="dashboard-menu" class="nav nav-list collapse in">
-        <li class="active">
-					<router-link to="/Adm-users"><a>用户列表</a></router-link>
+				<li class="active">
+					<a href="users.html">用户列表</a>
 				</li>
 				<li>
-					<router-link to="/Adm-projects"><a>项目列表</a></router-link>
+					<a href="projects.html">项目列表</a>
 				</li>
 				<li>
-					<router-link to="/Adm-news"><a>新闻列表</a></router-link>
+					<a href="adm-news.html">新闻列表</a>
 				</li>
 				<li>
-					<router-link to="/Adm-post"><a>项目发表</a></router-link>
+					<a href="adm-post.html">项目发表</a>
 				</li>
+
 			</ul>
 		</div>
 
@@ -74,15 +75,43 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr v-for="(proList, index) in proLists">
-									<td>{{index+1}}</td>
-									<td>{{proList.type}}</td>
-									<td>{{proList.project}}</td>
-									<td>{{proList.poster}}</td>
-									<td>{{proList.styles}}</td>
-									<td>{{proList.major}}</td>
-									<td>{{proList.time}}</td>
-									<td>{{proList.telephone}}</td>
+								<tr>
+									<td>1</td>
+									<td>同济大学汽车学院网站</td>
+									<td>小王</td>
+									<td>王老师</td>
+									<td>官网</td>
+									<td>学院 网站</td>
+									<td>一个月</td>
+									<td>11111111111111</td>
+									<td>
+										<a href="#myModal" role="button" data-toggle="modal">删除</a>
+										<button class="adm-pass">通过</button>
+									</td>
+								</tr>
+								<tr>
+									<td>2</td>
+									<td>同济大学汽车学院网站</td>
+									<td>小王</td>
+									<td>王老师</td>
+									<td>官网</td>
+									<td>学院 网站</td>
+									<td>一个月</td>
+									<td>11111111111111</td>
+									<td>
+										<a href="#myModal" role="button" data-toggle="modal">删除</a>
+										<button class="adm-pass">通过</button>
+									</td>
+								</tr>
+								<tr>
+									<td>3</td>
+									<td>同济大学汽车学院网站</td>
+									<td>小王</td>
+									<td>王老师</td>
+									<td>官网</td>
+									<td>学院 网站</td>
+									<td>一个月</td>
+									<td>11111111111111</td>
 									<td>
 										<a href="#myModal" role="button" data-toggle="modal">删除</a>
 										<button class="adm-pass">通过</button>
@@ -138,17 +167,7 @@ export default {
   name: 'adm-projects',
   data () {
     return {
-      proLists: [
-        {
-          type: '同济大学汽车学院网站',
-          project: '项目',
-          poster: '王老师',
-          styles: '官网',
-          major: '网站',
-          time: '一个月',
-          telephone: '11111111111111111111'
-        }
-      ]
+      msg: 'Welcome to Your Vue.js App'
     }
   }
 }
