@@ -41,36 +41,15 @@
 		<div class="content-bottom">
 			<span class="bt3">过往项目</span>
 			<ul>
-				<li>
+				<li v-for='knotList in knotLists'>
 					<img src="../img/main_9_9.jpg" class="project-pic"/>
 					<div class="project-bottom">
-						<a href="javascript:;"><span class="project">这里是项目名称</span></a>
-						<a href="javascript:;"><span class="project-mean">这里是项目简介这里是项目简介这里是项目简介这里是项目简介这里是项目简介这里是项目简介</span></a>
-					</div>
-				</li>
-				<li>
-					<img src="../img/main_9_9.jpg" class="project-pic"/>
-					<div class="project-bottom">
-						<a href="javascript:;"><span class="project">这里是项目名称</span></a>
-						<a href="javascript:;"><span class="project-mean">这里是项目简介这里是项目简介这里是项目简介这里是项目简介这里是项目简介这里是项目简介</span></a>
-					</div>
-				</li>
-				<li>
-					<img src="../img/main_9_9.jpg" class="project-pic"/>
-					<div class="project-bottom">
-						<a href="javascript:;"><span class="project">这里是项目名称</span></a>
-						<a href="javascript:;"><span class="project-mean">这里是项目简介这里是项目简介这里是项目简介这里是项目简介这里是项目简介这里是项目简介</span></a>
-					</div>
-				</li>
-				<li>
-					<img src="../img/main_9_9.jpg" class="project-pic"/>
-					<div class="project-bottom">
-						<a href="javascript:;"><span class="project">这里是项目名称</span></a>
-						<a href="javascript:;"><span class="project-mean">这里是项目简介这里是项目简介这里是项目简介这里是项目简介这里是项目简介这里是项目简介</span></a>
+						<a href="javascript:;"><span class="project">{{knotList.itemname}}</span></a>
+						<a href="javascript:;"><span class="project-mean">{{knotList.itembrief}}</span></a>
 					</div>
 				</li>
 			</ul>
-			<a href="javascript:;" class="show-wholetwo">查看全部</a>
+			<a href="javascript:;" class="show-wholetwo" v-on:click="goGwfc">查看全部</a>
 		</div>
 	</div>
   <v-footer></v-footer>
@@ -90,11 +69,13 @@ export default {
     })
     axios.post(global.baseURL + 'api/items/getItemsList').then((res) => {
       this.projectsList = res.data.data
-      // console.log(res)
-      // console.log(res.data.data)
       var self = this
+      // console.log(res)
       for (let index in res.data.data) {
         self.keywords.push(JSON.parse(res.data.data[index].keywords))
+        if (!res.data.data[index].type) {
+          self.knotLists.push(res.data.data[index])
+        }
       }
       this.keywords = self.keywords
     })
@@ -103,7 +84,8 @@ export default {
     return {
       newsList: [],
       projectsList: [],
-      keywords: []
+      keywords: [],
+      knotLists: []
     }
   },
   methods: {
@@ -122,6 +104,9 @@ export default {
     // 点击更多项目
     goProgect: function () {
       this.$router.push({ path: '/square' })
+    },
+    goGwfc: function () {
+      this.$router.push({ path: '/gwfc' })
     }
   },
   components: {

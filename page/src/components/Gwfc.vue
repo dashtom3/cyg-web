@@ -75,7 +75,8 @@ export default {
     return {
       items: [],
       type: '',
-      keywords: []
+      keywords: [],
+      knotLists: []
     }
   },
   components: {
@@ -86,11 +87,13 @@ export default {
     var self = this
     axios.post(global.baseURL + 'api/items/getItemsList')
     .then(function (res) {
-      console.log(res.data.data[0].keywords)
-      self.items = res.data.data
-      res.data.data.type ? self.type = '申请项目' : self.type = '结题项目'
       for (let index in res.data.data) {
         self.keywords.push(JSON.parse(res.data.data[index].keywords))
+        if (!res.data.data[index].type) {
+          self.items = res.data.data
+          self.type = '结题项目'
+          self.knotLists.push(res.data.data[index])
+        }
       }
     })
   }

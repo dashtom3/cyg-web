@@ -7,7 +7,7 @@
 				<span class="rewrite-information">1.个人信息</span>
 				<div class="rewrite-name">
 					<span >姓名</span>
-					<input type="text" name="" />
+					<input type="text" name=""  placeholder="不可更改" v-model="user.name" />
 				</div>
 				<div class="rewrite-number">
 					<span >学号</span>

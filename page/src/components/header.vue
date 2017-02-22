@@ -26,7 +26,8 @@ import global from '../global/global'
 export default {
   data () {
     return {
-      state: global.user.state
+      state: global.user.state,
+      url: global.user.path
     }
   }
 }

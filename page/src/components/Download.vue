@@ -26,8 +26,8 @@
       <ul>
         <li v-for="(down, index) in downs">
           <span class="down-num">{{index+1}}</span>
-          <span class="down-type">{{down.type}}</span>
-          <span class="down-date">{{down.date}}</span>
+          <span class="down-type">{{down.intro}}</span>
+          <span class="down-date"></span>
         </li>
       </ul>
     </div>
@@ -37,20 +37,24 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 import header from './header'
 import footer from './footer'
+import global from '../global/global'
 export default {
   name: 'download',
   data () {
     return {
-      downs: [
-        {
-          type: '2016年上海市大学生创新项目立项申请表格',
-          date: '2016-1-20'
-        }
-      ]
+      downs: []
     }
+  },
+  created () {
+    var self = this
+    axios.get(global.baseURL + 'api/file/getMaterialList')
+    .then(function (res) {
+      console.log(res)
+      self.downs = res.data.data
+    })
   },
   components: {
     'v-header': header,

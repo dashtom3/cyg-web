@@ -37,41 +37,38 @@
 					</li>
 					<li>
 						<span class="infomation-left">身份:&nbsp;</span>
-						<span class="infomation-id">学生</span>
+						<span class="infomation-id">{{personMsg.usertype}}</span>
 					</li>
 					<li>
 						<span class="infomation-left">学院/部门/单位:&nbsp;</span>
-						<span class="infomation-college">汽车学院</span>
+						<span class="infomation-college">{{personMsg.department}}</span>
 					</li>
 					<li>
 						<span>专业方向:&nbsp;</span>
-						<span class="infomation-major">动力设计</span>
+						<span class="infomation-major">{{personMsg.major}}</span>
 					</li>
 					<li>
 						<span>个性标签:&nbsp;</span>
-						<span class="infomation-selfdom">文</span>&nbsp;&nbsp;
-						<span class="infomation-selfdom">公众号</span>&nbsp;&nbsp;
-						<span class="infomation-selfdom">摄影</span>&nbsp;&nbsp;
-						<span class="infomation-selfdom">赞助外联</span>
+						<span class="infomation-selfdom" v-for="selfdom in personMsg.personaltag">{{selfdom}}&nbsp;&nbsp;</span>
 					</li>
 					<li>
 						<span>邮箱:&nbsp;</span>
-						<span class="infomation-right">6958@tongji.edu.com</span>
+						<span class="infomation-right">{{personMsg.email}}</span>
 					</li>
 					<li>
 						<span>联系电话:&nbsp;</span>
-						<span class="infomation-email">6113443958</span>
+						<span class="infomation-email">{{personMsg.telephone}}</span>
 					</li>
 					<li>
 						<span>个人简介:&nbsp;</span>
-						<span class="infomation-short">我是小明</span>
+						<span class="infomation-short">{{personMsg.personalbrief}}</span>
 					</li>
 					<li>
 						<span>项目经历:&nbsp;</span>
 						<span class="infomation-project">2016主持完成上创《xxx》项目</span>
 					</li>
 				</ul>
-				<button>修改</button>
+				<button v-on:click="reWrite(personMsg.userid)">修改</button>
 			</div>
 		</div>
     <v-footer></v-footer>
@@ -79,7 +76,6 @@
 </template>
 
 <script>
-import axios from 'axios'
 import header from 'components/header'
 import footer from 'components/footer'
 import global from '../global/global'
@@ -88,41 +84,20 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      personMsg: '',
-      persontype: ''
+      personMsg: global.user
     }
+  },
+  created () {
+    console.log(global.user)
   },
   components: {
     'v-header': header,
     'v-footer': footer
   },
-  created () {
-    var self = this
-    axios.get(global.baseURL + 'api/user/getbytoken?token=' + global.user.token)
-    .then(function (res) {
-      if (res.data.callStatus === 'SUCCEED') {
-        console.log('你好')
-        global.user.state = res.data.data.username
-        self.personMsg = res.data.data
-        var num = res.data.data.usertype
-        switch (num) {
-          case 0:
-            self.persontype = '学生'
-            break
-          case 1:
-            self.persontype = '教工'
-            break
-          case 2:
-            self.persontype = '校友'
-            break
-          default:
-            self.persontype = '企业'
-        }
-      }
-    })
-    .catch(function (error) {
-      console.log(error)
-    })
+  methods: {
+    reWrite: function (userid) {
+      this.$router.push({ pwth: '/rewrite', id: userid })
+    }
   }
 }
 </script>

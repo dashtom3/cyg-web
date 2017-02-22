@@ -9,26 +9,26 @@
 				<span class="person-information">1.个人信息</span>
 				<div class="person-name">
 					<span >姓名</span>
-					<input type="text" name=""  placeholder="不可更改" v-model="user.name" />
+					<input type="text" name=""  placeholder="不可更改" v-model="user.username" />
 				</div>
 				<div class="person-number">
 					<span >学号</span>
-					<input type="text" name="" class="person-number" value="" placeholder="不可更改" v-model="user.id" />
+					<input type="text" name="" class="person-number" value="" placeholder="不可更改" v-model="user.studentid" />
 				</div>
 				<div class="regester-ma">
 					<div class="person-ma">
 						<span>密码</span>
-						<input type="password" name=""  value="" placeholder="密码" v-model="user.pwd" />
+						<input type="password" name=""  value="" placeholder="密码" v-model="user.password" />
 					</div>
 					<div class="person-rema">
 						<span>重复密码</span>
-						<input type="password" name=""  value="" v-model="user.rePwd" />
+						<input type="password" name=""  value="" v-model="user.repassword" />
 					</div>
 				</div>
 			</div>
 			<div class="college">
 				<span>学院/部门/单位</span>
-				<select name="" v-model="user.college">
+				<select name="" v-model="user.department">
 					<option v-for="college in colleges" :value="college.val">{{college.college}}</option>
 				</select>
 			</div>
@@ -68,7 +68,7 @@ import axios from 'axios'
 import Vue from 'vue'
 import global from '../global/global'
 export default {
-  name: 'regester-content',
+  name: 'regester',
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
@@ -113,31 +113,30 @@ export default {
         { self_btns: ['结构建模', '有限元分析', 'matlab', '仿真计算', 'autoCAD'], isActive: false }
       ],
       user: {
-        personType: '',
-        name: '',
-        id: '',
+        usertype: '',
+        username: '',
+        studentid: '',
         major: '',
-        college: '',
-        pwd: '',
-        rePwd: '',
+        department: '',
+        password: '',
+        repassword: '',
         email: '',
         telephone: '',
         personalbrief: '',
-        selfs: '',
-        selfdom: []
+        personaltag: []
       }
     }
   },
   methods: {
     personKind: function (val, index) {
       this.shishi = index
-      Vue.set(this.user, 'personType', val)
+      Vue.set(this.user, 'usertype', val)
     },
     selfDom: function (event, index) {
-      if (this.user.selfdom.indexOf(index)) {
-        this.user.selfdom.push(index)
+      if (this.user.personaltag.indexOf(index)) {
+        this.user.personaltag.push(index)
       } else {
-        this.user.selfdom.splice(index, 1)
+        this.user.personaltag.splice(index, 1)
       }
       var isActive = event.currentTarget.getAttribute('class')
       // console.log(isActive.indexOf('active'))
@@ -145,38 +144,26 @@ export default {
     },
     regester: function () {
       // 收集用户注册的信息
-      var data = {
-        usertype: this.user.personType,
-        name: this.user.name,
-        id: this.user.id,
-        pwd: this.user.pwd,
-        college: this.user.college,
-        major: this.user.major,
-        email: this.user.email,
-        telephone: this.user.telephone,
-        personalbrief: this.user.personalbrief,
-        personaltag: this.user.selfdom
-      }
-      console.log(data)
-      var self = this
+      // var self = this
+      console.log(JSON.stringify(this.user.personaltag))
       var personalMsg = new FormData()
-      personalMsg.append('username', this.user.name)
-      personalMsg.append('studentid', this.user.id)
-      personalMsg.append('usertype', this.user.personType)
-      personalMsg.append('password', this.user.pwd)
-      personalMsg.append('department', this.user.college)
+      personalMsg.append('username', this.user.username)
+      personalMsg.append('studentid', this.user.studentid)
+      personalMsg.append('usertype', this.user.usertype)
+      personalMsg.append('password', this.user.password)
+      personalMsg.append('department', this.user.department)
       personalMsg.append('major', this.user.major)
       personalMsg.append('email', this.user.email)
       personalMsg.append('telephone', this.user.telephone)
       personalMsg.append('personalbrief', this.user.personalbrief)
-      personalMsg.append('personaltag', this.user.selfdom)
+      personalMsg.append('personaltag', JSON.stringify(this.user.personaltag))
       axios.post(global.baseURL + 'api/user/register', personalMsg)
       .then(function (result) {
         console.log(result)
         console.log(result.data.callStatus)
         if (result.data.callStatus === 'SUCCEED') {
           alert('注册成功!!!')
-          self.$router.push('/login')
+          self.$router.push({ path: '/login' })
         } else {
           alert('注册失败')
         }

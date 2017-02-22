@@ -17,9 +17,9 @@ import vueTap from 'v-tap'
 import admNews from 'components/Adm-news'
 import communicate from 'components/Communicate'
 import knot from 'components/Knot'
-import update from 'components/Rewrite'
-// import comment from 'components/Comment'
-import test from 'components/TestDate'
+import rewrite from 'components/Rewrite'
+import apply from 'components/Apply'
+import comment from 'components/Comment'
 // import fastclick from 'fastclick'
 import Vuex from 'vuex'
 
@@ -34,6 +34,9 @@ Vue.filter('year', function (value) {
 })
 Vue.filter('day', function (value) {
   return new Date(parseInt(value)).getDay()
+})
+Vue.filter('date', function (value) {
+  return new Date(parseInt(value)).toLocaleString().replace(/年|月/g, '-').replace(/日/g, ' ')
 })
 
 /* eslint-disable no-new */
@@ -83,12 +86,15 @@ const router = new VueRouter({
     name: 'knot',
     component: knot
   }, {
-    path: '/update',
-    name: 'update',
-    components: update
+    path: '/comment/:id',
+    name: 'comment',
+    component: comment
   }, {
-    path: '/test',
-    components: test
+    path: '/rewrite/:id',
+    component: rewrite
+  }, {
+    path: '/apply',
+    component: apply
   }]
 })
 new Vue({

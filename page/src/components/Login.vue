@@ -34,7 +34,9 @@ export default {
         name: '',
         pwd: ''
       },
-      isShow: false
+      isShow: false,
+      personaltag: [],
+      selfdoms: ['文', '理', '工', '农', '医', '财务管理', '团队管理', '宣传管理', '问卷星', '公众号管理', '计算机编程', '摄影', '体育运动', '信息检索', '报告撰写', '结构建模', '有限元分析', 'matlab', '仿真计算', 'autoCAD']
     }
   },
   methods: {
@@ -45,12 +47,62 @@ export default {
       zipFormData.append('password', this.people.pwd)
       axios.post(global.baseURL + 'api/user/login', zipFormData)
       .then(function (result) {
-        console.log(result)
+        // console.log(result)
         if (result.data.callStatus === 'SUCCEED') {
           alert('登录成功')
-          global.user.token = result.data.token
-          console.log()
-          self.$router.push({ path: '/personal' })
+          var token = result.data.token
+          axios.get(global.baseURL + 'api/user/getbytoken?token=' + token)
+          .then(function (result) {
+            // console.log(result)
+            global.user.token = token
+            global.user.username = result.data.data.username
+            global.user.state = result.data.data.state
+            global.user.studentid = result.data.data.studentid
+            switch (result.data.data.department) {
+              case 0:
+                global.user.department = '小学'
+                break
+              case 1:
+                global.user.department = '初中'
+                break
+              default:
+                global.user.department = '大学'
+            }
+            switch (result.data.data.major) {
+              case 0:
+                global.user.major = '小学'
+                break
+              case 1:
+                global.user.major = '初中'
+                break
+              default:
+                global.user.major = '大学'
+            }
+            global.user.email = result.data.data.email
+            global.user.personalbrief = result.data.data.personalbrief
+            global.user.usertype = result.data.data.usertype
+            global.user.telephone = result.data.data.telephone
+            // 个性标签
+            for (let i in JSON.parse(result.data.data.personaltag)) {
+              self.personaltag.push(self.selfdoms[JSON.parse(result.data.data.personaltag)[i]])
+            }
+            global.user.personaltag = self.personaltag
+            switch (result.data.data.usertype) {
+              case 0:
+                global.user.usertype = '学生'
+                break
+              case 1:
+                global.user.usertype = '教工'
+                break
+              case 2:
+                global.user.usertype = '校友'
+                break
+              default:
+                global.user.usertype = '企业'
+            }
+          })
+          global.user.path = '/personal'
+          self.$router.push({ path: global.user.path })
         } else {
           alert('账号或密码错误')
         }
@@ -86,6 +138,7 @@ export default {
 	min-width: 960px;
 	min-height: 620px;
   overflow: hidden;
+  background-size: cover;
 }
 .login2{
 	width:255px;

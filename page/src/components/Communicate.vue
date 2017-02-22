@@ -9,12 +9,15 @@
 					<span class="communicate-words">交流区</span>
 					<div class="communicate-words-today">
 						<span>今日:</span>
-						<span class="today-number">12</span>
+						<span class="today-number">{{getCounts.todayPostCount}}</span>
 					</div>
 					<div class="communicate-words-whole">
 						<span>(</span>
-						<span class="communicate-theme">111</span>
+						<span class="communicate-theme">{{getCounts.allPostCount}}</span>
 						<span>主题</span>&nbsp;
+            <span>/</span>
+            <span class="communicate-answer">{{getCounts.allCommentCount}}</span>
+            <span>回复</span>
 						<span>)</span>
 					</div>
 				</div>
@@ -52,7 +55,7 @@
 						<th class="table-th-answer">回复/查看</th>
 						<th>最后回复</th>
 					</tr>
-					<tr v-for="communicate in communicates">
+					<tr v-for="communicate in communicates" v-on:click="goComment(communicate.postsId)">
 						<td class="table-tr-first">
 							[<span class="table-show">{{communicate.theme}}</span>]
 						</td>
@@ -61,15 +64,15 @@
 						</td>
 						<td>
 							<span class="table-pereson">{{communicate.userName}}</span><br/>
-							<span class="person-date">{{communicate.publishedTime | time}}</span>
+							<span class="person-date">{{communicate.publishedTime | date}}</span>
 						</td>
 						<td>
-							<span class="answer-number">{{communicate.replyQuantity}}</span><br/>
-							<span class="read-number">110</span>
+							<span class="answer-number">{{communicate.replyCount}}</span><br/>
+							<span class="read-number">{{communicate.readCount}}</span>
 						</td>
 						<td>
-							<span class="answer-words">{{}}</span><br/>
-							<span class="answer-words-date">{{communicate.replyTime | time}}</span>
+							<span class="answer-words">{{communicate.replyContents}}</span><br/>
+							<span class="answer-words-date">{{communicate.replyTime | date}}</span>
 						</td>
 					</tr>
 				</table>
@@ -106,6 +109,7 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       communicates: '',
+      getCounts: '',
       publishCommunite: {
         theme: '',
         contents: ''
@@ -116,8 +120,13 @@ export default {
     var self = this
     axios.post(global.baseURL + 'api/communication/getCommunicationList')
     .then(function (res) {
-      console.log(res.data.data)
+      console.log(res)
       self.communicates = res.data.data
+    })
+    axios.get(global.baseURL + 'api/communication/getCounts')
+    .then(function (res) {
+      // console.log(res)
+      self.getCounts = res.data.data
     })
   },
   methods: {
@@ -130,6 +139,10 @@ export default {
         console.log(res)
         console.log('发布成功')
       })
+    },
+    goComment: function (postid) {
+      console.log(postid)
+      this.$router.push({name: 'comment', params: { id: postid }})
     }
   },
   components: {
@@ -315,6 +328,8 @@ export default {
   height:245px;
   float:left;
   border:1px solid black;
+  resize:none;
+  outline:none;
   }
   /*图片、音频、上传附件*/
   .publish-post{
