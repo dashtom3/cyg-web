@@ -2,7 +2,7 @@
 		<!--中间新闻内容部分-->
 		<div>
 			<v-header></v-header>
-		<div class="news-content" id="height">
+		<div class="news-content">
 			<span class="news-title">{{news.title}}</span>
 			<span class="news-date">{{news.time | time}}</span>
 			<span class="news-article">
@@ -28,9 +28,9 @@ export default {
     })
     var wh = document.body.clientHeight
     console.log(wh)
-    var dh = document.getElementById('height')
+    var dh = document.querySelector('.news-content')
     console.log(dh)
-    // dh.offsetHeight < wh - 247 ? dh.offsetHeight = wh - 247 : dh.offsetHeight
+    // dh < wh - 247 ? dh = wh - 247 : dh
   },
   data () {
     return {

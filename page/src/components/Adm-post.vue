@@ -1,61 +1,14 @@
 <template>
   <div class="adm-post">
-    <div class="navbar">
-			<div class="navbar-inner">
-				<ul class="nav pull-right">
-					<li id="fat-menu" class="dropdown">
-						<a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
-							<i class="icon-user"></i> Jack Smith
-							<i class="icon-caret-down"></i>
-						</a>
-
-						<ul class="dropdown-menu">
-							<li>
-								<a tabindex="-1" href="#">My Account</a>
-							</li>
-							<li class="divider"></li>
-							<li>
-								<a tabindex="-1" class="visible-phone" href="#">Settings</a>
-							</li>
-							<li class="divider visible-phone"></li>
-							<li>
-								<a tabindex="-1" href="sign-in.html">Logout</a>
-							</li>
-						</ul>
-					</li>
-
-				</ul>
-				<a class="brand" href="users.html"><span class="second">管理中心</span></a>
-			</div>
-		</div>
-
-		<div class="sidebar-nav">
-			<ul id="dashboard-menu" class="nav nav-list collapse in">
-				<li class="active">
-					<a href="users.html">用户列表</a>
-				</li>
-				<li>
-					<a href="projects.html">项目列表</a>
-				</li>
-				<li>
-					<a href="adm-news.html">新闻列表</a>
-				</li>
-				<li>
-					<a href="adm-post.html">项目发表</a>
-				</li>
-
-			</ul>
-		</div>
-
+    <adm></adm>
 		<div class="adm-content">
 			<div class="adm-header">
-				<h1 class="page-title">项目发表</h1>
+				<h1 class="page-title">帖子列表</h1>
 			</div>
-
 			<ul class="breadcrumb">
 				<li>
 					<a href="users.html">管理中心</a> <span class="divider">/</span></li>
-				<li class="active">项目发表</li>
+				<li class="active">帖子列表</li>
 			</ul>
 
 			<div class="container-fluid">
@@ -66,36 +19,17 @@
 								<tr>
 									<th>序号</th>
 									<th>主题</th>
-									<th>项目</th>
+									<th>标题</th>
 									<th>发表者</th>
+                  <th>操作</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>1</td>
-									<td>精品</td>
-									<td>这是一个学院网站</td>
-									<td>小王</td>
-									<td>
-										<a href="#myModal" role="button" data-toggle="modal">删除</a>
-										<button class="adm-pass">通过</button>
-									</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>精品</td>
-									<td>这是一个学院网站</td>
-									<td>小王</td>
-									<td>
-										<a href="#myModal" role="button" data-toggle="modal">删除</a>
-										<button class="adm-pass">通过</button>
-									</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>精品</td>
-									<td>这是一个学院网站</td>
-									<td>小王</td>
+								<tr v-for="(comment, index) in comments">
+									<td>{{index + 1}}</td>
+									<td>{{comment.theme}}</td>
+									<td>{{comment.title}}</td>
+									<td>{{comment.username}}</td>
 									<td>
 										<a href="#myModal" role="button" data-toggle="modal">删除</a>
 										<button class="adm-pass">通过</button>
@@ -107,22 +41,22 @@
 					<div class="pagination">
 						<ul>
 							<li>
-								<a href="#">Prev</a>
+								<a href="javascript:;">Prev</a>
 							</li>
 							<li>
-								<a href="#">1</a>
+								<a href="javascript:;">1</a>
 							</li>
 							<li>
-								<a href="#">2</a>
+								<a href="javascript:;">2</a>
 							</li>
 							<li>
-								<a href="#">3</a>
+								<a href="javascript:;">3</a>
 							</li>
 							<li>
-								<a href="#">4</a>
+								<a href="javascript:;">4</a>
 							</li>
 							<li>
-								<a href="#">Next</a>
+								<a href="javascript:;">Next</a>
 							</li>
 						</ul>
 					</div>
@@ -147,12 +81,27 @@
 </template>
 
 <script>
+import adm from './adm'
+import axios from 'axios'
+import global from '../global/global'
 export default {
   name: 'adm-post',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      comments: ''
     }
+  },
+  created () {
+    var self = this
+    axios.post(global.baseURL + 'api/posts/getPostsList')
+    .then(function (res) {
+      // console.log(res)
+      self.comments = res.data.data
+    })
+  },
+  components: {
+    adm
   }
 }
 </script>

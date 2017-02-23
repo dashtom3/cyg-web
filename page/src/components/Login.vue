@@ -56,7 +56,7 @@ export default {
             // console.log(result)
             global.user.token = token
             global.user.username = result.data.data.username
-            global.user.state = result.data.data.state
+            global.user.state = '个人中心'
             global.user.studentid = result.data.data.studentid
             switch (result.data.data.department) {
               case 0:

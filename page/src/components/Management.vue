@@ -1,23 +1,6 @@
 <template>
   <div class="management">
-		<div class="header">
-			<div class="nav">
-	            <div class="nav-left">
-					<img src="../img/logo.png" class="logo"/>
-					<a href="javascript:;"><span>同济大学汽车学院</span></a>
-	            </div>
-				<ul class="nav-content">
-					<li><a href="javascript:;">新闻通知</a></li>
-					<li><a href="javascript:;">项目广场</a></li>
-					<li><a href="javascript:;">过往风采</a></li>
-					<li><a href="javascript:;">资料下载</a></li>
-				</ul>
-				<div class="nav-right">
-					<input type="text" placeholder="点击搜索" id="inp" />
-					<span><a href="javascript:;">个人中心</a></span>
-				</div>
-			</div>
-		</div>
+		<v-header></v-header>
 		<!--中间部分-->
 		<div class="management-content">
 			<div class="management-left">
@@ -36,14 +19,13 @@
 						</div>
 					</div>
 					<ul class="cont-manage-bottom">
-						<li><a href="javascript:;">新闻通告</a></li>
-						<li><a href="javascript:;">个人信息</a></li>
-						<li><a href="javascript:;">项目管理</a></li>
-						<li><a href="javascript:;">私信</a></li>
+            <li class="tab-item"><router-link to="/notice">新闻通知</a></li>
+            <li class="tab-item"><router-link to="/personal">个人信息</router-link></li>
+            <li class="tab-item"><router-link to="/management">项目管理</a></li>
 					</ul>
 				</div>
 				<!--发起项目-->
-				<button class="post-project">发起项目</button>
+				<button class="post-project" v-on:click="publishProject">发起项目</button>
 			</div>
 			<!--右边项目-->
 			<div class="management-right">
@@ -70,15 +52,13 @@
 			</div>
 		</div>
 		<!--底部-->
-		<div class="footer">
-			<span class="footer-span1">版权信息</span><br/>
-			<span class="footer-span2">版权信息版权信息版权信息</span><br/>
-			<span class="footer-span2">版权信息版权信息版权信息</span>
-		</div>
+		<v-footer></v-footer>
   </div>
 </template>
 
 <script>
+import header from './header'
+import footer from './footer'
 export default {
   name: 'management',
   data () {
@@ -93,6 +73,15 @@ export default {
         }
       ]
     }
+  },
+  methods: {
+    publishProject: function () {
+      this.$router.push({ path: '/apply' })
+    }
+  },
+  components: {
+    'v-header': header,
+    'v-footer': footer
   }
 }
 </script>

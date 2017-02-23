@@ -59,22 +59,22 @@
                        <div class="autorComment">
                            <p class="artical">{{content.contents}}</p>
                        </div>
+                       <div class="time">
+                           <ul>
+                               <li><a href="javascript:;">回复</a></li>
+                               <li>{{content.time | time}}</li>
+                               <li><span>{{index + 1}}</span>楼</li>
+                           </ul>
+                       </div>
                        <div class="otherReply">
-                           <div class="time">
-                               <ul>
-                                   <li><a href="javascript:;">回复</a></li>
-                                   <li>{{content.time | time}}</li>
-                                   <li><span>{{index + 1}}</span>楼</li>
-                               </ul>
-                           </div>
                            <div class="otherCommentsList">
                                <ul>
-                                   <li>
-                                       <a href="javascript;:"></a>
+                                   <li v-for="other in content.commentReplyEntity">
+                                       <a href="javascript;:"><img src="" alt=""></a>
                                        <div>
-                                           <a href="javascript:;"></a>
-                                           <span></span>
-                                           <div></div>
+                                           <a href="javascript:;">{{other.username}}:&nbsp;</a>
+                                           <span>{{other.contents}}</span>
+                                           <div><span>{{other.time | date}}</span></div>
                                        </div>
                                    </li>
                                </ul>
@@ -158,6 +158,26 @@ font-family: "\5FAE\8F6F\96C5\9ED1";
 margin:0;
 padding: 0;
 box-sizing: content-box;
+}
+.otherCommentsList{
+  background: #f7f8fa
+}
+.otherCommentsList a img{
+  width: 32px;
+  height: 32px;
+}
+.otherCommentsList ul li a{
+  float: left;
+}
+.otherCommentsList ul li>div>div{
+  text-align: right;
+}
+.otherCommentsList ul li{
+  overflow: hidden;
+  padding: 5px 30px;
+}
+.otherCommentsList ul li div{
+  margin-left: 45px;
 }
 .communicate-top{
 font-family:"微软雅黑";

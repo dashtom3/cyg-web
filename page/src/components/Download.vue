@@ -133,6 +133,7 @@ margin-top: 60px;
 font-family: "微软雅黑";
 margin-top: 14px;
 float:left;
+width: 120px;
 }
 .user-downal .username-downal-name{
 display:block;

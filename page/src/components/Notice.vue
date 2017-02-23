@@ -18,12 +18,11 @@
 							<span class="noticeright-right-words">新<br/>闻<br/>通<br/>知</span>
 						</div>
 					</div>
-					<ul class="cont-notice-bottom">
-						<li><a href="javascript:;">新闻通告</a></li>
-						<li><a href="javascript:;">个人信息</a></li>
-						<li><a href="javascript:;">项目管理</a></li>
-						<li><a href="javascript:;">私信</a></li>
-					</ul>
+  					<ul class="cont-notice-bottom" tab>
+              <li class="tab-item"><router-link to="/notice">新闻通知</a></li>
+              <li class="tab-item"><router-link to="/personal">个人信息</router-link></li>
+              <li class="tab-item"><router-link to="/management">项目管理</a></li>
+  					</ul>
 				</div>
 			</div>
 			<!--右边项目-->
@@ -68,6 +67,9 @@ export default {
   methods: {
     goNewsDetial: function (newsId) {
       this.$router.push({name: 'newsDetial', params: { id: newsId }})
+    },
+    goPersonal: function () {
+      this.$router.push({ path: '/personal' })
     }
   }
 }
@@ -148,6 +150,7 @@ margin-top: 60px;
 font-family: "微软雅黑";
 margin-top: 14px;
 float:left;
+width: 120px;
 }
 .user-notice .username-notice-name{
 display:block;

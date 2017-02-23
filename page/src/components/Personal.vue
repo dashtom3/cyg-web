@@ -18,10 +18,9 @@
 					</div>
 				</div>
 				<ul class="cont-person-bottom">
-					<li><a href="javascript:;">新闻通告</a></li>
-					<li><a href="javascript:;">个人信息</a></li>
-					<li><a href="javascript:;">项目管理</a></li>
-					<li><a href="javascript:;">私信</a></li>
+          <li class="tab-item"><router-link to="/notice">新闻通知</a></li>
+          <li class="tab-item"><router-link to="/personal">个人信息</router-link></li>
+          <li class="tab-item"><router-link to="/management">项目管理</a></li>
 				</ul>
 			</div>
 			<!--右边信息部分-->
@@ -168,6 +167,7 @@ export default {
 	font-family: "微软雅黑";
 	margin-top: 14px;
 	float:left;
+  width: 120px;
 }
 .user-personal .username-personal-name{
 	display:block;

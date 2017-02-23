@@ -2,7 +2,7 @@
   <div>
   <div class="header">
     <div class="nav">
-            <div class="nav-left">
+            <div class="nav-left" v-on:click="goIndex">
         <img src="../img/logo.png" class="logo"/>
         <a href="javascript:;"><span>同济大学汽车学院</span></a>
             </div>
@@ -14,7 +14,7 @@
       </ul>
       <div class="nav-right">
         <input type="text" placeholder="点击搜索" id="inp" />
-        <span><router-link to="/login">{{state}}</router-link></span>
+        <span><a href="javascript:;" v-on:click="go">{{state.state}}</router-link></span>
       </div>
     </div>
   </div>
@@ -26,8 +26,21 @@ import global from '../global/global'
 export default {
   data () {
     return {
-      state: global.user.state,
+      state: global.user,
       url: global.user.path
+    }
+  },
+  methods: {
+    // var self = this
+    go: function () {
+      if (this.state.token !== '') {
+        this.$router.push({ path: '/personal' })
+      } else {
+        this.$router.push({ path: '/login' })
+      }
+    },
+    goIndex: function () {
+      this.$router.push({ path: '/index' })
     }
   }
 }

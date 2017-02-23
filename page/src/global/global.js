@@ -11,8 +11,7 @@ export default{
     num: '',
     usertype: '',
     telephone: '',
-    personaltag: '',
-    path: '/login'
+    personaltag: ''
   },
   baseURL: 'http://123.56.220.72:8080/Student/'
 }

@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+// import admin from 'components/admin'
 import VueRouter from 'vue-router'
 import index from 'components/index2'
 import Notice from 'components/Notice'
@@ -15,11 +16,15 @@ import newsDetial from 'components/News'
 import projectsDetial from 'components/Details'
 import vueTap from 'v-tap'
 import admNews from 'components/Adm-news'
+import admPost from 'components/Adm-post'
+import admProjects from 'components/Adm-projects'
+import admUsers from 'components/Adm-users'
 import communicate from 'components/Communicate'
 import knot from 'components/Knot'
 import rewrite from 'components/Rewrite'
 import apply from 'components/Apply'
 import comment from 'components/Comment'
+import management from 'components/Management'
 // import fastclick from 'fastclick'
 import Vuex from 'vuex'
 
@@ -36,9 +41,8 @@ Vue.filter('day', function (value) {
   return new Date(parseInt(value)).getDay()
 })
 Vue.filter('date', function (value) {
-  return new Date(parseInt(value)).toLocaleString().replace(/年|月/g, '-').replace(/日/g, ' ')
+  return new Date(parseInt(value)).toLocaleString().replace(/年|月/g, '-').replace(/日/g, ' ').replace(/\//g, '-')
 })
-
 /* eslint-disable no-new */
 /* 控制路由 */
 const router = new VueRouter({
@@ -51,6 +55,15 @@ const router = new VueRouter({
   }, {
     path: '/admNews',
     component: admNews
+  }, {
+    path: '/admPost',
+    component: admPost
+  }, {
+    path: '/admProjects',
+    component: admProjects
+  }, {
+    path: '/admUsers',
+    component: admUsers
   }, {
     path: '/square',
     component: Square
@@ -95,6 +108,9 @@ const router = new VueRouter({
   }, {
     path: '/apply',
     component: apply
+  }, {
+    path: '/management',
+    component: management
   }]
 })
 new Vue({

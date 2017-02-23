@@ -10,8 +10,8 @@
 						<div class="personal-username">
 							<img src="/static/img/logo.67fa1eb.png"/>
 							<div class="user-personal">
-								<span class="username-personal-name">你的名字</span><br/>
-								<span class="personal-number-fiex">账号:</span><span class="personal-number">123456789</span>
+								<span class="username-personal-name">{{global.username}}</span><br/>
+								<span class="personal-number-fiex">账号:</span><span class="personal-number">{{global.studentid}}</span>
 							</div>
 						</div>
 						<div class="cont-left-personright">
@@ -91,6 +91,7 @@
 import header from './header'
 import footer from './footer'
 import axios from 'axios'
+import global from '../global/global'
 export default {
   name: 'square',
   data () {
@@ -98,7 +99,8 @@ export default {
       msg: 'Welcome to Your Vue.js App',
       projects: [],
       page: [],
-      pageList: ''
+      pageList: '',
+      global: global.user
     }
   },
   components: {
@@ -107,7 +109,7 @@ export default {
   },
   methods: {
     publish: function () {
-      this.$router.push('/knot')
+      this.$router.push('/apply')
     },
     goProjectsDetial: function (itemid) {
       this.$router.push({name: 'projectDetial', params: { id: itemid }})
@@ -124,13 +126,14 @@ export default {
   },
   created () {
     var self = this
-    axios.post('http://123.56.220.72:8080/Student/api/items/getItemsList')
+    axios.post(global.baseURL + 'api/items/getItemsList')
     .then(function (res) {
-      console.log(res)
+      // console.log(res)
       self.projects = res.data.data
       self.page = res.data
       self.pageList = res.data.totalPage
     })
+    console.log(global.user)
   }
 }
 </script>
@@ -159,6 +162,9 @@ export default {
 	border-bottom: 2px solid rgb(114,166,188);
 	width:100%;
 	height:196px;
+}
+.user-notice{
+	width: 120px;
 }
 /*竖着字体设置*/
 .cont-left-personright{
@@ -208,6 +214,7 @@ export default {
 	font-family: "微软雅黑";
 	margin-top: 14px;
 	float:left;
+	width: 120px;
 }
 .user-personal .username-personal-name{
 	display:block;

@@ -1,6 +1,6 @@
 <template>
   <div class="adm-projects">
-    <div class="navbar">
+    <!-- <div class="navbar">
 			<div class="navbar-inner">
 				<ul class="nav pull-right">
 					<li id="fat-menu" class="dropdown">
@@ -45,8 +45,8 @@
 				</li>
 
 			</ul>
-		</div>
-
+		</div> -->
+    <adm></adm>
 		<div class="adm-content">
 			<div class="adm-header">
 				<h1 class="page-title">项目列表</h1>
@@ -65,55 +65,28 @@
 							<thead>
 								<tr>
 									<th>序号</th>
-									<th>主题</th>
-									<th>项目</th>
-									<th>发表者</th>
+									<th>项目名称</th>
+									<th>项目负责人</th>
+									<th>指导老师</th>
 									<th>项目类型</th>
 									<th>关键词</th>
 									<th>项目周期</th>
 									<th>联系方式</th>
+                  <th>操作</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>1</td>
-									<td>同济大学汽车学院网站</td>
-									<td>小王</td>
-									<td>王老师</td>
-									<td>官网</td>
-									<td>学院 网站</td>
-									<td>一个月</td>
-									<td>11111111111111</td>
+								<tr v-for="(projectsList, index) in projectsLists">
+									<td>{{index + 1}}</td>
+									<td>{{projectsList.itemname}}</td>
+									<td>{{projectsList.itemleader}}</td>
+									<td>{{projectsList.teacher}}</td>
+									<td>{{types[projectsList.type]}}</td>
+									<td><span v-for="keyword in JSON.parse(projectsList.keywords)">{{keyword}}&nbsp;</span></td>
+									<td>{{projectsList.itemcyle}}</td>
+									<td>{{projectsList.telephone}}</td>
 									<td>
-										<a href="#myModal" role="button" data-toggle="modal">删除</a>
-										<button class="adm-pass">通过</button>
-									</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td>同济大学汽车学院网站</td>
-									<td>小王</td>
-									<td>王老师</td>
-									<td>官网</td>
-									<td>学院 网站</td>
-									<td>一个月</td>
-									<td>11111111111111</td>
-									<td>
-										<a href="#myModal" role="button" data-toggle="modal">删除</a>
-										<button class="adm-pass">通过</button>
-									</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td>同济大学汽车学院网站</td>
-									<td>小王</td>
-									<td>王老师</td>
-									<td>官网</td>
-									<td>学院 网站</td>
-									<td>一个月</td>
-									<td>11111111111111</td>
-									<td>
-										<a href="#myModal" role="button" data-toggle="modal">删除</a>
+										<a href="#myModal" role="button" data-toggle="modal" v-on:click="del(projectsList.itemsid)">删除</a>
 										<button class="adm-pass">通过</button>
 									</td>
 								</tr>
@@ -163,12 +136,27 @@
 </template>
 
 <script>
+import axios from 'axios'
+import global from '../global/global'
+import adm from './adm'
 export default {
   name: 'adm-projects',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      projectsLists: '',
+      types: ['结题项目', '申请项目']
     }
+  },
+  created () {
+    var self = this
+    axios.post(global.baseURL + 'api/items/getItemsList')
+    .then(function (res) {
+      self.projectsLists = res.data.data
+    })
+  },
+  components: {
+    adm
   }
 }
 </script>
