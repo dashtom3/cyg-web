@@ -1,7 +1,7 @@
 <template>
   <div class="Adm-users">
     <adm></adm>
-		<div class="adm-content">
+		<div class="adm-content" ref="admContent">
 			<div class="adm-header">
 				<h1 class="page-title">用户</h1>
 			</div>
@@ -47,24 +47,15 @@
 						</table>
 					</div>
 					<div class="pagination">
-						<ul>
-							<li>
-								<a href="#">Prev</a>
+            <ul>
+							<li v-for="page in pages">
+								<a href="javascript:;">{{page}}</a>
 							</li>
 							<li>
-								<a href="#">1</a>
+                <a href="javascript:;" v-if="isShow">下一页</a>
 							</li>
 							<li>
-								<a href="#">2</a>
-							</li>
-							<li>
-								<a href="#">3</a>
-							</li>
-							<li>
-								<a href="#">4</a>
-							</li>
-							<li>
-								<a href="#">Next</a>
+                <a href="javascript:;" v-if="isShow">尾页</a>
 							</li>
 						</ul>
 					</div>
@@ -98,12 +89,21 @@ export default {
     return {
       userLists: '',
       personaltag: [],
+      pages: '',
+      isShow: false,
       selfdoms: ['文', '理', '工', '农', '医', '财务管理', '团队管理', '宣传管理', '问卷星', '公众号管理', '计算机编程', '摄影', '体育运动', '信息检索', '报告撰写', '结构建模', '有限元分析', 'matlab', '仿真计算', 'autoCAD']
     }
   },
   methods: {
     tagFilter: function (value) {
       return this.selfdoms[value]
+    }
+  },
+  mounted () {
+    var admContent = this.$refs.admContent
+    var wh = document.body.clientHeight
+    if (admContent.offsetHeight < wh - 71) {
+      admContent.style.height = wh - 77 + 'px'
     }
   },
   components: {
@@ -114,6 +114,8 @@ export default {
     axios.post(global.baseURL + 'api/user/getUserList')
     .then(function (result) {
       self.userLists = result.data.data
+      self.pages = result.data.totalPage
+      result.data.totalPage > 1 ? self.isShow = true : self.isShow = false
     })
   }
 }

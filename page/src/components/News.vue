@@ -2,7 +2,7 @@
 		<!--中间新闻内容部分-->
 		<div>
 			<v-header></v-header>
-		<div class="news-content">
+		<div class="news-content" ref="newsContent">
 			<span class="news-title">{{news.title}}</span>
 			<span class="news-date">{{news.time | time}}</span>
 			<span class="news-article">
@@ -26,11 +26,10 @@ export default {
       // console.log(res.data.data)
       self.news = res.data.data
     })
-    var wh = document.body.clientHeight
-    console.log(wh)
-    var dh = document.querySelector('.news-content')
-    console.log(dh)
-    // dh < wh - 247 ? dh = wh - 247 : dh
+  },
+  mounted () {
+    var newsContent = this.$refs.newsContent
+    global.setHeight(newsContent)
   },
   data () {
     return {

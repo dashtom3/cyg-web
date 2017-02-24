@@ -2,7 +2,7 @@
   <div class="management">
 		<v-header></v-header>
 		<!--中间部分-->
-		<div class="management-content">
+		<div class="management-content" ref="managementContent">
 			<div class="management-left">
 				<div class="management-content-left">
 					<div class="management-left-top">
@@ -59,6 +59,7 @@
 <script>
 import header from './header'
 import footer from './footer'
+import global from '../global/global'
 export default {
   name: 'management',
   data () {
@@ -82,6 +83,10 @@ export default {
   components: {
     'v-header': header,
     'v-footer': footer
+  },
+  mounted () {
+    var managementContent = this.$refs.managementContent
+    global.setHeight(managementContent)
   }
 }
 </script>
@@ -92,7 +97,6 @@ export default {
 	width:960px;
 	margin:0 auto;
 	min-height:575px;
-	height:auto!important;
 	height:575px;
 }
 .management-left{

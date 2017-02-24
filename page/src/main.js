@@ -25,6 +25,7 @@ import rewrite from 'components/Rewrite'
 import apply from 'components/Apply'
 import comment from 'components/Comment'
 import management from 'components/Management'
+import admin from 'components/admin'
 // import fastclick from 'fastclick'
 import Vuex from 'vuex'
 
@@ -104,6 +105,7 @@ const router = new VueRouter({
     component: comment
   }, {
     path: '/rewrite/:id',
+    name: 'rewrite',
     component: rewrite
   }, {
     path: '/apply',
@@ -111,6 +113,9 @@ const router = new VueRouter({
   }, {
     path: '/management',
     component: management
+  }, {
+    path: '/admin',
+    component: admin
   }]
 })
 new Vue({

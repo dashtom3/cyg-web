@@ -2,7 +2,7 @@
   <div class="notice">
     <v-header></v-header>
 		<!--中间部分-->
-		<div class="notice-content">
+		<div class="notice-content" ref="noticeContent">
 			<div class="notice-left">
 				<div class="notice-content-left">
 					<div class="notice-left-top">
@@ -60,6 +60,10 @@ export default {
       this.newsList = res.data.data
     })
   },
+  mounted () {
+    var noticeContent = this.$refs.noticeContent
+    global.setHeight(noticeContent)
+  },
   components: {
     'v-header': header,
     'v-footer': footer
@@ -81,7 +85,6 @@ export default {
 width:960px;
 margin:0 auto;
 min-height:444px;
-height:auto!important;
 height:444px;
 }
 .notice-left{

@@ -1,7 +1,7 @@
 <template>
   <div class="adm-post">
     <adm></adm>
-		<div class="adm-content">
+		<div class="adm-content" ref="admContent">
 			<div class="adm-header">
 				<h1 class="page-title">帖子列表</h1>
 			</div>
@@ -39,24 +39,15 @@
 						</table>
 					</div>
 					<div class="pagination">
-						<ul>
-							<li>
-								<a href="javascript:;">Prev</a>
+            <ul>
+							<li v-for="page in pages">
+								<a href="javascript:;">{{page}}</a>
 							</li>
 							<li>
-								<a href="javascript:;">1</a>
+                <a href="javascript:;" v-if="isShow">下一页</a>
 							</li>
 							<li>
-								<a href="javascript:;">2</a>
-							</li>
-							<li>
-								<a href="javascript:;">3</a>
-							</li>
-							<li>
-								<a href="javascript:;">4</a>
-							</li>
-							<li>
-								<a href="javascript:;">Next</a>
+                <a href="javascript:;" v-if="isShow">尾页</a>
 							</li>
 						</ul>
 					</div>
@@ -89,7 +80,9 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
-      comments: ''
+      comments: '',
+      pages: '',
+      isShow: false
     }
   },
   created () {
@@ -98,10 +91,19 @@ export default {
     .then(function (res) {
       // console.log(res)
       self.comments = res.data.data
+      self.pages = res.data.totalPage
+      res.data.totalPage > 1 ? self.isShow = true : self.isShow = false
     })
   },
   components: {
     adm
+  },
+  mounted () {
+    var admContent = this.$refs.admContent
+    var wh = document.body.clientHeight
+    if (admContent.offsetHeight < wh - 71) {
+      admContent.style.height = wh - 77 + 'px'
+    }
   }
 }
 </script>

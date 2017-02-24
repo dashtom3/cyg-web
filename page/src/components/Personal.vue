@@ -2,7 +2,7 @@
 		<!--中间部分-->
     <div>
       <v-header></v-header>
-		<div class="personal-content">
+		<div class="personal-content" ref="personalContent">
 			<div class="personal-content-left">
 				<div class="personal-left-top">
 					<div class="personal-username">
@@ -86,17 +86,19 @@ export default {
       personMsg: global.user
     }
   },
-  created () {
-    console.log(global.user)
-  },
   components: {
     'v-header': header,
     'v-footer': footer
   },
   methods: {
     reWrite: function (userid) {
-      this.$router.push({ pwth: '/rewrite', id: userid })
+      console.log(userid)
+      this.$router.push({name: 'rewrite', params: { id: userid }})
     }
+  },
+  mounted () {
+    var personalContent = this.$refs.personalContent
+    global.setHeight(personalContent)
   }
 }
 </script>

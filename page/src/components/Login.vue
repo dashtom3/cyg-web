@@ -1,7 +1,7 @@
 <template>
 <div>
   <v-header></v-header>
-  <div class="login">
+  <div class="login" ref="login">
     <div class="login2">
 			<div class="user-number" prop="name">
 				<img src="../img/r1.png"/>
@@ -53,8 +53,9 @@ export default {
           var token = result.data.token
           axios.get(global.baseURL + 'api/user/getbytoken?token=' + token)
           .then(function (result) {
-            // console.log(result)
+            console.log(result)
             global.user.token = token
+            global.user.userid = result.data.data.userid
             global.user.username = result.data.data.username
             global.user.state = '个人中心'
             global.user.studentid = result.data.data.studentid
@@ -121,6 +122,10 @@ export default {
   components: {
     'v-header': header,
     'v-footer': footer
+  },
+  mounted () {
+    var login = this.$refs.login
+    global.setHeight(login)
   }
 }
 </script>
@@ -139,6 +144,7 @@ export default {
 	min-height: 620px;
   overflow: hidden;
   background-size: cover;
+  margin: 0 auto!important;
 }
 .login2{
 	width:255px;

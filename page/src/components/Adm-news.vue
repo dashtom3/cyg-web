@@ -2,7 +2,7 @@
   <div style="position:relative">
   <div class="adm-news">
       <adm></adm>
-		<div class="adm-content">
+		<div class="adm-content" ref="admContent">
 			<div class="adm-header">
 				<h1 class="page-title">新闻列表</h1>
 			</div>
@@ -34,7 +34,7 @@
 									<td>{{newsList.title}}</td>
 									<td>{{type[newsList.state]}}</td>
 									<td>
-										<a href="#myModal" role="button" data-toggle="modal">删除</a>
+										<a href="javascript:;" role="button" data-toggle="modal">删除</a>
 										<button class="adm-pass">通过</button>
 									</td>
 								</tr>
@@ -84,10 +84,6 @@
 </template>
 
 <script type="text/javascript">
-// import '../vue-html5-editor.js'
-// var editor = require('vue-html5-editor')
-// Vue.use(editor, options)
-// Vue.use(VueHtml5Editor, options)
 import adm from './adm'
 import axios from 'axios'
 import global from '../global/global'
@@ -100,8 +96,7 @@ export default {
       newsLists: '',
       type: ['不通过', '通过'],
       pages: '',
-      isShow: false,
-      text: 'nihao'
+      isShow: false
     }
   },
   created () {
@@ -119,9 +114,15 @@ export default {
       console.log(item)
     }
   },
+  mounted () {
+    var admContent = this.$refs.admContent
+    var wh = document.body.clientHeight
+    if (admContent.offsetHeight < wh - 71) {
+      admContent.style.height = wh - 77 + 'px'
+    }
+  },
   components: {
     adm
-    // 'vue-html-editor': require('vue-html-editor')
   }
 }
 </script>

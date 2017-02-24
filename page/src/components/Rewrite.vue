@@ -7,95 +7,92 @@
 				<span class="rewrite-information">1.个人信息</span>
 				<div class="rewrite-name">
 					<span >姓名</span>
-					<input type="text" name=""  placeholder="不可更改" v-model="user.name" />
+					<input type="text" name=""  placeholder="不可更改" v-model='userMsg.username' v-bind:value=userMsg.username />
 				</div>
 				<div class="rewrite-number">
 					<span >学号</span>
-					<input type="text" name="" class="rewrite-number" value="" />
-				</div>
-				<div class="rewrite-ma">
-					<div class="rewrite-person-ma">
-						<span>密码</span>
-						<input type="text" name=""  value="" />
-					</div>
-					<div class="rewrite-rema">
-						<span>重复密码</span>
-						<input type="text" name=""  value="" />
-					</div>
+					<input type="text" name="" class="rewrite-number" v-model='userMsg.studentid' :value=userMsg.studentid />
 				</div>
 			</div>
 			<div class="rewrite-college">
 				<span>学院/部门/单位</span>
-				<select name="">
-					<option value="">学院/部门/单位</option>
-					<option value="">学院/部门/单位</option>
-					<option value="">学院/部门/单位</option>
+				<select name="" :select=userMsg.department v-model='userMsg.department'>
+					<option value="0">小学</option>
+					<option value="1">初中</option>
+					<option value="2">高中</option>
 				</select>
 			</div>
 			<div class="rewrite-major">
 				<span>专业方向</span>
-				<select name="" >
-					<option value="">专业方向</option>
-					<option value="">专业方向</option>
-					<option value="">专业方向</option>
+				<select name="" v-model='userMsg.major' :select=userMsg.major>
+					<option value="0">小学</option>
+					<option value="1">初中</option>
+					<option value="2">高中</option>
 				</select>
 			</div>
 			<div class="rewrite-person-bottom">
 				<div class="rewrite-emal">
 					<span >电子邮件</span>
-					<input type="text" name=""  value="" />
+					<input type="text" name="" v-model='userMsg.email'  :value=userMsg.email />
 				</div>
 				<div class="rewrite-call-number">
 					<span >联系电话</span>
-					<input type="text" name=""  value="" />
+					<input type="text" name="" v-model='userMsg.telephone'  :value=userMsg.telephone />
 				</div>
 			</div>
 			<div class="rewrite-summary">
 				<span>个人简介</span>
-				<textarea name="" placeholder="个人简介，专业特长" class="summary-textarea"></textarea>
+				<textarea name="" placeholder="个人简介，专业特长" class="summary-textarea" v-model='userMsg.personalbrief' :value=userMsg.personalbrief></textarea>
 			</div>
 			<div class="rewrite-selfdom">
-				<span class="rewrite-self-title">2.个性标签</span>
-				<div class="rewrite-self-flex">
-					<button>文</button>
-					<button>理</button>
-					<button>工</button>
-					<button>农</button>
-					<button>医</button>
-				</div>
-				<div class="rewrite-self-flex">
-					<button>财务管理</button>
-					<button>团队管理</button>
-					<button>宣传联络</button>
-					<button>问卷星</button>
-					<button>公众号管理</button>
-				</div>
-				<div class="rewrite-self-flex">
-					<button>计算机编程</button>
-					<button>摄影</button>
-					<button>体育运动 </button>
-					<button>信息检索</button>
-					<button>报告撰写</button>
-				</div>
-				<div class="rewrite-self-flex">
-					<button>结构建模</button>
-					<button>有限元分析</button>
-					<button>matlab</button>
-					<button>仿真计算</button>
-					<button>autoCAD</button>
-				</div>
-				<button class="rewrite-complete">确认</button>
+				<button class="rewrite-complete" v-on:click="change">确认</button>
 			</div>
       </div>
 		</div>
 </template>
 
 <script>
+import axios from 'axios'
+import global from '../global/global'
 export default {
   name: 'rewrite-content',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      userid: this.$route.params.id,
+      userMsg: ''
+    }
+  },
+  created () {
+    var self = this
+    axios.get(global.baseURL + 'api/user/getbyid?userid=' + this.userid + '&token=' + global.user.token)
+    .then(function (res) {
+      self.userMsg = res.data.data
+    })
+  },
+  methods: {
+    change: function () {
+      var self = this
+      var personalMsg = new FormData()
+      personalMsg.append('username', this.userMsg.username)
+      personalMsg.append('studentid', this.userMsg.studentid)
+      personalMsg.append('usertype', this.userMsg.usertype)
+      personalMsg.append('password', this.userMsg.password)
+      personalMsg.append('department', this.userMsg.department)
+      personalMsg.append('major', this.userMsg.major)
+      personalMsg.append('email', this.userMsg.email)
+      personalMsg.append('telephone', this.userMsg.telephone)
+      personalMsg.append('personalbrief', this.userMsg.personalbrief)
+      personalMsg.append('personaltag', this.userMsg.personaltag)
+      personalMsg.append('userid', this.userMsg.userid)
+      axios.post(global.baseURL + 'api/user/update?token=' + global.user.token, personalMsg)
+      .then(function (res) {
+        console.log(res)
+        if (res.data.callStatus === 'SUCCEED') {
+          alert('信息修改成功')
+          self.$router.push({name: '/personal', params: { id: self.userMsg.userid }})
+        }
+      })
     }
   }
 }
@@ -107,13 +104,17 @@ export default {
 	background:rgb(70,77,87);
 	font-family: "微软雅黑";
   width:100%;
-  height:100%;
+  height:auto;
   overflow: hidden;
 }
 .rewrite-content2{
 	width:960px;
 	height:auto;
 	margin:80px auto;
+}
+.self-flex button.active{
+	border:4px solid white;
+	color:white;
 }
 .rewrite-title{
 	width:100%;
@@ -495,7 +496,7 @@ export default {
 	border: 2px solid rgb(126,128,132);
 	outline: none;
 }
-.rewrite-self-flex button:focus{
+.rewrite-self-flex button.active{
 	border:4px solid white;
 	color:white;
 }

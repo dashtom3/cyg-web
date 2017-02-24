@@ -1,53 +1,7 @@
 <template>
   <div class="adm-projects">
-    <!-- <div class="navbar">
-			<div class="navbar-inner">
-				<ul class="nav pull-right">
-					<li id="fat-menu" class="dropdown">
-						<a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
-							<i class="icon-user"></i> Jack Smith
-							<i class="icon-caret-down"></i>
-						</a>
-
-						<ul class="dropdown-menu">
-							<li>
-								<a tabindex="-1" href="#">My Account</a>
-							</li>
-							<li class="divider"></li>
-							<li>
-								<a tabindex="-1" class="visible-phone" href="#">Settings</a>
-							</li>
-							<li class="divider visible-phone"></li>
-							<li>
-								<a tabindex="-1" href="sign-in.html">Logout</a>
-							</li>
-						</ul>
-					</li>
-
-				</ul>
-				<a class="brand" href="users.html"><span class="second">管理中心</span></a>
-			</div>
-		</div>
-
-		<div class="sidebar-nav">
-			<ul id="dashboard-menu" class="nav nav-list collapse in">
-				<li class="active">
-					<a href="users.html">用户列表</a>
-				</li>
-				<li>
-					<a href="projects.html">项目列表</a>
-				</li>
-				<li>
-					<a href="adm-news.html">新闻列表</a>
-				</li>
-				<li>
-					<a href="adm-post.html">项目发表</a>
-				</li>
-
-			</ul>
-		</div> -->
     <adm></adm>
-		<div class="adm-content">
+		<div class="adm-content" ref="admContent">
 			<div class="adm-header">
 				<h1 class="page-title">项目列表</h1>
 			</div>
@@ -94,24 +48,15 @@
 						</table>
 					</div>
 					<div class="pagination">
-						<ul>
-							<li>
-								<a href="#">Prev</a>
+            <ul>
+							<li v-for="page in pages">
+								<a href="javascript:;">{{page}}</a>
 							</li>
 							<li>
-								<a href="#">1</a>
+                <a href="javascript:;" v-if="isShow">下一页</a>
 							</li>
 							<li>
-								<a href="#">2</a>
-							</li>
-							<li>
-								<a href="#">3</a>
-							</li>
-							<li>
-								<a href="#">4</a>
-							</li>
-							<li>
-								<a href="#">Next</a>
+                <a href="javascript:;" v-if="isShow">尾页</a>
 							</li>
 						</ul>
 					</div>
@@ -145,7 +90,9 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       projectsLists: '',
-      types: ['结题项目', '申请项目']
+      types: ['结题项目', '申请项目'],
+      pages: '',
+      isShow: false
     }
   },
   created () {
@@ -153,7 +100,16 @@ export default {
     axios.post(global.baseURL + 'api/items/getItemsList')
     .then(function (res) {
       self.projectsLists = res.data.data
+      self.pages = res.data.totalPage
+      res.data.totalPage > 1 ? self.isShow = true : self.isShow = false
     })
+  },
+  mounted () {
+    var admContent = this.$refs.admContent
+    var wh = document.body.clientHeight
+    if (admContent.offsetHeight < wh - 71) {
+      admContent.style.height = wh - 77 + 'px'
+    }
   },
   components: {
     adm

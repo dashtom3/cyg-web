@@ -1,5 +1,5 @@
 <template>
-  <div class="adm-news">
+  <div class="adm-news" ref="admNews">
     <div class="navbar">
 			<div class="navbar-inner">
 				<ul class="nav pull-right">

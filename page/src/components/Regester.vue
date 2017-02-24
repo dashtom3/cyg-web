@@ -139,7 +139,6 @@ export default {
         this.user.personaltag.splice(index, 1)
       }
       var isActive = event.currentTarget.getAttribute('class')
-      // console.log(isActive.indexOf('active'))
       isActive === 'active' ? event.currentTarget.setAttribute('class', '') : event.currentTarget.setAttribute('class', 'active')
     },
     regester: function () {
@@ -157,20 +156,24 @@ export default {
       personalMsg.append('telephone', this.user.telephone)
       personalMsg.append('personalbrief', this.user.personalbrief)
       personalMsg.append('personaltag', JSON.stringify(this.user.personaltag))
-      axios.post(global.baseURL + 'api/user/register', personalMsg)
-      .then(function (result) {
-        console.log(result)
-        console.log(result.data.callStatus)
-        if (result.data.callStatus === 'SUCCEED') {
-          alert('注册成功!!!')
-          self.$router.push({ path: '/login' })
-        } else {
-          alert('注册失败')
-        }
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
+      if (this.user.password !== this.user.repassword) {
+        alert('两次密码不一致')
+      } else {
+        axios.post(global.baseURL + 'api/user/register', personalMsg)
+        .then(function (result) {
+          console.log(result)
+          console.log(result.data.callStatus)
+          if (result.data.callStatus === 'SUCCEED') {
+            alert('注册成功!!!')
+            self.$router.push({ path: '/login' })
+          } else {
+            alert('注册失败')
+          }
+        })
+        .catch(function (error) {
+          console.log(error)
+        })
+      }
     }
   }
 }

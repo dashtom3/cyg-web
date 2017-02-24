@@ -2,7 +2,7 @@
   <!--中间部分-->
   <div>
     <v-header></v-header>
-  <div class="download-content">
+  <div class="download-content" ref="downloadContent">
     <!--左边上半部分-->
     <div class="download-left">
       <div class="download-t">
@@ -59,6 +59,10 @@ export default {
   components: {
     'v-header': header,
     'v-footer': footer
+  },
+  mounted () {
+    var downloadContent = this.$refs.downloadContent
+    global.setHeight(downloadContent)
   }
 }
 </script>
