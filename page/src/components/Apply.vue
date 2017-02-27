@@ -66,7 +66,7 @@
 			</div>
 			<div class="apply-submit">
 				<input type="submit" name="" id="" value="发布" v-on:click="aply" />
-				<button>取消</button>
+				<button v-on:click="goBack">取消</button>
 			</div>
       </div>
 		</div>
@@ -121,6 +121,9 @@ export default {
       }
       var isActive = event.currentTarget.getAttribute('class')
       isActive === 'active' ? event.currentTarget.setAttribute('class', '') : event.currentTarget.setAttribute('class', 'active')
+    },
+    goBack: function () {
+      this.$router.push({ path: '/square' })
     },
     aply: function () {
       var projectMsg = new FormData()

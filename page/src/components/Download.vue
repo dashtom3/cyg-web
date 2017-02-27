@@ -30,6 +30,14 @@
           <span class="down-date"></span>
         </li>
       </ul>
+      <div class="square-right-b">
+        &nbsp;当前是&nbsp;:&nbsp;<span>{{page.currentPage}}/{{page.totalPage}}</span>&nbsp;&nbsp;
+        共<span class="square-number">{{page.totalNumber}}</span>条信息&nbsp;&nbsp;&nbsp;
+        <span v-on:click="prev" v-show="prevShow">上一页</span>&nbsp;<span v-on:click="next" v-show="nextShow">下一页</span>&nbsp;&nbsp;跳转到:&nbsp;第
+        <select name="">
+          <option value="" v-for="pages in pageList" v-on:click='goPage(pages)'>{{pages}}</option>
+        </select>页
+      </div>
     </div>
   </div>
   <v-footer></v-footer>
@@ -40,12 +48,19 @@
 import axios from 'axios'
 import header from './header'
 import footer from './footer'
+import Vue from 'vue'
 import global from '../global/global'
 export default {
   name: 'download',
   data () {
     return {
-      downs: []
+      downs: [],
+      page: [],
+      pageList: '',
+      prevShow: false,
+      nextShow: false,
+      pagenum: 1,
+      url: 'api/file/getMaterialList?pagenum='
     }
   },
   created () {
@@ -53,8 +68,26 @@ export default {
     axios.get(global.baseURL + 'api/file/getMaterialList')
     .then(function (res) {
       console.log(res)
+      self.page = res.data
+      if (res.data.data > 10) {
+        self.downs = res.data.data.slice(10 * (res.data.currentPage - 1), 10)
+      }
       self.downs = res.data.data
     })
+  },
+  methods: {
+    prev: function () {
+      Vue.set(this, 'pagenum', this.pagenum - 1)
+      global.goPage(this, this.pagenum, this.url)
+    },
+    next: function () {
+      Vue.set(this, 'pagenum', this.pagenum + 1)
+      global.goPage(this, this.pagenum, this.url)
+    },
+    goPage: function (page) {
+      Vue.set(this, 'pagenum', page)
+      global.goPage(this, this.pagenum, this.url)
+    }
   },
   components: {
     'v-header': header,

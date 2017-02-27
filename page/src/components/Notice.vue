@@ -9,8 +9,8 @@
 						<div class="notice-username">
 							<img src=""/>
 							<div class="user-notice">
-								<span class="username-notice-name">你的名字</span><br/>
-								<span class="notice-number-fiex">账号:</span><span class="notice-number">123456789</span>
+								<span class="username-notice-name">{{personalMsg.username}}</span><br/>
+								<span class="notice-number-fiex">账号:</span><span class="notice-number">{{personalMsg.studentid}}</span>
 							</div>
 						</div>
 						<div class="cont-left-noticeright">
@@ -19,7 +19,6 @@
 						</div>
 					</div>
   					<ul class="cont-notice-bottom" tab>
-              <li class="tab-item"><router-link to="/notice">新闻通知</a></li>
               <li class="tab-item"><router-link to="/personal">个人信息</router-link></li>
               <li class="tab-item"><router-link to="/management">项目管理</a></li>
   					</ul>
@@ -35,6 +34,14 @@
 						<span class="notice-title">{{ news.title }}</span>
 					</li>
 				</ul>
+        <div class="square-right-b">
+					&nbsp;当前是&nbsp;:&nbsp;<span>{{page.currentPage}}/{{page.totalPage}}</span>&nbsp;&nbsp;
+					共<span class="square-number">{{page.totalNumber}}</span>条信息&nbsp;&nbsp;&nbsp;
+					<span v-on:click="prev" v-show="prevShow">上一页</span>&nbsp;<span v-on:click="next" v-show="nextShow">下一页</span>&nbsp;&nbsp;跳转到:&nbsp;第
+					<select name="">
+						<option value="" v-for="pages in pageList" v-on:click='goPage(pages)'>{{pages}}</option>
+					</select>页
+				</div>
 			</div>
 		</div>
 		<!--底部-->
@@ -46,17 +53,31 @@
 import axios from 'axios'
 import header from './header'
 import footer from './footer'
+import Vue from 'vue'
 import global from '../global/global'
 export default {
   name: 'notice',
   data () {
     return {
-      newsList: []
+      newsList: [],
+      page: [],
+      pageList: '',
+      pagenum: 1,
+      prevShow: false,
+      nextShow: false,
+      personalMsg: global.user,
+      url: 'api/news/getNewsList?pagenum='
     }
   },
   created () {
+    var self = this
     axios.post(global.baseURL + 'api/news/getNewsList').then((res) => {
-      // console.log(res.data)
+      console.log(res.data)
+      self.page = res.data
+      self.pageList = res.data.totalPage
+      if (res.data.data > 10) {
+        this.newsList = res.data.data.slice(10 * (res.data.currentPage - 1), 10)
+      }
       this.newsList = res.data.data
     })
   },
@@ -74,6 +95,18 @@ export default {
     },
     goPersonal: function () {
       this.$router.push({ path: '/personal' })
+    },
+    prev: function () {
+      Vue.set(this, 'pagenum', this.pagenum - 1)
+      global.goPage(this, this.pagenum, this.url)
+    },
+    next: function () {
+      Vue.set(this, 'pagenum', this.pagenum + 1)
+      global.goPage(this, this.pagenum, this.url)
+    },
+    goPage: function (page) {
+      Vue.set(this, 'pagenum', page)
+      global.goPage(this, this.pagenum, this.url)
     }
   }
 }
@@ -91,6 +124,14 @@ height:444px;
 float:left;
 width:264px;
 height:444px;
+}
+.square-right-b{
+	font-size: 14px;
+	height:30px;
+	width:465px;
+	float:left;
+	margin-top: 45px;
+	background: rgb(237,237,237);
 }
 .notice-content-left{
 width:214px;

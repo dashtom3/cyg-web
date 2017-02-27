@@ -18,13 +18,9 @@
 				</div>
 			</div>
 			<div class="content-left-fcbottom">
-				<span class="content-left-fcbottom-data">年份</span>
-				<ul>
-					<li><a href="javascript:;">2016</a></li>
-					<li><a href="javascript:;">2015</a></li>
-					<li><a href="javascript:;">2014</a></li>
-					<li><a href="javascript:;">2013</a></li>
-					<li><a href="javascript:;">2012</a></li>
+				<ul tab>
+					<li class="tab-item"><router-link to="/personal">个人信息</router-link></li>
+					<li class="tab-item"><router-link to="/management">项目管理</a></li>
 				</ul>
 			</div>
 		</div>
@@ -57,6 +53,14 @@
 						<td><span v-for="keyword in keywords[index]">{{keyword}}</span></td>
 					</tr>
 				</table>
+				<div class="square-right-b">
+					&nbsp;当前是&nbsp;:&nbsp;<span>{{page.currentPage}}/{{page.totalPage}}</span>&nbsp;&nbsp;
+					共<span class="square-number">{{page.totalNumber}}</span>条信息&nbsp;&nbsp;&nbsp;
+					<span v-on:click="prev" v-show="prevShow">上一页</span>&nbsp;<span v-on:click="next" v-show="nextShow">下一页</span>&nbsp;&nbsp;跳转到:&nbsp;第
+					<select name="">
+						<option value="" v-for="pages in pageList" v-on:click='goPage(pages)'>{{pages}}</option>
+					</select>页
+				</div>
 			</div>
 		</div>
 	</div>
@@ -68,6 +72,7 @@
 import axios from 'axios'
 import header from './header'
 import footer from './footer'
+import Vue from 'vue'
 import global from '../global/global'
 export default {
   name: 'gwfc',
@@ -75,8 +80,14 @@ export default {
     return {
       items: [],
       type: '',
+      page: [],
+      pagenum: 1,
+      prevShow: false,
+      nextShow: false,
+      pageList: '',
       keywords: [],
-      knotLists: []
+      knotLists: [],
+      url: 'api/items/getItemsList?pagenum='
     }
   },
   components: {
@@ -87,6 +98,12 @@ export default {
     var self = this
     axios.post(global.baseURL + 'api/items/getItemsList')
     .then(function (res) {
+      self.page = res.data
+      self.pageList = res.data.totalPage
+      if (res.data.data > 10) {
+        self.items = res.data.data.slice(10 * (res.data.currentPage - 1), 10)
+      }
+      self.items = res.data.data
       for (let index in res.data.data) {
         self.keywords.push(JSON.parse(res.data.data[index].keywords))
         if (!res.data.data[index].type) {
@@ -96,6 +113,20 @@ export default {
         }
       }
     })
+  },
+  methods: {
+    prev: function () {
+      Vue.set(this, 'pagenum', this.pagenum - 1)
+      global.goPage(this, this.pagenum, this.url)
+    },
+    next: function () {
+      Vue.set(this, 'pagenum', this.pagenum + 1)
+      global.goPage(this, this.pagenum, this.url)
+    },
+    goPage: function (page) {
+      Vue.set(this, 'pagenum', page)
+      global.goPage(this, this.pagenum, this.url)
+    }
   }
 }
 </script>

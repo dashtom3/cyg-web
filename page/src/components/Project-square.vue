@@ -10,7 +10,7 @@
 						<div class="personal-username">
 							<img src="/static/img/logo.67fa1eb.png"/>
 							<div class="user-personal">
-								<span class="username-personal-name">{{global.username}}</span><br/>
+								<span class="personal-number-fiex">名字:</span><span class="username-personal-name">{{global.username}}</span><br/>
 								<span class="personal-number-fiex">账号:</span><span class="personal-number">{{global.studentid}}</span>
 							</div>
 						</div>
@@ -23,30 +23,6 @@
 				<!--左边下半部分-->
 				<div class="square-b">
 					<button class="square-post" v-on:click="publish">发起项目</button>
-					<div class="square-left-project">
-						<div class="square-source">
-							<span class="square-source-words">项目来源:</span>
-							<ul>
-								<li>大学生创新项目</li>
-								<li>导师项目</li>
-								<li>校友项目</li>
-								<li>企业项目</li>
-							</ul>
-						</div>
-						<div class="square-direct">
-							<span class="square-direct-words">学科方向:</span>
-							<ul>
-								<li>整车</li>
-								<li>动力</li>
-								<li>电子</li>
-								<li>车身</li>
-								<li>新能源</li>
-								<li>营销</li>
-								<li>实验</li>
-								<li>其他</li>
-							</ul>
-						</div>
-					</div>
 				</div>
 			</div>
 			<!--右半部分-->
@@ -76,7 +52,7 @@
 				<div class="square-right-b">
 					&nbsp;当前是&nbsp;:&nbsp;<span>{{page.currentPage}}/{{page.totalPage}}</span>&nbsp;&nbsp;
 					共<span class="square-number">{{page.totalNumber}}</span>条信息&nbsp;&nbsp;首页&nbsp;
-					<span v-on:click="prev">上一页</span>&nbsp;<span v-on:click="next">下一页</span>&nbsp;尾页&nbsp;跳转到:&nbsp;第
+					<span v-on:click="prev" v-show="prevShow">上一页</span>&nbsp;<span v-on:click="next" v-show="nextShow">下一页</span>&nbsp;尾页&nbsp;跳转到:&nbsp;第
 					<select name="">
 						<option value="" v-for="pages in pageList" v-on:click='goPage(pages)'>{{pages}}</option>
 					</select>页
@@ -91,6 +67,7 @@
 import header from './header'
 import footer from './footer'
 import axios from 'axios'
+import Vue from 'vue'
 import global from '../global/global'
 export default {
   name: 'square',
@@ -98,9 +75,13 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       projects: [],
+      prevShow: false,
+      nextShow: false,
       page: [],
       pageList: '',
-      global: global.user
+      pagenum: 1,
+      global: global.user,
+      url: 'api/items/getItemsList?pagenum='
     }
   },
   components: {
@@ -115,23 +96,29 @@ export default {
       this.$router.push({name: 'projectDetial', params: { id: itemid }})
     },
     prev: function () {
-      console.log('上一页')
+      Vue.set(this, 'pagenum', this.pagenum - 1)
+      global.goPage(this, this.pagenum, this.url)
     },
     next: function () {
-      console.log('下一页')
+      Vue.set(this, 'pagenum', this.pagenum + 1)
+      global.goPage(this, this.pagenum, this.url)
     },
-    goPage: function (index) {
-      console.log(index)
+    goPage: function (page) {
+      Vue.set(this, 'pagenum', page)
+      global.goPage(this, this.pagenum, this.url)
     }
   },
   created () {
     var self = this
-    axios.post(global.baseURL + 'api/items/getItemsList')
+    axios.post(global.baseURL + 'api/items/getItemsList?pagenum=' + this.pagenum)
     .then(function (res) {
       // console.log(res)
-      self.projects = res.data.data
       self.page = res.data
       self.pageList = res.data.totalPage
+      if (res.data.data > 10) {
+        self.projects = res.data.data.slice(10 * (res.data.currentPage - 1), 10)
+      }
+      self.projects = res.data.data
     })
     console.log(global.user)
   }

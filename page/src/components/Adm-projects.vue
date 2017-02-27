@@ -40,8 +40,8 @@
 									<td>{{projectsList.itemcyle}}</td>
 									<td>{{projectsList.telephone}}</td>
 									<td>
-										<a href="#myModal" role="button" data-toggle="modal" v-on:click="del(projectsList.itemsid)">删除</a>
-										<button class="adm-pass">通过</button>
+										<a href="javascript:;" role="button" data-toggle="modal" v-on:click="delUser(projectsList.itemid)">删除</a>
+										<button class="adm-pass" v-on:click="verify(projectsList.itemid)">通过</button>
 									</td>
 								</tr>
 							</tbody>
@@ -60,23 +60,23 @@
 							</li>
 						</ul>
 					</div>
-
-					<div class="modal small hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						<div class="modal-adm-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-							<h3 id="myModalLabel">确认 删除</h3>
-						</div>
-						<div class="modal-body">
-							<p class="error-text"><i class="icon-warning-sign modal-icon adm-warn"></i>你想要删除这个项目吗?</p>
-						</div>
-						<div class="modal-footer">
-							<button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
-							<button class="btn btn-danger" data-dismiss="modal">确认</button>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
+    <div class="verify" v-show="verifyShow">
+      <div class="">
+        <a href="javascript:;" v-on:click="throught">通过</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="javascript:;" v-on:click="pass">不通过</a>
+      </div>
+    </div>
+    <div class="queren" v-show="isDel">
+      <div class="">
+        <p>确认删除吗</p><br>
+        <br>
+        <a href="javascript:;" v-on:click="del">确认</a>&nbsp;&nbsp;
+        <a href="javascript:;" v-on:click="hide">再想一下</a>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -92,6 +92,10 @@ export default {
       projectsLists: '',
       types: ['结题项目', '申请项目'],
       pages: '',
+      userid: '',
+      projectid: '',
+      verifyShow: false,
+      isDel: false,
       isShow: false
     }
   },
@@ -99,6 +103,7 @@ export default {
     var self = this
     axios.post(global.baseURL + 'api/items/getItemsList')
     .then(function (res) {
+      console.log(res)
       self.projectsLists = res.data.data
       self.pages = res.data.totalPage
       res.data.totalPage > 1 ? self.isShow = true : self.isShow = false
@@ -109,6 +114,54 @@ export default {
     var wh = document.body.clientHeight
     if (admContent.offsetHeight < wh - 71) {
       admContent.style.height = wh - 77 + 'px'
+    }
+  },
+  methods: {
+    delUser: function (id) {
+      console.log(id)
+      this.isDel = true
+      this.userid = id
+    },
+    del: function () {
+      var self = this
+      var userMsg = new FormData()
+      userMsg.append('userid', this.userid)
+      axios.get(global.baseURL + 'api/items/delete?token=' + global.user.token, userMsg)
+      .then(function (res) {
+        console.log(res)
+        if (res.data.callStatus === 'SUCCEED') {
+          alert('删除成功')
+          self.isDel = false
+        }
+      })
+    },
+    hide: function () {
+      this.isDel = false
+    },
+    verify: function (id) {
+      this.verifyShow = true
+      this.newsId = id
+    },
+    throught: function () {
+      var verifyNews = new FormData()
+      verifyNews.append('newsid', this.newsId)
+      verifyNews.append('state', this.through)
+      axios.get(global.baseURL + 'api/news/verify?token=' + global.user.token, verifyNews)
+      .then(function (res) {
+        console.log(res)
+        // if
+      })
+    },
+    pass: function () {
+      this.verifyShow = false
+      var verifyNews = new FormData()
+      verifyNews.append('newsid', this.newsId)
+      verifyNews.append('state', this.pass)
+      axios.get(global.baseURL + 'api/news/verify?token=' + global.user.token, verifyNews)
+      .then(function (res) {
+        console.log(res)
+        // if
+      })
     }
   },
   components: {
@@ -129,5 +182,79 @@ export default {
   margin: 0px;
   padding: 0px;
   overflow: hidden;
+}
+.verify{
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  clear: both;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  opacity: .8;
+}
+.verify div{
+  position: absolute;
+  top: 100px;
+  width: 60%;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+text-align: center;
+padding-top: 20px;
+background: #e2e2e2
+}
+.verify div{
+  height: 150px;
+  width: 300px;
+  top: 200px;
+  border-radius: 10px;
+}
+.verify div a{
+  padding: 10px;
+  font-size: 15px;
+  border-radius:5px;
+  color:#fff;
+  position: absolute;
+  bottom: 50px;
+}
+.verify div a:nth-child(1){
+  background: green;
+  left: 50px;
+}
+.verify div a:nth-child(2){
+  background-color: red;
+}
+.queren{
+position: absolute;
+height: 100%;
+width: 100%;
+top: 0;
+background: #e2e2e2;
+opacity: .7
+}
+.queren div{
+  width: 300px;
+height: 150px;
+margin: 300px auto;
+text-align: center;
+color: red;
+font-size: 20px;
+background-color: #fff;
+border-radius: 10px;
+padding-top: 30px;
+}
+.queren div a{
+  padding: 10px;
+  color: #fff;
+  border-radius: 5px;
+}
+.queren div a{
+  background: red;
+}
+.queren div a:last-child{
+  background: green;
 }
 </style>

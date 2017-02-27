@@ -5,6 +5,9 @@
 			<!--个人信息-->
 			<div class="rewrite-top">
 				<span class="rewrite-information">1.个人信息</span>
+        <div class="person-type">
+  				<button v-for="(item, index) in items" :class="{'active':item.active,'unactive':!item.active}"  v-on:click="personKind(item, index)">{{item.data}}</button>
+  			</div>
 				<div class="rewrite-name">
 					<span >姓名</span>
 					<input type="text" name=""  placeholder="不可更改" v-model='userMsg.username' v-bind:value=userMsg.username />
@@ -53,6 +56,7 @@
 
 <script>
 import axios from 'axios'
+import Vue from 'vue'
 import global from '../global/global'
 export default {
   name: 'rewrite-content',
@@ -60,17 +64,35 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       userid: this.$route.params.id,
-      userMsg: ''
+      userMsg: '',
+      items: [
+        { data: '学生', val: 0 },
+        { data: '教工', val: 1 },
+        { data: '校友', val: 2 },
+        { data: '企业', val: 3 }
+      ],
+      active: false
     }
   },
   created () {
     var self = this
     axios.get(global.baseURL + 'api/user/getbyid?userid=' + this.userid + '&token=' + global.user.token)
     .then(function (res) {
+      Vue.set(self.items[res.data.data.usertype], 'active', true)
       self.userMsg = res.data.data
     })
   },
   methods: {
+    personKind: function (item, index) {
+      var self = this
+      this.$nextTick(function () {
+        self.items.forEach(function (item) {
+          Vue.set(item, 'active', false)
+        })
+        Vue.set(item, 'active', true)
+      })
+      Vue.set(this.userMsg, 'usertype', item.val)
+    },
     change: function () {
       var self = this
       var personalMsg = new FormData()
@@ -85,12 +107,13 @@ export default {
       personalMsg.append('personalbrief', this.userMsg.personalbrief)
       personalMsg.append('personaltag', this.userMsg.personaltag)
       personalMsg.append('userid', this.userMsg.userid)
+      console.log(this.userMsg)
       axios.post(global.baseURL + 'api/user/update?token=' + global.user.token, personalMsg)
       .then(function (res) {
-        console.log(res)
+        // console.log(res)
         if (res.data.callStatus === 'SUCCEED') {
           alert('信息修改成功')
-          self.$router.push({name: '/personal', params: { id: self.userMsg.userid }})
+          self.$router.push({name: 'personal', params: { id: self.userMsg.userid }})
         }
       })
     }
@@ -106,6 +129,28 @@ export default {
   width:100%;
   height:auto;
   overflow: hidden;
+}
+.person-type{
+	float:left;
+	width:100%;
+	display:flex;
+	flex-direction: row;
+	height:73px;
+	justify-content: space-between;
+	margin-top: 75px;
+}
+.person-type button{
+	width:212px;
+	height:72px;
+	background:rgb(70,77,87);
+	border:1px solid white;
+	text-align: center;
+	font-size: 33px;
+	color:white;
+	font-family: "微软雅黑";
+}
+.person-type button.active{
+	background:rgb(4,177,243);
 }
 .rewrite-content2{
 	width:960px;

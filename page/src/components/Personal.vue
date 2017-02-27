@@ -18,7 +18,6 @@
 					</div>
 				</div>
 				<ul class="cont-person-bottom">
-          <li class="tab-item"><router-link to="/notice">新闻通知</a></li>
           <li class="tab-item"><router-link to="/personal">个人信息</router-link></li>
           <li class="tab-item"><router-link to="/management">项目管理</a></li>
 				</ul>
@@ -92,7 +91,6 @@ export default {
   },
   methods: {
     reWrite: function (userid) {
-      console.log(userid)
       this.$router.push({name: 'rewrite', params: { id: userid }})
     }
   },

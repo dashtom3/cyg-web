@@ -5,7 +5,7 @@
 			<!--头部分-->
 			<div class="details-content">
 				<div class="details-content-top">
-					<span class="join">立即加入</span>
+					<span class="join" v-on:click="joinProject">立即加入</span>
 					<div class="details-top-right">
 						<span class="project-topname">{{project.itemname}}</span>
 						<div class="detail-key">
@@ -98,7 +98,7 @@
 							{{project.exitbasic}}
 						</p>
 					</div>
-					<a href="javascript:;" class="details-foot">返回过往风采</a>
+					<a href="javascript:;" class="details-foot" v-on:click="goGwfc">返回过往风采</a>
 				</div>
 			</div>
 		</div>
@@ -137,6 +137,23 @@ export default {
       self.expectresult = JSON.parse(res.data.data.expectresult)
       res.data.data.type ? self.type = '申请项目' : self.type = '结题项目'
     })
+  },
+  methods: {
+    goGwfc: function () {
+      this.$router.push({ path: '/gwfc' })
+    },
+    joinProject: function () {
+      var personalMsg = new FormData()
+      personalMsg.append('itemsid', this.projectId)
+      personalMsg.append('token', global.user.token)
+      axios.post(global.baseURL + 'api/items/apply?token=' + global.user.token, personalMsg)
+      .then(function (res) {
+        console.log(res)
+        if (res.data.callStatus === 'SUCCEED') {
+          alert('加入成功')
+        }
+      })
+    }
   }
 }
 </script>
@@ -162,6 +179,9 @@ font-weight: bold;
 display: inline-block;
 line-height: 246px;
 margin-left: 93px;
+}
+.join:hover{
+  cursor: pointer;
 }
 .details-top-right{
 height:246px;

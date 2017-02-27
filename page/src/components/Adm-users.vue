@@ -26,6 +26,7 @@
 									<th>电子邮件</th>
 									<th>联系电话</th>
 									<th>个性标签</th>
+                  <th>操作</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -39,8 +40,7 @@
 									<td>{{userlist.telephone}}</td>
 									<td><span v-for="personaltaginfo in JSON.parse(userlist.personaltag)">{{tagFilter(personaltaginfo)}}&nbsp;</span></td>
 									<td>
-										<a href="#myModal" role="button" data-toggle="modal">删除</a>
-										<button class="adm-pass">通过</button>
+										<a href="javascript:;" role="button" data-toggle="modal" v-on:click="delUser(userlist.userid)">删除</a>
 									</td>
 								</tr>
 							</tbody>
@@ -59,23 +59,17 @@
 							</li>
 						</ul>
 					</div>
-
-					<div class="modal small hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						<div class="modal-adm-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-							<h3 id="myModalLabel">确认 删除</h3>
-						</div>
-						<div class="modal-body">
-							<p class="error-text"><i class="icon-warning-sign modal-icon adm-warn"></i>你想要删除这个用户吗?</p>
-						</div>
-						<div class="modal-footer">
-							<button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
-							<button class="btn btn-danger" data-dismiss="modal">删除</button>
-						</div>
-					</div>
 				</div>
 			</div>
 		</div>
+    <div class="queren" v-show="isDel">
+      <div class="">
+        <p>确认删除吗</p><br>
+        <br>
+        <a href="javascript:;" v-on:click="del">确认</a>&nbsp;&nbsp;
+        <a href="javascript:;" v-on:click="hide">再想一下</a>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -83,11 +77,14 @@
 import adm from './adm'
 import axios from 'axios'
 import global from '../global/global'
+import Vue from 'vue'
 export default {
   name: 'adm-users',
   data () {
     return {
+      isDel: false,
       userLists: '',
+      userid: '',
       personaltag: [],
       pages: '',
       isShow: false,
@@ -97,6 +94,37 @@ export default {
   methods: {
     tagFilter: function (value) {
       return this.selfdoms[value]
+    },
+    delUser: function (id) {
+      console.log(id)
+      this.isDel = true
+      this.userid = id
+    },
+    del: function () {
+      var self = this
+      var userMsg = new FormData()
+      userMsg.append('userid', this.userid)
+      axios.post(global.baseURL + 'api/user/delete?token=' + global.user.token, userMsg)
+      .then(function (res) {
+        console.log(res)
+        if (res.data.callStatus === 'SUCCEED') {
+          alert('删除成功')
+          self.isDel = false
+          var that = self
+          Vue.nextTick(function () {
+            axios.post(global.baseURL + 'api/news/getNewsList')
+            .then(function (res) {
+              console.log(res)
+              that.newsLists = res.data.data
+              that.pages = res.data.totalPage
+              res.data.totalPage > 1 ? that.isShow = true : that.isShow = false
+            })
+          })
+        }
+      })
+    },
+    hide: function () {
+      this.isDel = false
     }
   },
   mounted () {
@@ -133,5 +161,36 @@ export default {
   margin: 0px;
   padding: 0px;
   overflow: hidden;
+  position: relative;
+}
+.queren{
+position: absolute;
+height: 100%;
+width: 100%;
+top: 0;
+background: #e2e2e2;
+opacity: .7
+}
+.queren div{
+  width: 300px;
+height: 150px;
+margin: 300px auto;
+text-align: center;
+color: red;
+font-size: 20px;
+background-color: #fff;
+border-radius: 10px;
+padding-top: 30px;
+}
+.queren div a{
+  padding: 10px;
+  color: #fff;
+  border-radius: 5px;
+}
+.queren div a{
+  background: red;
+}
+.queren div a:last-child{
+  background: green;
 }
 </style>

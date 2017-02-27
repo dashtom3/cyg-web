@@ -9,8 +9,8 @@
 						<div class="management-username">
 							<img src=""/>
 							<div class="user-management">
-								<span class="username-management-name">你的名字</span><br/>
-								<span class="management-number-fiex">账号:</span><span class="management-number">123456789</span>
+								<span class="username-management-name">{{personalMsg.username}}</span><br/>
+								<span class="management-number-fiex">账号:</span><span class="management-number">{{personalMsg.studentid}}</span>
 							</div>
 						</div>
 						<div class="cont-left-manageright">
@@ -19,7 +19,6 @@
 						</div>
 					</div>
 					<ul class="cont-manage-bottom">
-            <li class="tab-item"><router-link to="/notice">新闻通知</a></li>
             <li class="tab-item"><router-link to="/personal">个人信息</router-link></li>
             <li class="tab-item"><router-link to="/management">项目管理</a></li>
 					</ul>
@@ -64,6 +63,7 @@ export default {
   name: 'management',
   data () {
     return {
+      personalMsg: global.user,
       items: [
         {
           title: '这是项目名这是项目名这是项目名这是项',
@@ -163,6 +163,7 @@ export default {
 	font-family: "微软雅黑";
 	margin-top: 14px;
 	float:left;
+  width: 100px;
 }
 .user-management .username-management-name{
 	display:block;

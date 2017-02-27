@@ -64,11 +64,18 @@ import global from '../global/global'
 export default {
   created () {
     axios.post(global.baseURL + 'api/news/getNewsList').then((res) => {
-      // console.log(res.data)
-      this.newsList = res.data.data
+      if (res.data.data > 5) {
+        this.newsList = res.data.data.slice(0, 5)
+      } else {
+        this.newsList = res.data.data
+      }
     })
     axios.post(global.baseURL + 'api/items/getItemsList').then((res) => {
-      this.projectsList = res.data.data
+      if (res.data.data > 5) {
+        this.projectsList = res.data.data.slice(0, 5)
+      } else {
+        this.projectsList = res.data.data
+      }
       var self = this
       // console.log(res)
       for (let index in res.data.data) {

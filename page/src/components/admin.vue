@@ -5,16 +5,53 @@
             <div class="w200"></div>
             <div class="msg">
                 <div class="title">管理员登录</div>
-                <div class="label">用户名</div>
-                <input type="text"/>
-                <div class="label">密码</div>
-                <input type="password"/>
-                <button class="login">登录</button>
+                <div class="name">用户名</div>
+                <input type="text" v-model="msg.studentid" />
+                <div class="name">密码</div>
+                <input type="password" v-model="msg.password" />
+                <button class="login" v-on:click="login">登录</button>
             </div>
         </div>
     </div>
   </div>
 </template>
+
+<script type="text/javascript">
+import axios from 'axios'
+import global from '../global/global'
+export default {
+  name: 'details',
+  data () {
+    return {
+      msg: {
+        studentid: '',
+        password: ''
+      }
+    }
+  },
+  methods: {
+    login: function () {
+      if (this.msg.studentid === '1980199' && this.msg.password === '123') {
+        console.log(this.msg)
+        var msg = new FormData()
+        var self = this
+        msg.append('studentid', this.msg.studentid)
+        msg.append('password', this.msg.password)
+        axios.post(global.baseURL + 'api/user/login', msg)
+        .then(function (res) {
+          if (res.data.callStatus === 'SUCCEED') {
+            alert('登录成功')
+            global.user.token = res.data.token
+            self.$router.push({ path: '/admUsers' })
+          }
+        })
+      } else {
+        alert('用户名或密码错误')
+      }
+    }
+  }
+}
+</script>
 <style media="screen">
 *{
 margin: 0;
@@ -34,7 +71,7 @@ font-size: 16px;
 font-weight: bold;
 margin: 10px auto;
 }
-.msg .label{
+.msg .name{
 color: #65676b;
 margin: 10px 0;
 font-weight: 600;

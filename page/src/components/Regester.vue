@@ -143,7 +143,7 @@ export default {
     },
     regester: function () {
       // 收集用户注册的信息
-      // var self = this
+      var self = this
       console.log(JSON.stringify(this.user.personaltag))
       var personalMsg = new FormData()
       personalMsg.append('username', this.user.username)
