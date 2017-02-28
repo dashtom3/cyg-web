@@ -24,9 +24,17 @@ export default{
       dh.style.height = wh - 247 + 'px'
     }
   },
+  go: function (obj, token) {
+    var self = obj
+    if (token !== '') {
+      self.$router.push({ path: '/personal' })
+    } else {
+      self.$router.push({ path: '/login' })
+      this.user.state = '登录'
+    }
+  },
   goPage: function (obj, pagenum, url) {
     var self = obj
-    console.log(pagenum)
     if (pagenum > 1) {
       self.prevShow = true
     }
@@ -38,6 +46,24 @@ export default{
         self.projects = res.data.data.slice(10 * (self.pagenum - 1), 10)
       }
       self.projects = res.data.data
+    })
+  },
+  verify: function (url, kind, id) {
+    axios.get(this.baseURL + url + this.user.token + '&' + kind + '=' + id + '&state=1')
+    .then(function (res) {
+      console.log(res)
+      if (res.data.callStatus === 'SUCCEED') {
+        alert('操作成功')
+      }
+    })
+  },
+  pass: function (url, kind, id) {
+    axios.get(this.baseURL + url + this.user.token + '&' + kind + '=' + id + '&state=0')
+    .then(function (res) {
+      console.log(res)
+      if (res.data.callStatus === 'SUCCEED') {
+        alert('操作成功')
+      }
     })
   }
 }

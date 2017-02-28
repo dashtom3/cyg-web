@@ -43,10 +43,9 @@
 							<span class="file-title">这里是该项目提供的附件下载</span>
 							<span>如果没有附件则不显示此方块</span><br/>
 							<div class="file-filter">
-								<span>附件1.pptx</span><br/>
-								<span>附件2.dwg</span>
+								<span><a href=exitbasicfilesrc>现有基础</a></span><br/>
+								<span><a href=memberdemandfilesrc>所需成员</a></span>
 							</div>
-
 						</div>
 					</div>
 					<!--右边招募、项目开发部分-->
@@ -57,11 +56,11 @@
 								<div class="recruit-number">
 									<span class="recruit-number-left">{{project.nowpeople}}</span>
 									<span>/</span>
-									<span class="recruit-number-right">{{project.allpeople}}</span>
+									<span class="recruit-number-right">{{project.memberdemand}}</span>
 								</div>
 								<span class="recruit-title">招募情况</span>
 							</div>
-							<div class="recruit-bottom">
+							<!-- <div class="recruit-bottom">
 								<span class="requirement">{{project.memberdemand}}</span>
 								<ul>
 									<li>专业方向: <span class="recruit-major">{{expectresult.major}}</span></li>
@@ -72,7 +71,7 @@
 									<li>学制: <span class="recruit-system">{{expectresult.edu_length}}</span></li>
 									<li>籍贯: <span class="recruit-place">{{expectresult.place}}</span></li>
 								</ul>
-							</div>
+							</div> -->
 						</div>
 						<!--项目开发中-->
 						<div class="project-way">
@@ -119,6 +118,8 @@ export default {
       projectId: this.$route.params.id,
       project: {},
       keywords: [],
+      exitbasicfilesrc: '',
+      memberdemandfilesrc: '',
       expectresult: [],
       type: ''
     }
@@ -131,9 +132,11 @@ export default {
     var self = this
     axios.post(global.baseURL + 'api/items/getbyid/?itemsid=' + this.projectId)
     .then(function (res) {
+      console.log(res)
       // console.log(res.data.data.type)
+      self.exitbasicfilesrc = 'http://123.56.220.72:8080/Student/api/items/getItemsList/' + res.data.data.exitbasicfilesrc
+      self.memberdemandfilesrc = 'http://123.56.220.72:8080/Student/api/items/getItemsList/' + res.data.data.memberdemandfilesrc
       self.project = res.data.data
-      self.keywords = JSON.parse(res.data.data.keywords)
       self.expectresult = JSON.parse(res.data.data.expectresult)
       res.data.data.type ? self.type = '申请项目' : self.type = '结题项目'
     })

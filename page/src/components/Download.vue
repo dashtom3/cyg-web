@@ -118,6 +118,7 @@ height:252px;
 float:left;
 padding-left: 22px;
 padding-right: 22px;
+background-color: rgb(126,206,243)
 }
 .downal-left-top{
 border-bottom: 2px solid rgb(114,166,188);
@@ -142,12 +143,12 @@ display:block;
 font-size: 18px;
 position: absolute;
 bottom:53px;
-color:rgb(178,178,178);
+color:rgb(221,239,255);
 right:-8px;
 }
 .downright-right-words{
 float:right;
-color:rgb(178,178,178);
+color:rgb(221,239,255);
 display:block;
 font-size: 32px;
 line-height: 34px;

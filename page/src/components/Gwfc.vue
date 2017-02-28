@@ -50,7 +50,7 @@
 						<td>{{index+1}}</td>
 						<td class="td-title">{{item.itemname}}</td>
 						<td>{{type}}</td>
-						<td><span v-for="keyword in keywords[index]">{{keyword}}</span></td>
+						<td><span>{{item.keywords}}</span></td>
 					</tr>
 				</table>
 				<div class="square-right-b">

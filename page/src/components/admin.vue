@@ -41,6 +41,7 @@ export default {
         .then(function (res) {
           if (res.data.callStatus === 'SUCCEED') {
             alert('登录成功')
+            console.log(res.data.token)
             global.user.token = res.data.token
             self.$router.push({ path: '/admUsers' })
           }

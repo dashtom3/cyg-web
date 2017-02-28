@@ -33,11 +33,7 @@ export default {
   methods: {
     // var self = this
     go: function () {
-      if (this.state.token !== '') {
-        this.$router.push({ path: '/personal' })
-      } else {
-        this.$router.push({ path: '/login' })
-      }
+      global.go(this, global.user.token)
     },
     goIndex: function () {
       this.$router.push({ path: '/index' })

@@ -5,10 +5,9 @@
 			<div class="apply-type">
 				<div class="apply-type-t">
 					<span class="apply-type-title">项目类型</span>
-					<span class="apply-type-select">(可多选)</span>
 				</div>
 				<div class="apply-type-c">
-					<button v-for="(applytype, index) in applytypes" v-on:click="checked($event, index)">{{applytype}}</button>
+					<button v-for="(item, index) in items" :class="{'active':item.active,'unactive':!item.active}" v-on:click="checked(item, index)">{{item.data}}</button>
 				</div>
 			</div>
 			<div class="kont-top-left">
@@ -26,10 +25,15 @@
 				</div>
 				<div class="apply-project-type">
 					<span>学科方向 :</span>
-					<select name="">
-						<option value=""></option>
-						<option value="">企业</option>
-						<option value="">电商</option>
+					<select name="" v-model="applyProject.projectdirection">
+						<option value="0">整车</option>
+						<option value="1">动力</option>
+						<option value="2">电子</option>
+            <option value="3">车身</option>
+            <option value="4">新能源</option>
+            <option value="5">营销</option>
+            <option value="6">实验</option>
+            <option value="7">其他</option>
 					</select>
 				</div>
 				<div class="apply-key">
@@ -52,16 +56,26 @@
 				<span>附件上传</span>
 				<input type="file" name="" id="" value="" @change="exitbasicfile" />
 			</div>
-			<span class="apply-innovation">成员需求</span>
-			<textarea name="" placeholder="限100字" class="apply-innovation-t" v-model="applyProject.memberdemand"></textarea>
+			<div class="allxq">
+        <span class="apply-innovation xq">成员需求</span>
+        <select name="" v-model="applyProject.memberdemand">
+          <option v-for="(num, index) in nums" :value=index+1>{{num}}</option>
+        </select>
+			</div>
 			<div class="apply-person-file">
 				<span>附件上传</span>
-				<input type="file" name="" id="memberdemandfile" value="" @change="memberdemandfile" />
+				<input type="file" name="" id="memberdemandfile" />
 			</div>
 			<div class="apply-bottom">
 				<div class="apply-cycle">
-					<span>发布截至时间 :</span>
-					<input type="text" name="" v-model="applyProject.end" />
+					<span>开始日期 :</span>
+					<input type="text" name="" placeholder="举例:2016-12-12" v-model="applyProject.start" />
+				</div>
+			</div>
+      <div class="apply-bottom">
+				<div class="apply-cycle">
+					<span>结束日期 :</span>
+					<input type="text" name="" placeholder="举例:2016-12-12" v-model="applyProject.end" />
 				</div>
 			</div>
 			<div class="apply-submit">
@@ -69,27 +83,50 @@
 				<button v-on:click="goBack">取消</button>
 			</div>
       </div>
+      <div class="div" v-show="success">
+        <div class="con">
+          <p>恭喜你项目申请成功</p>
+        </div>
+      </div>
 		</div>
 </template>
 
 <script>
 import axios from 'axios'
+import Vue from 'vue'
 import global from '../global/global'
 export default {
   name: 'apply-content',
   data () {
     return {
-      applytypes: ['国创', '上创', 'sitp', '创新赛事', '企业课题', '创业', '其他'],
+      success: false,
+      items: [
+        { data: '国创', val: 0 },
+        { data: '上创', val: 1 },
+        { data: 'sitp', val: 2 },
+        { data: '创新赛事', val: 3 },
+        { data: '企业课题', val: 4 },
+        { data: '创业', val: 5 },
+        { data: '其他', val: 6 }
+      ],
       projecttype: [],
       expecttypes: ['论文', '报告', '成品', '模型', '专利', '其他'],
       result: [],
+      nums: 50,
+      active: false,
       applyProject: {
+        labels: '',
+        start: '',
         itemname: '',
+        projectdirection: '',
         itemleader: '',
         teacher: '',
         keywords: '',
         itembrief: '',
+        xianyou: '',
+        chengyuan: '',
         exitbasic: '',
+        expectresult: '',
         exitbasicfile: '',
         memberdemand: '',
         end: '',
@@ -98,20 +135,21 @@ export default {
     }
   },
   methods: {
-    checked: function (event, index) {
-      if (this.projecttype.indexOf(index)) {
-        this.projecttype.push(index)
-      } else {
-        this.projecttype.splice(index, 1)
-      }
-      var isActive = event.currentTarget.getAttribute('class')
-      isActive === 'active' ? event.currentTarget.setAttribute('class', '') : event.currentTarget.setAttribute('class', 'active')
+    checked: function (item, index) {
+      var self = this
+      this.$nextTick(function () {
+        self.items.forEach(function (item) {
+          Vue.set(item, 'active', false)
+        })
+        Vue.set(item, 'active', true)
+      })
+      Vue.set(this.applyProject, 'labels', index)
     },
-    exitbasicfile: function (obj) {
-      this.applyProject.exitbasicfile = obj.target.value
+    exitbasicfile: function () {
+      this.applyProject.xianyou = document.querySelector('.apply-basic-file input').files[0]
     },
     memberdemandfile: function (obj) {
-      this.applyProject.memberdemandfile = obj.target.value
+      this.applyProject.chengyuan = document.querySelector('.apply-person-file input').files[0]
     },
     changetype: function (event, index) {
       if (this.result.indexOf(index)) {
@@ -126,24 +164,33 @@ export default {
       this.$router.push({ path: '/square' })
     },
     aply: function () {
+      var self = this
       var projectMsg = new FormData()
+      projectMsg.append('labels', this.applyProject.labels)
+      projectMsg.append('projectdirection', this.applyProject.projectdirection)
+      projectMsg.append('memberdemand', this.applyProject.memberdemand)
       projectMsg.append('itemname', this.applyProject.itemname)
       projectMsg.append('itemleader', this.applyProject.itemleader)
       projectMsg.append('teacher', this.applyProject.teacher)
       projectMsg.append('keywords', this.applyProject.keywords)
       projectMsg.append('itembrief', this.applyProject.itembrief)
       projectMsg.append('exitbasic', this.applyProject.exitbasic)
-      projectMsg.append('exitbasicfile', this.applyProject.exitbasicfile)
-      projectMsg.append('memberdemand', this.applyProject.memberdemand)
+      projectMsg.append('exitbasicfile', this.applyProject.xianyou)
       projectMsg.append('end', this.applyProject.end)
-      projectMsg.append('memberdemandfile', this.applyProject.memberdemandfile)
+      projectMsg.append('start', this.applyProject.start)
+      projectMsg.append('memberdemandfile', this.applyProject.chengyuan)
       console.log(this.applyProject)
-      // projectMsg.append('projecttype', this.applyProject.projecttype)
-      // projectMsg.append('itemname', this.applyProject.result)
-      // projectMsg.append('itemname', this.applyProject.itemname)
-      axios.post(global.baseURL + 'api/items/add', projectMsg)
+      axios.post(global.baseURL + 'api/items/add?token=' + global.user.token, projectMsg)
       .then(function (res) {
-        console.log(res)
+        if (res.data.callStatus === 'SUCCEED') {
+          alert('项目申请成功')
+          self.success = true
+          var that = self
+          setTimeout(function () {
+            that.success = false
+            that.$router.push({ path: '/management' })
+          }, 1000)
+        }
       })
     }
   }
@@ -163,6 +210,30 @@ font-family: "微软雅黑";
 width:960px;
 height:auto;
 margin:84px auto;
+}
+.allxq{
+  float: left;
+}
+.div{
+  position: fixed;
+  width: 250px;
+  height: 150px;
+  margin: 0 auto;
+  font-size: 20px;
+  color: red;
+  background: #000;
+  border-radius: 10px;
+  text-align: center;
+  left: 0;
+  right: 0;
+}
+.con{
+  padding-top: 40px;
+}
+.allxq select{
+  position: relative;
+  top: 30px;
+  left: 20px;
 }
 textarea{
   resize:none;
@@ -318,6 +389,9 @@ float:left;
 outline: none;
 }
 /*项目类型*/
+.xq{
+  width: auto!important;
+}
 .apply-project-type select{
 color:rgb(215,215,217);
 font-size: 14px;
@@ -439,7 +513,6 @@ padding-top: 5px;
 /*底部分*/
 .apply-bottom{
 width:450px;
-float:left;
 height:auto;
 }
 .apply-cycle,.apply-phone{

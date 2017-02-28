@@ -49,7 +49,6 @@ export default {
       .then(function (result) {
         // console.log(result)
         if (result.data.callStatus === 'SUCCEED') {
-          alert('登录成功')
           var token = result.data.token
           axios.get(global.baseURL + 'api/user/getbytoken?token=' + token)
           .then(function (result) {

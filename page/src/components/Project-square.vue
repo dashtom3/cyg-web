@@ -24,6 +24,32 @@
 				<div class="square-b">
 					<button class="square-post" v-on:click="publish">发起项目</button>
 				</div>
+				<div class="square-b">
+					<div class="square-left-project">
+						<div class="square-source">
+							<span class="square-source-words">项目来源:</span>
+							<ul>
+								<li><a href="javascript:;">大学生创新项目</a></li>
+								<li><a href="javascript:;">导师项目</a></li>
+								<li><a href="javascript:;">校友项目</a></li>
+								<li><a href="javascript:;">企业项目</a></li>
+							</ul>
+						</div>
+						<div class="square-direct">
+							<span class="square-direct-words">学科方向:</span>
+							<ul>
+								<li><a href="javascript:;" v-on:click="go(0)">整车</a></li>
+								<li><a href="javascript:;" v-on:click="go(1)">动力</a></li>
+								<li><a href="javascript:;" v-on:click="go(2)">电子</a></li>
+								<li><a href="javascript:;" v-on:click="go(3)">车身</a></li>
+								<li><a href="javascript:;" v-on:click="go(4)">新能源</a></li>
+								<li><a href="javascript:;" v-on:click="go(5)">营销</a></li>
+								<li><a href="javascript:;" v-on:click="go(6)">实验</a></li>
+								<li><a href="javascript:;" v-on:click="go(7)">其他</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
 			</div>
 			<!--右半部分-->
 			<div class="square-right">
@@ -40,12 +66,12 @@
 							<span>负责人:</span>&nbsp;
 							<span class="square-responsible-name">{{project.itemleader}}</span>&nbsp;
 							<span class="square-date-right-border">|</span>&nbsp;
-							<span>招募人数: </span>
+							<span>招募人数: {{project.memberdemand}}</span>
 							<span class="square-state">{{project.nowpeople}}</span>&nbsp;
 							<span class="square-date-right-border">|</span><br/>
 							项目来源:&nbsp;&nbsp;<span class="square-source-id">大学生创业项目</span>&nbsp;
 							<span class="square-date-right-border">|</span>&nbsp;
-							学科方向:&nbsp;&nbsp;<span>整车</span>
+							学科方向:&nbsp;&nbsp;<span>{{expecttypes[project.projectdirection]}}</span>
 						</div>
 					</li>
 				</ul>
@@ -80,6 +106,7 @@ export default {
       page: [],
       pageList: '',
       pagenum: 1,
+      expecttypes: ['整车', '动力', '电子', '车身', '新能源', '营销', '实验', '其他'],
       global: global.user,
       url: 'api/items/getItemsList?pagenum='
     }
@@ -89,6 +116,12 @@ export default {
     'v-footer': footer
   },
   methods: {
+    go: function (index) {
+      axios.post(global.baseURL + 'api/items/getItemsList?projectdirection=' + index)
+      .then(function (res) {
+        console.log(res)
+      })
+    },
     publish: function () {
       this.$router.push('/apply')
     },
@@ -112,7 +145,7 @@ export default {
     var self = this
     axios.post(global.baseURL + 'api/items/getItemsList?pagenum=' + this.pagenum)
     .then(function (res) {
-      // console.log(res)
+      console.log(res)
       self.page = res.data
       self.pageList = res.data.totalPage
       if (res.data.data > 10) {
@@ -120,7 +153,6 @@ export default {
       }
       self.projects = res.data.data
     })
-    console.log(global.user)
   }
 }
 </script>

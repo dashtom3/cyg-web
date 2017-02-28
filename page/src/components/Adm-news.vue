@@ -36,6 +36,7 @@
 									<td>
 										<a href="javascript:;" role="button" data-toggle="modal" v-on:click="delUser(newsList.newsid)">删除</a>
 										<button class="adm-pass" v-on:click="verify(newsList.newsid)">通过</button>
+                    <button class="adm-pass" v-on:click="pass(newsList.newsid)">不通过</button>
 									</td>
 								</tr>
 							</tbody>
@@ -58,12 +59,6 @@
 			</div>
 		</div>
   </div>
-  <div class="verify" v-show="verifyShow">
-    <div class="">
-      <a href="javascript:;" v-on:click="throught">通过</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <a href="javascript:;" v-on:click="pass">不通过</a>
-    </div>
-  </div>
   <div class="queren" v-show="isDel">
     <div class="">
       <p>确认删除吗</p><br>
@@ -80,10 +75,16 @@
       </div>
       <div class="text">
         <span>新闻内容: </span>
-        <vue-editor
+        <!-- <vue-editor
             :use-save-button="false"
+            :editor-toolbar="customToolbar"
             @editor-updated=handleUpdatedContent>
-          </vue-editor>
+          </vue-editor> -->
+          <quill-editor ref="myTextEditor"
+              :content="content"
+              :config="editorOption"
+              @change="onEditorChange($event)">
+            </quill-editor>
       </div>
       <div class="text">
         <span>新闻作者: </span>
@@ -104,7 +105,7 @@ import adm from './adm'
 import axios from 'axios'
 import Vue from 'vue'
 import global from '../global/global'
-import { VueEditor } from 'vue2-editor'
+import { quillEditor } from 'vue-quill-editor'
 export default {
   name: 'adm-news',
   props: ['value'],
@@ -113,26 +114,27 @@ export default {
       msg: 'Welcome to Your Vue.js App',
       newsLists: '',
       show: false,
+      content: '',
+      editorOption: {},
       type: ['不通过', '通过'],
       pages: '',
       newsId: '',
       verifyShow: false,
-      through: '1',
-      pass: '0',
       isDel: false,
       isShow: false,
       htmlFromEditor: null,
       newsMsg: {
         title: '',
         autor: ''
-      }
+      },
+      url: 'api/news/verify?token='
     }
   },
   created () {
     var self = this
     axios.post(global.baseURL + 'api/news/getNewsList')
     .then(function (res) {
-      console.log(res)
+      // console.log(res)
       self.newsLists = res.data.data
       self.pages = res.data.totalPage
       res.data.totalPage > 1 ? self.isShow = true : self.isShow = false
@@ -140,21 +142,23 @@ export default {
   },
   components: {
     adm,
-    VueEditor
+    quillEditor
   },
   methods: {
+    onEditorChange ({ editor, html, text, img }) {
+      console.log(html, img)
+      this.content = html
+    },
     showText: function () {
       this.show = true
-    },
-    handleUpdatedContent: function (value) {
-      this.htmlFromEditor = value
     },
     saveTheContent: function () {
       var self = this
       var pubNews = new FormData()
-      pubNews.append('title', this.newsMsg.title)
-      pubNews.append('content', this.htmlFromEditor)
-      axios.post(global.baseURL + 'api/news/add?token=' + global.token, pubNews)
+      pubNews.append('name', this.newsMsg.title)
+      pubNews.append('file', this.content)
+      console.log(this.content.img)
+      axios.post(global.baseURL + 'api/file/materialUpload?token=' + global.user.token, pubNews)
       .then(function (res) {
         console.log(res)
         if (res.data.callStatus === 'SUCCEED') {
@@ -167,7 +171,7 @@ export default {
       this.show = false
     },
     delUser: function (id) {
-      console.log(id)
+      // console.log(id)
       this.isDel = true
       this.userid = id
     },
@@ -198,29 +202,10 @@ export default {
       this.isDel = false
     },
     verify: function (id) {
-      this.verifyShow = true
-      this.newsId = id
+      global.verify(this.url, 'newsid', id)
     },
-    throught: function () {
-      var verifyNews = new FormData()
-      verifyNews.append('newsid', this.newsId)
-      verifyNews.append('state', this.through)
-      axios.get(global.baseURL + 'api/news/verify?token=' + global.user.token, verifyNews)
-      .then(function (res) {
-        console.log(res)
-        // if
-      })
-    },
-    pass: function () {
-      this.verifyShow = false
-      var verifyNews = new FormData()
-      verifyNews.append('newsid', this.newsId)
-      verifyNews.append('state', this.pass)
-      axios.get(global.baseURL + 'api/news/verify?token=' + global.user.token, verifyNews)
-      .then(function (res) {
-        console.log(res)
-        // if
-      })
+    pass: function (id) {
+      global.pass(this.url, 'newsid', id)
     }
   },
   mounted () {
@@ -261,6 +246,9 @@ export default {
 }
 .text button{
   padding: 10px;
+}
+.ql-toolbar+div{
+  height: 500px;
 }
 .publishNews,.verify{
   position: absolute;

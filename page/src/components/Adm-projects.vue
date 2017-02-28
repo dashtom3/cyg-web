@@ -42,6 +42,7 @@
 									<td>
 										<a href="javascript:;" role="button" data-toggle="modal" v-on:click="delUser(projectsList.itemid)">删除</a>
 										<button class="adm-pass" v-on:click="verify(projectsList.itemid)">通过</button>
+                    <button class="adm-pass" v-on:click="pass(projectsList.itemid)">不通过</button>
 									</td>
 								</tr>
 							</tbody>
@@ -65,7 +66,7 @@
 		</div>
     <div class="verify" v-show="verifyShow">
       <div class="">
-        <a href="javascript:;" v-on:click="throught">通过</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="javascript:;" v-on:click="verify">通过</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <a href="javascript:;" v-on:click="pass">不通过</a>
       </div>
     </div>
@@ -96,7 +97,8 @@ export default {
       projectid: '',
       verifyShow: false,
       isDel: false,
-      isShow: false
+      isShow: false,
+      url: 'api/items/verify?token='
     }
   },
   created () {
@@ -139,29 +141,10 @@ export default {
       this.isDel = false
     },
     verify: function (id) {
-      this.verifyShow = true
-      this.newsId = id
+      global.verify(this.url, 'itemsid', id)
     },
-    throught: function () {
-      var verifyNews = new FormData()
-      verifyNews.append('newsid', this.newsId)
-      verifyNews.append('state', this.through)
-      axios.get(global.baseURL + 'api/news/verify?token=' + global.user.token, verifyNews)
-      .then(function (res) {
-        console.log(res)
-        // if
-      })
-    },
-    pass: function () {
-      this.verifyShow = false
-      var verifyNews = new FormData()
-      verifyNews.append('newsid', this.newsId)
-      verifyNews.append('state', this.pass)
-      axios.get(global.baseURL + 'api/news/verify?token=' + global.user.token, verifyNews)
-      .then(function (res) {
-        console.log(res)
-        // if
-      })
+    pass: function (id) {
+      global.pass(this.url, 'itemsid', id)
     }
   },
   components: {

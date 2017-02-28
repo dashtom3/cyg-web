@@ -58,6 +58,7 @@
 <script>
 import header from './header'
 import footer from './footer'
+// import axios from 'axios'
 import global from '../global/global'
 export default {
   name: 'management',
@@ -80,6 +81,9 @@ export default {
       this.$router.push({ path: '/apply' })
     }
   },
+  // created () {
+  //   axios.post(global.baseURL + '')
+  // }
   components: {
     'v-header': header,
     'v-footer': footer

@@ -51,7 +51,7 @@
 			</div>
 			<div class="knot-submit">
 				<input type="button" name="" id="" value="提交申请" v-on:click="apply" />
-				<button>取消</button>
+				<button v-on:click="goback">取消</button>
 			</div>
     </div>
 		</div>
@@ -78,6 +78,9 @@ export default {
     }
   },
   methods: {
+    goback: function () {
+      this.$router.push({ path: '/management' })
+    },
     apply: function () {
       var zipFormData = new FormData()
       zipFormData.append('itemname', this.itemname)

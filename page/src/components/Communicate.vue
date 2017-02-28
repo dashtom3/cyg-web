@@ -76,8 +76,14 @@
 						</td>
 					</tr>
 				</table>
-				<div class="page-number-bottom">
-
+				<div class="page-number-bottom" v-for="page in pages">
+          <ul>
+            <li><a href="javascript:;" v-show="prev">首页</a></li>
+            <li><a href="javascript:;" v-show="prev">上一页</a></li>
+            <li><a href="javascript:;">1</a></li>
+            <li><a href="javascript:;" v-show="next">下一页</a></li>
+            <li><a href="javascript:;" v-show="next">尾页</a></li>
+          </ul>
 				</div>
 			</div>
 			<!--发表部分-->
@@ -110,6 +116,8 @@ export default {
       msg: 'Welcome to Your Vue.js App',
       communicates: '',
       getCounts: '',
+      prev: false,
+      next: false,
       publishCommunite: {
         theme: '',
         contents: ''
@@ -120,12 +128,12 @@ export default {
     var self = this
     axios.post(global.baseURL + 'api/communication/getCommunicationList')
     .then(function (res) {
-      console.log(res)
+      // console.log(res)
       self.communicates = res.data.data
     })
     axios.get(global.baseURL + 'api/communication/getCounts')
     .then(function (res) {
-      // console.log(res)
+      console.log(res)
       self.getCounts = res.data.data
     })
   },
@@ -136,7 +144,7 @@ export default {
       zipFormData.append('contents', this.publishCommunite.contents)
       axios.post(global.baseURL + 'api/posts/add', zipFormData)
       .then(function (res) {
-        console.log(res)
+        // console.log(res)
         console.log('发布成功')
       })
     },
@@ -164,6 +172,12 @@ export default {
   width:960px;
   height:148px;
   border-bottom: 13px solid rgb(191,191,191);
+  }
+  .page-number-bottom ul li{
+    float: left;
+  }
+  .page-number-bottom ul li a{
+    padding: 10px;
   }
   .communicate-top-left{
   width:622px;

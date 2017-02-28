@@ -6,10 +6,10 @@
 			<div class="personal-content-left">
 				<div class="personal-left-top">
 					<div class="personal-username">
-						<img src=""/>
 						<div class="user-personal">
 							<span class="username-personal-name">{{personMsg.username}}</span><br/>
-							<span class="personal-number-fiex">账号:</span><span class="personal-number">{{personMsg.studentid}}</span>
+							<span class="personal-number-fiex">账号:</span><span class="personal-number">{{personMsg.studentid}}</span><br/>
+              <span class="username-personal-name exit" v-on:click="exit">注销</span>
 						</div>
 					</div>
 					<div class="cont-left-personright">
@@ -82,6 +82,7 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App',
+      id: this.$route.params.id,
       personMsg: global.user
     }
   },
@@ -92,6 +93,10 @@ export default {
   methods: {
     reWrite: function (userid) {
       this.$router.push({name: 'rewrite', params: { id: userid }})
+    },
+    exit: function () {
+      global.user.token = ''
+      global.go(this, global.user.token)
     }
   },
   mounted () {
@@ -107,6 +112,9 @@ export default {
 	height:524px;
 	width:960px;
 	margin:0 auto;
+}
+.exit:hover{
+  cursor: pointer;
 }
 .personal-content-left{
 	width:214px;
@@ -165,7 +173,7 @@ export default {
 /*个人信息*/
 .user-personal{
 	font-family: "微软雅黑";
-	margin-top: 14px;
+	margin-top: 80px;
 	float:left;
   width: 120px;
 }

@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 // import admin from 'components/admin'
+import VueQuillEditor from 'vue-quill-editor'
 import VueRouter from 'vue-router'
 import index from 'components/index2'
 import Notice from 'components/Notice'
@@ -32,11 +33,12 @@ import Vuex from 'vuex'
 Vue.use(vueTap)
 Vue.use(VueRouter)
 Vue.use(Vuex)
+Vue.use(VueQuillEditor)
 Vue.filter('time', function (value) {
-  return new Date(parseInt(value)).getFullYear() + '-' + new Date(parseInt(value)).getMonth() + 1 + '-' + new Date(parseInt(value)).getDay()
+  return new Date(parseInt(value)).getFullYear() + '-' + (new Date(parseInt(value)).getMonth() + 1) + '-' + new Date(parseInt(value)).getDay()
 })
 Vue.filter('year', function (value) {
-  return new Date(parseInt(value)).getFullYear() + '-' + new Date(parseInt(value)).getMonth() + 1
+  return new Date(parseInt(value)).getFullYear() + '-' + (new Date(parseInt(value)).getMonth() + 1)
 })
 Vue.filter('day', function (value) {
   return new Date(parseInt(value)).getDay()
@@ -79,6 +81,7 @@ const router = new VueRouter({
     component: login
   }, {
     path: '/personal',
+    name: 'personal',
     component: personal
   }, {
     path: '/regester',

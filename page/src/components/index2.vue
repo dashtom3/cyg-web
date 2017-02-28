@@ -20,7 +20,7 @@
            <span class="date-day">{{item.time | day}}</span>
          </div>
          <a href="javascript:;"><span class="news-words">
-           {{item.contents}}
+           {{item.title}}
          </span></a>
        </li>
       </ul>
@@ -32,7 +32,7 @@
         <li v-for="(project, index) in projectsList" v-on:click="goProjectsDetial(project.itemid)">
 					<a href="javascript:;"><span class="project-name">{{project.itemname}}</span></a>
 					<div class="main-words">
-						<a href="javascript:;" v-for="keyword in keywords[index]"><span class="main-words1">{{keyword}}</span></a>
+						<a href="javascript:;"><span class="main-words1">{{project.keywords}}</span></a>
 					</div>
 				</li>
 			</ul>

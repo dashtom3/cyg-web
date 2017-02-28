@@ -28,15 +28,11 @@
 			</div>
 			<div class="college">
 				<span>学院/部门/单位</span>
-				<select name="" v-model="user.department">
-					<option v-for="college in colleges" :value="college.val">{{college.college}}</option>
-				</select>
+				<input type="text" name="" value="" v-model="user.college">
 			</div>
 			<div class="major">
 				<span>专业方向</span>
-				<select name="" v-model="user.major">
-					<option v-for="major in majors" :value="major.val">{{major.major}}</option>
-				</select>
+				<input type="text" name="" value="" v-model="user.major">
 			</div>
 			<div class="regester-person-bottom">
 				<div class="emal">
@@ -60,6 +56,11 @@
 				<button class="complete" v-on:click="regester">完成</button>
 			</div>
 		</div>
+    <div class="div" v-show="success">
+      <div class="con">
+        <p>恭喜你注册成功</p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -94,18 +95,9 @@ export default {
           val: 3
         }
       },
+      success: false,
       shishi: -1,
-      colleges: [
-        {val: '0', college: '小学'},
-        {val: '1', college: '初中'},
-        {val: '2', college: '高中'}
-      ],
       isActive: false,
-      majors: [
-        {val: '0', major: '小学'},
-        {val: '1', major: '初中'},
-        {val: '2', major: '高中'}
-      ],
       selfs: [
         { self_btns: ['文', '理', '工', '农', '医'], isActive: false },
         { self_btns: ['财务管理', '团队管理', '宣传管理', '问卷星', '公众号管理'], isActive: false },
@@ -117,6 +109,7 @@ export default {
         username: '',
         studentid: '',
         major: '',
+        college: '',
         department: '',
         password: '',
         repassword: '',
@@ -144,7 +137,8 @@ export default {
     regester: function () {
       // 收集用户注册的信息
       var self = this
-      console.log(JSON.stringify(this.user.personaltag))
+      console.log(this.user)
+      // console.log(JSON.stringify(this.user.personaltag))
       var personalMsg = new FormData()
       personalMsg.append('username', this.user.username)
       personalMsg.append('studentid', this.user.studentid)
@@ -164,8 +158,13 @@ export default {
           console.log(result)
           console.log(result.data.callStatus)
           if (result.data.callStatus === 'SUCCEED') {
-            alert('注册成功!!!')
-            self.$router.push({ path: '/login' })
+            // alert('注册成功')
+            self.success = true
+            var that = self
+            setTimeout(function () {
+              that.success = false
+              that.$router.push({ path: '/login' })
+            }, 1000)
           } else {
             alert('注册失败')
           }
@@ -192,6 +191,37 @@ export default {
 	width:960px;
 	height:auto;
 	margin:80px auto;
+}
+.div{
+  position: fixed;
+  width: 250px;
+  height: 150px;
+  margin: 0 auto;
+  font-size: 20px;
+  color: red;
+  background: #000;
+  border-radius: 10px;
+  text-align: center;
+  left: 0;
+  right: 0;
+}
+.con{
+  padding-top: 40px;
+}
+.college input,.major input{
+  color: rgb(215,215,217);
+font-size: 14px;
+font-family: "\5FAE\8F6F\96C5\9ED1";
+margin-left: 15px;
+width: 250px;
+height: 14px;
+font-weight: bold;
+background: rgb(70,77,87);
+padding: 0;
+border: 0;
+margin-top: 11px;
+float: left;
+outline: none
 }
 .regester-title{
 	width:100%;
