@@ -58,13 +58,13 @@
 			</div>
 			<div class="allxq">
         <span class="apply-innovation xq">成员需求</span>
-        <select name="" v-model="applyProject.memberdemand">
+        <select name="" v-model="applyProject.allpeople">
           <option v-for="(num, index) in nums" :value=index+1>{{num}}</option>
         </select>
 			</div>
 			<div class="apply-person-file">
 				<span>附件上传</span>
-				<input type="file" name="" id="memberdemandfile" />
+				<input type="file" name="" id="memberdemandfile" @change="memberdemandfile" />
 			</div>
 			<div class="apply-bottom">
 				<div class="apply-cycle">
@@ -85,7 +85,7 @@
       </div>
       <div class="div" v-show="success">
         <div class="con">
-          <p>恭喜你项目申请成功</p>
+          <p>恭喜你项目发布成功</p>
         </div>
       </div>
 		</div>
@@ -123,11 +123,10 @@ export default {
         teacher: '',
         keywords: '',
         itembrief: '',
-        xianyou: '',
-        chengyuan: '',
         exitbasic: '',
         expectresult: '',
         exitbasicfile: '',
+        allpeople: '',
         memberdemand: '',
         end: '',
         memberdemandfile: ''
@@ -146,10 +145,10 @@ export default {
       Vue.set(this.applyProject, 'labels', index)
     },
     exitbasicfile: function () {
-      this.applyProject.xianyou = document.querySelector('.apply-basic-file input').files[0]
+      this.applyProject.exitbasicfile = document.querySelector('.apply-basic-file input').files[0]
     },
-    memberdemandfile: function (obj) {
-      this.applyProject.chengyuan = document.querySelector('.apply-person-file input').files[0]
+    memberdemandfile: function () {
+      this.applyProject.memberdemandfile = document.querySelector('.apply-person-file input').files[0]
     },
     changetype: function (event, index) {
       if (this.result.indexOf(index)) {
@@ -168,22 +167,21 @@ export default {
       var projectMsg = new FormData()
       projectMsg.append('labels', this.applyProject.labels)
       projectMsg.append('projectdirection', this.applyProject.projectdirection)
-      projectMsg.append('memberdemand', this.applyProject.memberdemand)
+      projectMsg.append('allpeople', this.applyProject.allpeople)
       projectMsg.append('itemname', this.applyProject.itemname)
       projectMsg.append('itemleader', this.applyProject.itemleader)
       projectMsg.append('teacher', this.applyProject.teacher)
       projectMsg.append('keywords', this.applyProject.keywords)
       projectMsg.append('itembrief', this.applyProject.itembrief)
       projectMsg.append('exitbasic', this.applyProject.exitbasic)
-      projectMsg.append('exitbasicfile', this.applyProject.xianyou)
+      projectMsg.append('exitbasicfile', this.applyProject.exitbasicfile)
       projectMsg.append('end', this.applyProject.end)
       projectMsg.append('start', this.applyProject.start)
-      projectMsg.append('memberdemandfile', this.applyProject.chengyuan)
-      console.log(this.applyProject)
-      axios.post(global.baseURL + 'api/items/add?token=' + global.user.token, projectMsg)
+      projectMsg.append('memberdemandfile', this.applyProject.memberdemandfile)
+      axios.post(global.baseURL + 'api/items/add?type=1&token=' + global.user.token, projectMsg)
       .then(function (res) {
+        console.log(res)
         if (res.data.callStatus === 'SUCCEED') {
-          alert('项目申请成功')
           self.success = true
           var that = self
           setTimeout(function () {

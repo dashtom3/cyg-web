@@ -36,7 +36,7 @@
 									<td>{{projectsList.itemleader}}</td>
 									<td>{{projectsList.teacher}}</td>
 									<td>{{types[projectsList.type]}}</td>
-									<td><span v-for="keyword in JSON.parse(projectsList.keywords)">{{keyword}}&nbsp;</span></td>
+									<td><span>{{projectsList.keyword}}&nbsp;</span></td>
 									<td>{{projectsList.itemcyle}}</td>
 									<td>{{projectsList.telephone}}</td>
 									<td>
@@ -126,13 +126,12 @@ export default {
     },
     del: function () {
       var self = this
-      var userMsg = new FormData()
-      userMsg.append('userid', this.userid)
-      axios.get(global.baseURL + 'api/items/delete?token=' + global.user.token, userMsg)
+      axios.get(global.baseURL + 'api/items/delete?token=' + global.user.token + '&itemsid=' + this.userid)
       .then(function (res) {
         console.log(res)
         if (res.data.callStatus === 'SUCCEED') {
           alert('删除成功')
+          location.reload()
           self.isDel = false
         }
       })

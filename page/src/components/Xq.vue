@@ -1,37 +1,17 @@
 <template>
+  <div>
+  <v-header></v-header>
   <div class="xq">
     <!--导航栏-->
-		<div class="header">
-			<div class="nav">
-				<!--
-	            	logo图
-	            -->
-	            <div class="nav-left">
-					<img src="../img/logo.png" class="logo"/>
-					<a href="javascript:;"><span>同济大学汽车学院</span></a>
-	            </div>
-				<ul class="nav-content">
-					<li><a href="javascript:;">新闻通知</a></li>
-					<li><a href="javascript:;">项目广场</a></li>
-					<li><a href="javascript:;">过往风采</a></li>
-					<li><a href="javascript:;">资料下载</a></li>
-				</ul>
-				<div class="nav-right">
-					<input type="text" placeholder="点击搜索" id="inp" />
-					<span><a href="javascript:;">个人中心</a></span>
-				</div>
-			</div>
-		</div>
-		<!--底部-->
-		<div class="management-content">
+    <div class="management-content">
 			<div class="management-left">
 				<div class="management-content-left">
 					<div class="management-left-top">
 						<div class="management-username">
-							<img src=""/>
+							<div style="height:70px"></div>
 							<div class="user-management">
-								<span class="username-management-name">你的名字</span><br/>
-								<span class="management-number-fiex">账号:</span><span class="management-number">123456789</span>
+								<span class="username-management-name">{{personalMsg.username}}</span><br/>
+								<span class="management-number-fiex">账号:</span><span class="management-number">{{personalMsg.studentid}}</span>
 							</div>
 						</div>
 						<div class="cont-left-manageright">
@@ -40,110 +20,155 @@
 						</div>
 					</div>
 					<ul class="cont-manage-bottom">
-						<li><a href="javascript:;">新闻通告</a></li>
-						<li><a href="javascript:;">个人信息</a></li>
-						<li><a href="javascript:;">项目管理</a></li>
-						<li><a href="javascript:;">私信</a></li>
+						<li v-on:click="goPersonal"><a href="javascript:;">个人信息</a></li>
+						<li v-on:click="goPro"><a href="javascript:;">项目管理</a></li>
 					</ul>
 				</div>
 			</div>
+		<!--底部-->
+		<div class="management-content">
 			<!--右半部分-->
 			<div class="xq-content-right">
 				<div class="xq-project-name">
-					<span class="xq-project-title">项目名字项目名字项目名字</span>
+					<span class="xq-project-title">{{projectMsg.itemname}}</span>
 					<div class="xq-leader">
 						<span>负责人 :&nbsp;</span>
-						<span class="xq-project-user">小明</span>
+						<span class="xq-project-user">{{projectMsg.itemleader}}</span>
 					</div>
 					<p>
-						项目简介这个项目非常好，项目简介这个项目非常好，
-						项目简介这个项目非常好，项目简介这个项目非常好，
-						项目简介这个项目非常好，项目简介这个项目非常好，
+						{{projectMsg.itembrief}}
 					</p>
 				</div>
 				<div class="xq-modify-right">
 					<ul class="xq-modify1">
 						<li>
 							<span>学科方向:&nbsp;</span>
-							<span>新能源</span>
+							<span>{{direction[projectMsg.projectdirection]}}</span>
 						</li>
 						<li>
 							<span>关键词:&nbsp;</span>
-							<span>试验</span>&nbsp;&nbsp;
-							<span>大数据</span>&nbsp;&nbsp;
-						</li>
-						<li>
-							<span>预期成果:</span>&nbsp;
-							<span>报告</span>
+							<span>{{projectMsg.keywords}}</span>
 						</li>
 					</ul>
 					<ul class="xq-modify2">
 						<li>
 							<span>成员需求: </span>
-							<span>5</span>
+							<span>{{projectMsg.memberdemand}}</span>
 							<span>人</span>
 							<span>严谨求实</span>
 						</li>
 						<li><span>申请成员列表:</span>
-							<span>小东</span>
-							<span>小北</span>
-							<span>小西</span>
+							<span v-for="personal in applypersonals">{{personal.username}}&nbsp;&nbsp;<a href="javascript:;" style="color:red" v-on:click="agree(personal.applicationid)">录用</a></span>
 						</li>
 						<li><span>已录用成员:</span>&nbsp;&nbsp;
-							<span>小南</span>
-							<span>小南</span>
+							<span v-for="agree in agreepersonal">{{agree.username}}&nbsp;&nbsp;<a href="javascript:;" style="color:red" v-on:click="del(agree.applicationid)">删除</span>
 						</li>
 					</ul>
 					<ul class="xq-modify3">
 						<li>
 							<span>联系方式:</span>&nbsp;
-							<span>34234225</span>
+							<span>{{projectMsg.telephone}}</span>
 						</li>
 						<li>
 							<span>发布有效期 (截止时间) :</span>&nbsp;&nbsp;
-							<span>1</span>
-							<span>月</span>
-							<span>31</span>
-							<span>日</span>
+							<span>{{projectMsg.endtime | year}}</span>
 						</li>
 					</ul>
-					<div class="xq-employ">
-						<input type="button" name="" id="" value="录用" />
-						<input type="button" name="" id="" value="删除" />
-					</div>
 					<button class="modify-data">修改资料</button>
 				</div>
 				<div class="xq-content-bottom">
 					<ul class="">
-						<li>项目负责人: <span>小明</span></li>
-						<li>指导老师: <span>李老师</span></li>
-						<li>项目状态: <span>已审核</span></li>
-						<li>项目类型: <span>sitp</span></li>
+						<li>项目负责人: <span>{{projectMsg.itemleader}}</span></li>
+						<li>指导老师: <span>{{projectMsg.teacher}}</span></li>
+						<li>项目状态: <span>{{type[projectMsg.type]}}</span></li>
+						<li>项目类型: <span>{{st[projectMsg.labels]}}</span></li>
 					</ul>
 					<div class="xq-bottom-but">
-						<button class="but-left">申请结题</button>
+						<button class="but-left" v-on:click="goKnot(itemsid)">申请结题</button>
 						<button class="but-content">退出项目</button>
 						<button class="but-right">关闭</button>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="footer">
-			<span class="footer-span1">版权信息</span><br/>
-			<span class="footer-span2">版权信息版权信息版权信息</span><br/>
-			<span class="footer-span2">版权信息版权信息版权信息</span>
-		</div>
   </div>
+      <v-footer></v-footer>
+    </div>
 </template>
 
 <script>
 import header from './header'
 import footer from './footer'
+import axios from 'axios'
+import global from '../global/global'
 export default {
   name: 'xq',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'Welcome to Your Vue.js App',
+      itemsid: this.$route.params.id,
+      personalMsg: global.user,
+      projectMsg: '',
+      applypersonals: [],
+      agreepersonal: [],
+      st: ['国创', '上创', 'sitp', '创新赛事', '企业课题', '创业', '其他'],
+      type: ['结题项目', '申请项目'],
+      direction: ['整车', '动力', '电子', '车身', '新能源', '营销', '实验', '其他']
+    }
+  },
+  created () {
+    var self = this
+    axios.get(global.baseURL + 'api/items/getbyid?itemsid=' + this.itemsid)
+    .then(function (res) {
+      console.log(res)
+      self.projectMsg = res.data.data
+    })
+    axios.get(global.baseURL + 'api/items/getApplicationList?itemsid=' + this.itemsid)
+    .then(function (res) {
+      console.log(res)
+      for (let i in res.data.data) {
+        console.log(res.data.data[i].state)
+        if (res.data.data[i].state === 1) {
+          self.agreepersonal.push(res.data.data[i])
+        } else {
+          self.applypersonals.push(res.data.data[i])
+        }
+      }
+    })
+  },
+  methods: {
+    agree: function (id) {
+      var agree = new FormData()
+      agree.append('applicationid', id)
+      agree.append('state', '1')
+      axios.post(global.baseURL + 'api/items/handleApplication?token=' + global.user.token, agree)
+      .then(function (res) {
+        console.log(res)
+        if (res.data.callStatus === 'SUCCEED') {
+          alert('录用成功')
+        }
+      })
+    },
+    del: function (id) {
+      var agree = new FormData()
+      agree.append('applicationid', id)
+      agree.append('state', '0')
+      axios.post(global.baseURL + 'api/items/handleApplication?token=' + global.user.token, agree)
+      .then(function (res) {
+        console.log(res)
+        if (res.data.callStatus === 'SUCCEED') {
+          alert('删除成功')
+        }
+      })
+    },
+    goKnot: function (id) {
+      this.$router.push({name: 'knot', params: { id: id }})
+    },
+    goPersonal: function () {
+      this.$router.push({ path: '/personal' })
+    },
+    goPro: function () {
+      this.$router.push({ path: '/management' })
     }
   },
   components: {
@@ -161,6 +186,9 @@ export default {
 	min-height:984px;
 	height:auto!important;
 	height:984px;
+}
+.xq-modify2 li:nth-child(2) span,.xq-modify2 li:nth-child(3) span{
+  display: block;
 }
 .management-left{
 	float:left;

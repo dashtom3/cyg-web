@@ -58,26 +58,8 @@ export default {
             global.user.username = result.data.data.username
             global.user.state = '个人中心'
             global.user.studentid = result.data.data.studentid
-            switch (result.data.data.department) {
-              case 0:
-                global.user.department = '小学'
-                break
-              case 1:
-                global.user.department = '初中'
-                break
-              default:
-                global.user.department = '大学'
-            }
-            switch (result.data.data.major) {
-              case 0:
-                global.user.major = '小学'
-                break
-              case 1:
-                global.user.major = '初中'
-                break
-              default:
-                global.user.major = '大学'
-            }
+            global.user.department = result.data.data.department
+            global.user.major = result.data.data.major
             global.user.email = result.data.data.email
             global.user.personalbrief = result.data.data.personalbrief
             global.user.usertype = result.data.data.usertype

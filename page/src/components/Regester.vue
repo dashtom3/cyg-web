@@ -28,7 +28,7 @@
 			</div>
 			<div class="college">
 				<span>学院/部门/单位</span>
-				<input type="text" name="" value="" v-model="user.college">
+				<input type="text" name="" value="" v-model="user.department">
 			</div>
 			<div class="major">
 				<span>专业方向</span>

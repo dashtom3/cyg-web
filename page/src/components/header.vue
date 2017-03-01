@@ -10,10 +10,11 @@
         <li class="tab-item"><router-link to="/notice">新闻通知</router-link></li>
         <li class="tab-item"><router-link to="/square">项目广场</router-link></li>
         <li class="tab-item"><router-link to="/gwfc">过往风采</router-link></li>
+        <li class="tab-item"><router-link to="/communicate">交流区</router-link></li>
         <li class="tab-item"><router-link to="/download">资料下载</router-link></li>
       </ul>
       <div class="nav-right">
-        <input type="text" placeholder="点击搜索" id="inp" />
+        <!-- <input type="text" placeholder="点击搜索" id="inp" /> -->
         <span><a href="javascript:;" v-on:click="go">{{state.state}}</router-link></span>
       </div>
     </div>

@@ -7,10 +7,11 @@
 				<div class="notice-content-left">
 					<div class="notice-left-top">
 						<div class="notice-username">
-							<img src=""/>
-							<div class="user-notice">
+							<div style="height:70px"></div>
+							<div class="user-notice" v-show="zxshow">
 								<span class="username-notice-name">{{personalMsg.username}}</span><br/>
 								<span class="notice-number-fiex">账号:</span><span class="notice-number">{{personalMsg.studentid}}</span>
+                <span class="username-personal-name exit" v-on:click="exit">注销</span>
 							</div>
 						</div>
 						<div class="cont-left-noticeright">
@@ -61,8 +62,8 @@ export default {
     return {
       newsList: [],
       page: [],
+      zxshow: false,
       pageList: '',
-      pagenum: 1,
       prevShow: false,
       nextShow: false,
       personalMsg: global.user,
@@ -74,12 +75,18 @@ export default {
     axios.post(global.baseURL + 'api/news/getNewsList').then((res) => {
       console.log(res.data)
       self.page = res.data
+      if (res.data.totalPage > 1) {
+        self.nextShow = true
+      }
       self.pageList = res.data.totalPage
-      if (res.data.data > 10) {
+      if (res.data.data.length > 10) {
         this.newsList = res.data.data.slice(10 * (res.data.currentPage - 1), 10)
       }
       this.newsList = res.data.data
     })
+    if (global.user.token) {
+      this.zxshow = true
+    }
   },
   mounted () {
     var noticeContent = this.$refs.noticeContent
@@ -97,16 +104,20 @@ export default {
       this.$router.push({ path: '/personal' })
     },
     prev: function () {
-      Vue.set(this, 'pagenum', this.pagenum - 1)
+      Vue.set(this, 'pagenum', this.page.currentPage - 1)
       global.goPage(this, this.pagenum, this.url)
     },
     next: function () {
-      Vue.set(this, 'pagenum', this.pagenum + 1)
+      Vue.set(this, 'pagenum', this.page.currentPage + 1)
       global.goPage(this, this.pagenum, this.url)
     },
     goPage: function (page) {
       Vue.set(this, 'pagenum', page)
       global.goPage(this, this.pagenum, this.url)
+    },
+    exit: function () {
+      global.user.token = ''
+      global.go(this, global.user.token)
     }
   }
 }
@@ -124,6 +135,19 @@ height:444px;
 float:left;
 width:264px;
 height:444px;
+}
+.notice-right-part ul li:hover{
+  cursor: pointer;
+}
+.exit{
+  display: block;
+    font-weight: bold;
+    float: left;
+    color: black;
+    font-size: 15px;
+}
+.exit:hover{
+  cursor: pointer;
 }
 .square-right-b{
 	font-size: 14px;

@@ -44,7 +44,13 @@
 						</select>
 					</div>
 					<div class="page-number">
-
+            <ul>
+              <li>当前<a href="javascript:;">{{pages.currentPage}}</a>/<a href="javascript:;">{{pages.totalPage}}</a></li>
+              <li v-on:click="top"><a href="javascript:;">首页</a></li>
+              <li v-on:click="prev"><a href="javascript:;">上一页</a></li>
+              <li v-on:click="next"><a href="javascript:;">下一页</a></li>
+              <li v-on:click="bottom"><a href="javascript:;">尾页</a></li>
+            </ul>
 					</div>
 				</div>
 				<table border="0" cellspacing="0" cellpadding="0" class="page-table">
@@ -76,25 +82,11 @@
 						</td>
 					</tr>
 				</table>
-				<div class="page-number-bottom" v-for="page in pages">
-          <ul>
-            <li><a href="javascript:;" v-show="prev">首页</a></li>
-            <li><a href="javascript:;" v-show="prev">上一页</a></li>
-            <li><a href="javascript:;">1</a></li>
-            <li><a href="javascript:;" v-show="next">下一页</a></li>
-            <li><a href="javascript:;" v-show="next">尾页</a></li>
-          </ul>
-				</div>
 			</div>
 			<!--发表部分-->
 			<div class="publish">
 				<span class="publish-news">发表新帖</span>
-				<input type="text" name="" class="publish-title" value="" v-model="publishCommunite.theme" />
-				<div class="publish-post">
-					<a href="javascript:;"><span class="post-pic">图片</span></a>
-					<a href="javascript:;"><span class="post-adiou">音频</span></a>
-					<a href="javascript:;"><span class="post-fu">上传附件</span></a>
-				</div>
+				<input type="text" name="" class="publish-title" v-model="publishCommunite.title" />
 				<textarea name="" rows="" cols="" v-model="publishCommunite.contents"></textarea>
 				<button  class="publish-but" v-on:click="publish">发表</button>
 			</div>
@@ -108,6 +100,7 @@
 import header from './header'
 import footer from './footer'
 import axios from 'axios'
+import Vue from 'vue'
 import global from '../global/global'
 export default {
   name: 'communicate',
@@ -116,10 +109,10 @@ export default {
       msg: 'Welcome to Your Vue.js App',
       communicates: '',
       getCounts: '',
-      prev: false,
-      next: false,
+      pages: '',
+      currentPage: '',
       publishCommunite: {
-        theme: '',
+        title: '',
         contents: ''
       }
     }
@@ -133,24 +126,87 @@ export default {
     })
     axios.get(global.baseURL + 'api/communication/getCounts')
     .then(function (res) {
-      console.log(res)
       self.getCounts = res.data.data
+    })
+    axios.get(global.baseURL + 'api/posts/getPostsList')
+    .then(function (res) {
+      self.pages = res.data
+      self.currentPage = res.data.currentPage
+      if (res.data.totalPage > 1) {
+        self.next = true
+      }
     })
   },
   methods: {
     publish: function () {
+      var self = this
       var zipFormData = new FormData()
-      zipFormData.append('theme', this.publishCommunite.theme)
+      zipFormData.append('title', this.publishCommunite.title)
       zipFormData.append('contents', this.publishCommunite.contents)
-      axios.post(global.baseURL + 'api/posts/add', zipFormData)
+      axios.post(global.baseURL + 'api/posts/add?token=' + global.user.token, zipFormData)
       .then(function (res) {
-        // console.log(res)
-        console.log('发布成功')
+        if (res.data.callStatus === 'SUCCEED') {
+          alert('发布成功')
+        } else {
+          alert('请先登录')
+          self.$router.push({ path: '/login' })
+        }
       })
     },
     goComment: function (postid) {
       console.log(postid)
       this.$router.push({name: 'comment', params: { id: postid }})
+    },
+    top: function () {
+      var self = this
+      axios.post(global.baseURL + 'api/communication/getCommunicationList')
+      .then(function (res) {
+        // console.log(res)
+        self.communicates = res.data.data
+      })
+    },
+    prev: function () {
+      if (this.currentPage === 1) {
+        alert('已经是第一页了')
+      } else {
+        Vue.set(this, 'currentPage', this.currentPage - 1)
+        var self = this
+        axios.get(global.baseURL + 'api/communication/getCommunicationList?pagenum=' + this.currentPage)
+        .then(function (res) {
+          console.log(res)
+          self.contentsList = res.data.data
+          if (res.data.data.length > 10) {
+            self.contentsList = res.data.data.slice(10 * (res.data.currentPage - 1), 10)
+          }
+        })
+      }
+    },
+    next: function () {
+      if (this.currentPage === this.pages.totalPage) {
+        alert('已经是最后一页了')
+      } else {
+        Vue.set(this, 'currentPage', this.currentPage + 1)
+        this.prevShow = true
+        var self = this
+        axios.get(global.baseURL + 'api/communication/getCommunicationList?pagenum=' + this.currentPage)
+        .then(function (res) {
+          console.log(res)
+          self.contentsList = res.data.data
+          if (res.data.data.length > 10) {
+            self.contentsList = res.data.data.slice(10 * (res.data.currentPage - 1), 10)
+          }
+        })
+      }
+    },
+    bottom: function () {
+      axios.get(global.baseURL + 'api/communication/getCommunicationList?pagenum=' + this.pages.totalPage)
+      .then(function (res) {
+        console.log(res)
+        self.contentsList = res.data.data
+        if (res.data.data.length > 10) {
+          self.contentsList = res.data.data.slice(10 * (res.data.currentPage - 1), 10)
+        }
+      })
     }
   },
   components: {
@@ -166,6 +222,12 @@ export default {
   .layout{
   width:960px;
   margin:0 auto;
+  }
+  .page-number ul li{
+    float: left;
+  }
+  .page-number ul li a{
+    padding: 10px;
   }
   .communicate-top{
   font-family:"微软雅黑";

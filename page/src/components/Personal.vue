@@ -6,7 +6,7 @@
 			<div class="personal-content-left">
 				<div class="personal-left-top">
 					<div class="personal-username">
-						<div class="user-personal">
+						<div class="user-personal" v-show="msgshow">
 							<span class="username-personal-name">{{personMsg.username}}</span><br/>
 							<span class="personal-number-fiex">账号:</span><span class="personal-number">{{personMsg.studentid}}</span><br/>
               <span class="username-personal-name exit" v-on:click="exit">注销</span>
@@ -83,12 +83,18 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       id: this.$route.params.id,
-      personMsg: global.user
+      personMsg: global.user,
+      msgshow: true
     }
   },
   components: {
     'v-header': header,
     'v-footer': footer
+  },
+  created () {
+    if (global.user.token) {
+      this.msgshow = true
+    }
   },
   methods: {
     reWrite: function (userid) {

@@ -6,10 +6,13 @@
 		<div class="content-fc-left">
 			<div class="content-left-fctop">
 				<div class="username">
-					<img src=""/>
-					<div class="user-person">
-						<span class="username-name">你的名字</span><br/>
-						<span class="username-number-fiex">账号:</span><span class="username-number">123456789</span>
+					<div style="height:70px">
+
+					</div>
+					<div class="user-person" v-show="zxshow">
+						<span class="username-name">{{msg.username}}</span><br/>
+						<span class="username-number-fiex">账号:</span><span class="username-number">{{msg.studentid}}</span><br>
+						<span class="username-personal-name exit" v-on:click="exit">注销</span>
 					</div>
 				</div>
 				<div class="cont-left-fcright">
@@ -28,13 +31,9 @@
 		<div class="content-fc-right">
 			<div class="excllent">
 				<span class="exc-t">优秀项目</span>
-				<div class="exc-img1">
-					<img src=""/>
-					<a href="javascript:;"><span class="exc-words1">处理烟雾中多种污染物的自由基强化催化过滤式脱除装置</span></a>
-				</div>
-				<div class="exc-img2">
-					<img src=""/>
-					<a href="javascript:;"><span class="exc-words2">处理烟雾中多种污染物的自由基强化催化过滤式脱除装置</span></a>
+				<div class="exc-img1" v-for="excellent in excellents">
+					<!-- <img :src={{excellent.src}} /> -->
+					<a href="javascript:;"><span class="exc-words1">{{excellent.itemname}}</span></a>
 				</div>
 			</div>
 			<div class="whole-project">
@@ -46,7 +45,7 @@
 						<th>项目类型</th>
 						<th>关键词</th>
 					</tr>
-					<tr v-for="(item,index) in items">
+					<tr v-for="(item,index) in items" v-on:click="goDetial(item.itemid)">
 						<td>{{index+1}}</td>
 						<td class="td-title">{{item.itemname}}</td>
 						<td>{{type}}</td>
@@ -79,7 +78,9 @@ export default {
   data () {
     return {
       items: [],
+      excellents: '',
       type: '',
+      msg: global.user,
       page: [],
       pagenum: 1,
       prevShow: false,
@@ -87,6 +88,7 @@ export default {
       pageList: '',
       keywords: [],
       knotLists: [],
+      zxshow: false,
       url: 'api/items/getItemsList?pagenum='
     }
   },
@@ -96,23 +98,26 @@ export default {
   },
   created () {
     var self = this
-    axios.post(global.baseURL + 'api/items/getItemsList')
+    axios.post(global.baseURL + 'api/items/getItemsList?state=1')
     .then(function (res) {
+      // console.log(res)
       self.page = res.data
       self.pageList = res.data.totalPage
       if (res.data.data > 10) {
         self.items = res.data.data.slice(10 * (res.data.currentPage - 1), 10)
       }
       self.items = res.data.data
-      for (let index in res.data.data) {
-        self.keywords.push(JSON.parse(res.data.data[index].keywords))
-        if (!res.data.data[index].type) {
-          self.items = res.data.data
-          self.type = '结题项目'
-          self.knotLists.push(res.data.data[index])
-        }
-      }
     })
+    axios.post(global.baseURL + 'api/items/getItemsList?state=3')
+    .then(function (res) {
+      if (res.data.data > 2) {
+        self.excellents = res.data.data.slice(0, 2)
+      }
+      self.excellents = res.data.data
+    })
+    if (global.user.token) {
+      this.zxshow = true
+    }
   },
   methods: {
     prev: function () {
@@ -126,6 +131,13 @@ export default {
     goPage: function (page) {
       Vue.set(this, 'pagenum', page)
       global.goPage(this, this.pagenum, this.url)
+    },
+    goDetial: function (itemid) {
+      this.$router.push({name: 'projectDetial', params: { id: itemid }})
+    },
+    exit: function () {
+      global.user.token = ''
+      global.go(this, global.user.token)
     }
   }
 }
@@ -137,6 +149,19 @@ export default {
 height:902px;
 width:960px;
 margin:0 auto;
+}
+table tr:hover,.excllent div{
+	cursor: pointer;
+}
+.exit{
+  display: block;
+    font-weight: bold;
+    float: left;
+    color: black;
+    font-size: 15px;
+}
+.exit:hover{
+  cursor: pointer;
 }
 .content-fc-left{
 width:214px;
@@ -270,14 +295,14 @@ font-size: 16px;
 padding-left: 10px;
 }
 /*项目种类*/
-.exc-img1,.exc-img2{
+.exc-img1{
 float:left;
 margin-top: 22px;
 height:213px;
 width:278px;
 }
 .exc-img1{
-margin-right: 66px;
+margin-right: 33px;
 }
 .exc-words1,.exc-words2{
 color:rgb(131,131,131);

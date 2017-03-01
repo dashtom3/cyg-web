@@ -7,10 +7,11 @@
 				<div class="management-content-left">
 					<div class="management-left-top">
 						<div class="management-username">
-							<img src=""/>
-							<div class="user-management">
+							<div style="height:70px"></div>
+							<div class="user-management" v-show="msgshow">
 								<span class="username-management-name">{{personalMsg.username}}</span><br/>
-								<span class="management-number-fiex">账号:</span><span class="management-number">{{personalMsg.studentid}}</span>
+								<span class="management-number-fiex">账号:</span><span class="management-number">{{personalMsg.studentid}}</span><br>
+                <span class="username-personal-name exit" v-on:click="exit">注销</span>
 							</div>
 						</div>
 						<div class="cont-left-manageright">
@@ -29,22 +30,22 @@
 			<!--右边项目-->
 			<div class="management-right">
 				<ul>
-          <li v-for="(item, index) in items">
+          <li v-for="(item, index) in items" v-on:click="goXq(item.itemid)">
 						<div class="manage-project">
 							<span class="manage-rank">No.{{index+1}}</span>
-							<span class="manage-project-name">{{item.title}}</span>
+							<span class="manage-project-name">{{item.itemname}}</span>
 						</div>
 						<div class="manage-project-information">
 							<span>起止时间:</span>&nbsp;
-							<span class="manage-date">{{item.start}}</span>
-              <span class="date-right-border">-</span>&nbsp;
-              <span class="manage-date2">{{item.end}}</span>&nbsp;
+							<span class="manage-date">{{item.starttime | year}}</span>
+              <span class="date-right-border">——</span>&nbsp;
+              <span class="manage-date2">{{item.endtime | year}}</span>&nbsp;
 							<span class="date-right-border">|</span>&nbsp;
 							<span>负责人:</span>&nbsp;
-							<span class="responsible-name">{{item.responsible}}</span>&nbsp;
+							<span class="responsible-name">{{item.itemleader}}</span>&nbsp;
 							<span class="date-right-border">|</span>&nbsp;
 							<span>状态: </span>&nbsp;
-							<span class="state">{{item.state}}</span>
+							<span class="state">{{state[item.state]}}</span>
 						</div>
 					</li>
 				</ul>
@@ -58,32 +59,41 @@
 <script>
 import header from './header'
 import footer from './footer'
-// import axios from 'axios'
+import axios from 'axios'
 import global from '../global/global'
 export default {
   name: 'management',
   data () {
     return {
+      msgshow: false,
       personalMsg: global.user,
-      items: [
-        {
-          title: '这是项目名这是项目名这是项目名这是项',
-          start: '2014.12.25',
-          end: '2016.12.25',
-          responsible: '某某某',
-          state: '已结题'
-        }
-      ]
+      items: '',
+      state: ['未结题', '已结题']
     }
   },
   methods: {
     publishProject: function () {
       this.$router.push({ path: '/apply' })
+    },
+    goXq: function (itemid) {
+      this.$router.push({ name: 'xq', params: { id: itemid } })
+    },
+    exit: function () {
+      global.user.token = ''
+      global.go(this, global.user.token)
     }
   },
-  // created () {
-  //   axios.post(global.baseURL + '')
-  // }
+  created () {
+    var self = this
+    axios.post(global.baseURL + 'api/items/getItemsList?userid=' + global.user.userid)
+    .then(function (res) {
+      console.log(res)
+      self.items = res.data.data
+    })
+    if (global.user.token) {
+      this.msgshow = true
+    }
+  },
   components: {
     'v-header': header,
     'v-footer': footer
@@ -102,6 +112,19 @@ export default {
 	margin:0 auto;
 	min-height:575px;
 	height:575px;
+}
+.exit{
+  display: block;
+    font-weight: bold;
+    float: left;
+    color: black;
+    font-size: 15px;
+}
+.exit:hover{
+  cursor: pointer;
+}
+.management-right ul li:hover{
+  cursor: pointer;
 }
 .management-left{
 	float:left;

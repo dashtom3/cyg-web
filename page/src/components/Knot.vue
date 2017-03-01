@@ -5,23 +5,19 @@
 			<div class="kont-top-left">
 				<div class="knot-project">
 					<span>项目名称 :</span>
-					<input type="text" name="" id="" value="" v-model="project.itemname" />
+					<input type="text" name="" id="" :value=project.itemname v-model="project.itemname" />
 				</div>
 				<div class="knot-leader">
 					<span>项目负责人 :</span>
-					<input type="text" name="" id="" value="" v-model="project.itemleader" />
+					<input type="text" name="" id="" :value=project.itemleader v-model="project.itemleader" />
 				</div>
 				<div class="knot-teacher">
 					<span>指导老师 :</span>
-					<input type="text" name="" id="" value="" v-model="project.teacher" />
+					<input type="text" name="" id="" :value=project.teacher v-model="project.teacher" />
 				</div>
 				<div class="knot-project-type">
 					<span>项目类型 :</span>
-					<select name="">
-						<option value=""></option>
-						<option value="">企业</option>
-						<option value="">电商</option>
-					</select>
+					<input type="text" name="" id="" :value=labels v-model="project.labels" />
 				</div>
 				<div class="knot-key">
 					<span>关键词 :</span>
@@ -40,12 +36,12 @@
 					<input type="text" name="" v-model="project.itemcyle" />
 				</div>
 				<div class="knot-phone">
-					<span>联系方式&nbsp;:</span>
+					<span>联系电话&nbsp;:</span>
 					<input type="text" name="" v-model="project.telephone" />
 				</div>
 				<div class="knot-file">
 					<span>附件上传</span>
-					<input type="file" name="" />
+					<input type="file" name="" @change="upload" />
 				</div>
 
 			</div>
@@ -64,37 +60,54 @@ export default {
   name: 'knot-content',
   data () {
     return {
-      project: {
-        itemname: '',
-        itemleader: '',
-        teacher: '',
-        keywords: '',
-        itembrief: '',
-        exitbasic: '',
-        innovate: '',
-        itemcyle: '',
-        telephone: ''
-      }
+      id: this.$route.params.id,
+      project: '',
+      type: ['国创', '上创', 'sitp', '创新赛事', '企业课题', '创业', '其他'],
+      labels: ''
     }
+  },
+  created () {
+    var self = this
+    axios.get(global.baseURL + 'api/items/getbyid?itemsid=' + this.id)
+    .then(function (res) {
+      console.log(res)
+      self.project = res.data.data
+      self.labels = self.type[res.data.data.labels]
+    })
   },
   methods: {
     goback: function () {
       this.$router.push({ path: '/management' })
     },
+    upload: function () {
+      this.project.imgfile = document.querySelector('.knot-file input').files[0]
+    },
     apply: function () {
       var zipFormData = new FormData()
-      zipFormData.append('itemname', this.itemname)
-      zipFormData.append('itemleader', this.itemleader)
-      zipFormData.append('teacher', this.teacher)
-      zipFormData.append('keywords', this.keywords)
-      zipFormData.append('itembrief', this.itembrief)
-      zipFormData.append('itemcyle', this.itemcyle)
-      zipFormData.append('telephone', this.telephone)
-      zipFormData.append('email', this.email)
-      zipFormData.append('file', this.file)
-      axios.post(global.baseURL + 'api/items/add', zipFormData)
+      zipFormData.append('itemname', this.project.itemname)
+      zipFormData.append('itemleader', this.project.itemleader)
+      zipFormData.append('teacher', this.project.teacher)
+      zipFormData.append('keywords', this.project.keywords)
+      zipFormData.append('itembrief', this.project.itembrief)
+      zipFormData.append('itemcyle', this.project.itemcyle)
+      zipFormData.append('itemresult', this.project.itemresult)
+      zipFormData.append('innovate', this.project.innovate)
+      zipFormData.append('telephone', this.project.telephone)
+      zipFormData.append('imgfile', this.project.imgfile)
+      zipFormData.append('labels', this.project.labels)
+      zipFormData.append('projectdirection', this.project.projectdirection)
+      zipFormData.append('allpeople', this.project.allpeople)
+      zipFormData.append('exitbasic', this.project.exitbasic)
+      zipFormData.append('exitbasicfile', this.project.exitbasicfile)
+      zipFormData.append('end', this.project.end)
+      zipFormData.append('start', this.project.start)
+      console.log(this.project)
+      axios.post(global.baseURL + 'api/items/add?type=0&token=' + global.user.token, zipFormData)
       .then(function (res) {
         console.log(res)
+        if (res.data.callStatus === 'SUCCEED') {
+          alert('结题申请已经提交')
+        }
       })
     }
   }
@@ -208,7 +221,7 @@ float:left;
 text-align: center;
 font-size: 18px;
 }
-.knot-teacher input{
+.knot-teacher input,.knot-project-type input{
 color:rgb(215,215,217);
 font-size: 14px;
 background:red;

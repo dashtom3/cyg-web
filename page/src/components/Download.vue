@@ -8,10 +8,11 @@
       <div class="download-t">
         <div class="downal-left-top">
           <div class="downal-username">
-            <img src=""/>
-            <div class="user-downal">
-              <span class="username-downal-name">你的名字</span><br/>
-              <span class="downal-number-fiex">账号:</span><span class="downal-number">123456789</span>
+            <div style="height:70px"></div>
+            <div class="user-downal" v-show="zxshow">
+              <span class="username-downal-name">{{msg.username}}</span><br/>
+              <span class="downal-number-fiex">账号:</span><span class="downal-number">{{msg.studentid}}</span>
+              <span class="username-personal-name exit" v-on:click="exit">注销</span>
             </div>
           </div>
           <div class="cont-left-downright">
@@ -24,18 +25,20 @@
     <!--右半部分-->
     <div class="download-right">
       <ul>
-        <li v-for="(down, index) in downs">
-          <span class="down-num">{{index+1}}</span>
-          <span class="down-type">{{down.intro}}</span>
-          <span class="down-date"></span>
+        <a :href=down.src v-for="(down, index) in downs" download>
+        <li>
+            <span class="down-num">{{index+1}}</span>
+            <span class="down-type">{{down.intro}}</span>
+            <span class="down-date"></span>
         </li>
+        </a>
       </ul>
       <div class="square-right-b">
-        &nbsp;当前是&nbsp;:&nbsp;<span>{{page.currentPage}}/{{page.totalPage}}</span>&nbsp;&nbsp;
+        &nbsp;当前是&nbsp;:&nbsp;<span>{{page.currentPage}}/{{page.currentPage}}</span>&nbsp;&nbsp;
         共<span class="square-number">{{page.totalNumber}}</span>条信息&nbsp;&nbsp;&nbsp;
         <span v-on:click="prev" v-show="prevShow">上一页</span>&nbsp;<span v-on:click="next" v-show="nextShow">下一页</span>&nbsp;&nbsp;跳转到:&nbsp;第
         <select name="">
-          <option value="" v-for="pages in pageList" v-on:click='goPage(pages)'>{{pages}}</option>
+          <option value="" v-for="pages in page.totalPage" v-on:click='goPage(pages)'>{{pages}}</option>
         </select>页
       </div>
     </div>
@@ -54,16 +57,21 @@ export default {
   name: 'download',
   data () {
     return {
+      msg: global.user,
       downs: [],
       page: [],
       pageList: '',
       prevShow: false,
       nextShow: false,
       pagenum: 1,
+      zxshow: false,
       url: 'api/file/getMaterialList?pagenum='
     }
   },
   created () {
+    if (global.user.token) {
+      this.show = true
+    }
     var self = this
     axios.get(global.baseURL + 'api/file/getMaterialList')
     .then(function (res) {
@@ -72,8 +80,14 @@ export default {
       if (res.data.data > 10) {
         self.downs = res.data.data.slice(10 * (res.data.currentPage - 1), 10)
       }
+      for (let i in res.data.data) {
+        res.data.data[i].src = 'http://123.56.220.72:8080/Student/' + res.data.data[i].src
+      }
       self.downs = res.data.data
     })
+    if (global.user.token) {
+      this.zxshow = true
+    }
   },
   methods: {
     prev: function () {
@@ -87,6 +101,10 @@ export default {
     goPage: function (page) {
       Vue.set(this, 'pagenum', page)
       global.goPage(this, this.pagenum, this.url)
+    },
+    exit: function () {
+      global.user.token = ''
+      global.go(this, global.user.token)
     }
   },
   components: {
@@ -111,6 +129,19 @@ margin:0 auto;
 width:262px;
 height:auto;
 float:left;
+}
+.download-right ul li{
+  cursor: pointer;
+}
+.exit{
+  display: block;
+    font-weight: bold;
+    float: left;
+    color: black;
+    font-size: 15px;
+}
+.exit:hover{
+  cursor: pointer;
 }
 .download-t{
 width:218px;
@@ -191,8 +222,8 @@ font-size: 14px;
 /*账号：*/
 .downal-username .downal-number-fiex{
 display:block;
-float:left;
 color:black;
+float: left;
 font-size: 15px;
 font-weight: bold;
 margin-right: 8px;

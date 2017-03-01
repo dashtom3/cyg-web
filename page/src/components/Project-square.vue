@@ -8,10 +8,11 @@
 				<div class="square-t">
 					<div class="personal-left-top">
 						<div class="personal-username">
-							<img src="/static/img/logo.67fa1eb.png"/>
-							<div class="user-personal">
+							<div style="height:70px"></div>
+							<div class="user-personal" v-show="zxshow">
 								<span class="personal-number-fiex">名字:</span><span class="username-personal-name">{{global.username}}</span><br/>
-								<span class="personal-number-fiex">账号:</span><span class="personal-number">{{global.studentid}}</span>
+								<span class="personal-number-fiex">账号:</span><span class="personal-number">{{global.studentid}}</span><br>
+								<span class="username-personal-name exit" v-on:click="exit">注销</span>
 							</div>
 						</div>
 						<div class="cont-left-personright">
@@ -27,17 +28,22 @@
 				<div class="square-b">
 					<div class="square-left-project">
 						<div class="square-source">
-							<span class="square-source-words">项目来源:</span>
+							<span class="square-source-words">项目类型:</span>
 							<ul>
-								<li><a href="javascript:;">大学生创新项目</a></li>
-								<li><a href="javascript:;">导师项目</a></li>
-								<li><a href="javascript:;">校友项目</a></li>
-								<li><a href="javascript:;">企业项目</a></li>
+								<li><a href="javascrtipt:;" v-on:click="all">全部</a></li>
+								<li><a href="javascript:;" v-on:click="select(0)">国创</a></li>
+								<li><a href="javascript:;" v-on:click="select(1)">上创</a></li>
+								<li><a href="javascript:;" v-on:click="select(2)">sitp</a></li>
+								<li><a href="javascript:;" v-on:click="select(3)">创新赛事</a></li>
+								<li><a href="javascript:;" v-on:click="select(4)">企业课题</a></li>
+								<li><a href="javascript:;" v-on:click="select(5)">创业</a></li>
+								<li><a href="javascript:;" v-on:click="select(6)">其他</a></li>
 							</ul>
 						</div>
 						<div class="square-direct">
 							<span class="square-direct-words">学科方向:</span>
 							<ul>
+								<li><a href="javascript:;" v-on:click="all">全部</a></li>
 								<li><a href="javascript:;" v-on:click="go(0)">整车</a></li>
 								<li><a href="javascript:;" v-on:click="go(1)">动力</a></li>
 								<li><a href="javascript:;" v-on:click="go(2)">电子</a></li>
@@ -54,9 +60,9 @@
 			<!--右半部分-->
 			<div class="square-right">
 				<ul>
-					<li v-for="project in projects" v-on:click="goProjectsDetial(project.itemid)">
+					<li v-for="(project, index) in projects" v-on:click="goProjectsDetial(project.itemid)">
 						<div class="square-project">
-							<span class="square-rank">No.100</span>
+							<span class="square-rank">No.{{index+1}}</span>
 							<span class="square-project-name">{{project.itemname}}</span>
 						</div>
 						<div class="square-project-information">
@@ -69,7 +75,7 @@
 							<span>招募人数: {{project.memberdemand}}</span>
 							<span class="square-state">{{project.nowpeople}}</span>&nbsp;
 							<span class="square-date-right-border">|</span><br/>
-							项目来源:&nbsp;&nbsp;<span class="square-source-id">大学生创业项目</span>&nbsp;
+							项目类型:&nbsp;&nbsp;<span class="square-source-id">{{type[project.labels]}}</span>&nbsp;
 							<span class="square-date-right-border">|</span>&nbsp;
 							学科方向:&nbsp;&nbsp;<span>{{expecttypes[project.projectdirection]}}</span>
 						</div>
@@ -101,14 +107,18 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       projects: [],
+      zxshow: false,
       prevShow: false,
       nextShow: false,
       page: [],
+      type: ['国创', '上创', 'sitp', '创新赛事', '企业课题', '创业', '其他'],
       pageList: '',
       pagenum: 1,
       expecttypes: ['整车', '动力', '电子', '车身', '新能源', '营销', '实验', '其他'],
       global: global.user,
-      url: 'api/items/getItemsList?pagenum='
+      url: 'api/items/getItemsList?pagenum=',
+      xiangmu: '',
+      xueke: ''
     }
   },
   components: {
@@ -116,14 +126,53 @@ export default {
     'v-footer': footer
   },
   methods: {
-    go: function (index) {
-      axios.post(global.baseURL + 'api/items/getItemsList?projectdirection=' + index)
+    select: function (index) {
+      this.xiangmu = index
+      console.log(index)
+      var self = this
+      axios.post(global.baseURL + 'api/items/getItemsList?projectdirection=' + this.xueke + '&labels=' + index)
+      .then(function (res) {
+        self.page = res.data
+        self.pageList = res.data.totalPage
+        if (res.data.data > 10) {
+          self.projects = res.data.data.slice(10 * (res.data.currentPage - 1), 10)
+        }
+        self.projects = res.data.data
+      })
+    },
+    all: function () {
+      var self = this
+      axios.post(global.baseURL + 'api/items/getItemsList?pagenum=' + this.pagenum)
       .then(function (res) {
         console.log(res)
+        self.page = res.data
+        self.pageList = res.data.totalPage
+        if (res.data.data > 10) {
+          self.projects = res.data.data.slice(10 * (res.data.currentPage - 1), 10)
+        }
+        self.projects = res.data.data
+      })
+    },
+    go: function (index) {
+      this.xueke = index
+      var self = this
+      axios.post(global.baseURL + 'api/items/getItemsList?projectdirection=' + index + '&labels=' + this.xiangmu)
+      .then(function (res) {
+        self.page = res.data
+        self.pageList = res.data.totalPage
+        if (res.data.data > 10) {
+          self.projects = res.data.data.slice(10 * (res.data.currentPage - 1), 10)
+        }
+        self.projects = res.data.data
       })
     },
     publish: function () {
-      this.$router.push('/apply')
+      if (global.user.token) {
+        this.$router.push('/apply')
+      } else {
+        alert('请先登录')
+        this.$router.push({ path: '/login' })
+      }
     },
     goProjectsDetial: function (itemid) {
       this.$router.push({name: 'projectDetial', params: { id: itemid }})
@@ -139,11 +188,15 @@ export default {
     goPage: function (page) {
       Vue.set(this, 'pagenum', page)
       global.goPage(this, this.pagenum, this.url)
+    },
+    exit: function () {
+      global.user.token = ''
+      global.go(this, global.user.token)
     }
   },
   created () {
     var self = this
-    axios.post(global.baseURL + 'api/items/getItemsList?pagenum=' + this.pagenum)
+    axios.post(global.baseURL + 'api/items/getItemsList?state=1&pagenum=' + this.pagenum)
     .then(function (res) {
       console.log(res)
       self.page = res.data
@@ -153,6 +206,9 @@ export default {
       }
       self.projects = res.data.data
     })
+    if (global.user.token) {
+      this.zxshow = true
+    }
   }
 }
 </script>
@@ -164,10 +220,16 @@ export default {
 	height:899px;
 	margin:0 auto;
 }
+.square-right ul li:hover{
+	cursor:pointer;
+}
 .square-left{
 	width:262px;
 	height:697px;
 	float:left;
+}
+.exit:hover{
+	cursor: pointer;
 }
 .square-t{
 	width:218px;

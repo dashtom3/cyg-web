@@ -19,19 +19,11 @@
 			</div>
 			<div class="rewrite-college">
 				<span>学院/部门/单位</span>
-				<select name="" :select=userMsg.department v-model='userMsg.department'>
-					<option value="0">小学</option>
-					<option value="1">初中</option>
-					<option value="2">高中</option>
-				</select>
+				<input type="text" name="" v-model='userMsg.department'  :value=userMsg.department />
 			</div>
 			<div class="rewrite-major">
 				<span>专业方向</span>
-				<select name="" v-model='userMsg.major' :select=userMsg.major>
-					<option value="0">小学</option>
-					<option value="1">初中</option>
-					<option value="2">高中</option>
-				</select>
+				<input type="text" name="" v-model='userMsg.major'  :value=userMsg.major />
 			</div>
 			<div class="rewrite-person-bottom">
 				<div class="rewrite-emal">
@@ -99,7 +91,6 @@ export default {
       personalMsg.append('username', this.userMsg.username)
       personalMsg.append('studentid', this.userMsg.studentid)
       personalMsg.append('usertype', this.userMsg.usertype)
-      personalMsg.append('password', this.userMsg.password)
       personalMsg.append('department', this.userMsg.department)
       personalMsg.append('major', this.userMsg.major)
       personalMsg.append('email', this.userMsg.email)
@@ -109,11 +100,19 @@ export default {
       personalMsg.append('userid', this.userMsg.userid)
       console.log(this.userMsg)
       axios.post(global.baseURL + 'api/user/update?token=' + global.user.token, personalMsg)
-      .then(function (res) {
+      .then(function (result) {
         // console.log(res)
-        if (res.data.callStatus === 'SUCCEED') {
+        if (result.data.callStatus === 'SUCCEED') {
           alert('信息修改成功')
-          self.$router.push({name: 'personal', params: { id: self.userMsg.userid }})
+          global.user.username = self.userMsg.username
+          global.user.studentid = self.userMsg.studentid
+          global.user.department = self.userMsg.department
+          global.user.major = self.userMsg.major
+          global.user.email = self.userMsg.email
+          global.user.personalbrief = self.userMsg.personalbrief
+          global.user.usertype = self.userMsg.usertype
+          global.user.telephone = self.userMsg.telephone
+          self.$router.push({name: 'personal'})
         }
       })
     }
@@ -229,7 +228,7 @@ export default {
 	float:right;
 	border-bottom: 2px solid rgb(215,215,217);
 }
-.rewrite-number input{
+.rewrite-number input,.rewrite-college input,.rewrite-major input{
 	color:rgb(215,215,217);
 	font-size: 14px;
 	font-family: "微软雅黑";
@@ -243,6 +242,9 @@ export default {
 	margin-top:11px;
 	float:left;
 	outline: none;
+}
+.rewrite-college input,.rewrite-major input{
+  width: 250px;
 }
 .rewrite-number span{
 	font-weight: bold;

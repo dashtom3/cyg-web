@@ -25,10 +25,10 @@
 								<ul>
 									<li><span>负责人:&nbsp;&nbsp;</span><span class="detail-leader">{{project.itemleader}}</span></li>
 									<li><span>指导老师:&nbsp;&nbsp;</span><span class="detail-teacher">{{project.teacher}}</span></li>
-									<li><span>姓名:&nbsp;&nbsp;</span><span class="detail-name"></span></li>
+									<li><span>姓名:&nbsp;&nbsp;</span><span class="detail-name">{{personalMsg.username}}</span></li>
 									<li><span>学号:&nbsp;&nbsp;</span><span class="detail-number">{{project.userid}}</span></li>
-									<li><span>联系方式:&nbsp;&nbsp;</span><span class="detail-call">{{project.telephone}}</span></li>
-									<li><span>邮箱:&nbsp;&nbsp;</span><span class="detail-email">{{project.email}}</span></li>
+									<li><span>联系方式:&nbsp;&nbsp;</span><span class="detail-call">{{personalMsg.telephone}}</span></li>
+									<li><span>邮箱:&nbsp;&nbsp;</span><span class="detail-email">{{personalMsg.email}}</span></li>
 								</ul>
 								<div class="detail-introduction">
 									<span class="detail-introduction-title">这里是项目简介</span>
@@ -43,8 +43,8 @@
 							<span class="file-title">这里是该项目提供的附件下载</span>
 							<span>如果没有附件则不显示此方块</span><br/>
 							<div class="file-filter">
-								<span><a href=exitbasicfilesrc>现有基础</a></span><br/>
-								<span><a href=memberdemandfilesrc>所需成员</a></span>
+								<span><a :href=exitbasicfilesrc download="xianyou">现有基础</a></span><br/>
+								<span><a :href=memberdemandfilesrc download="suoxu">所需成员</a></span>
 							</div>
 						</div>
 					</div>
@@ -56,26 +56,19 @@
 								<div class="recruit-number">
 									<span class="recruit-number-left">{{project.nowpeople}}</span>
 									<span>/</span>
-									<span class="recruit-number-right">{{project.memberdemand}}</span>
+									<span class="recruit-number-right">{{project.allpeople}}</span>
 								</div>
 								<span class="recruit-title">招募情况</span>
 							</div>
-							<!-- <div class="recruit-bottom">
-								<span class="requirement">{{project.memberdemand}}</span>
+							<div class="recruit-bottom">
 								<ul>
-									<li>专业方向: <span class="recruit-major">{{expectresult.major}}</span></li>
-									<li>所需技能: <span class="recruit-skill">{{expectresult.skill}}</span></li>
-									<li>负责任务: <span class="recruit-duty">{{expectresult.mission}}</span></li>
-									<li>年级: <span class="recruit-class">{{expectresult.grade}}</span></li>
-									<li>性别: <span class="recruit-sex">{{expectresult.sex}}</span></li>
-									<li>学制: <span class="recruit-system">{{expectresult.edu_length}}</span></li>
-									<li>籍贯: <span class="recruit-place">{{expectresult.place}}</span></li>
+									<li><span class="recruit-major">见左下角附件</span></li>
 								</ul>
-							</div> -->
+							</div>
 						</div>
 						<!--项目开发中-->
 						<div class="project-way">
-							<span>项目开发中</span>
+							<span>{{state[project.state]}}</span>
 						</div>
 						<!--项目开类型-->
 						<div class="details-type">
@@ -85,7 +78,7 @@
 							</div>
 							<div class="details-type-bottom">
 								<ul>
-									<li>{{type}}</li>
+									<li>{{type[project.innovate]}}</li>
 								</ul>
 							</div>
 						</div>
@@ -118,10 +111,12 @@ export default {
       projectId: this.$route.params.id,
       project: {},
       keywords: [],
+      state: ['项目开发中', '项目已完成'],
       exitbasicfilesrc: '',
       memberdemandfilesrc: '',
       expectresult: [],
-      type: ''
+      type: ['国创', '上创', 'sitp', '创新赛事', '企业课题', '创业', '其他'],
+      personalMsg: ''
     }
   },
   components: {
@@ -133,12 +128,16 @@ export default {
     axios.post(global.baseURL + 'api/items/getbyid/?itemsid=' + this.projectId)
     .then(function (res) {
       console.log(res)
-      // console.log(res.data.data.type)
-      self.exitbasicfilesrc = 'http://123.56.220.72:8080/Student/api/items/getItemsList/' + res.data.data.exitbasicfilesrc
-      self.memberdemandfilesrc = 'http://123.56.220.72:8080/Student/api/items/getItemsList/' + res.data.data.memberdemandfilesrc
+      self.exitbasicfilesrc = 'http://123.56.220.72:8080/Student/' + res.data.data.exitbasicfilesrc
+      self.memberdemandfilesrc = 'http://123.56.220.72:8080/Student/' + res.data.data.memberdemandfilesrc
       self.project = res.data.data
       self.expectresult = JSON.parse(res.data.data.expectresult)
-      res.data.data.type ? self.type = '申请项目' : self.type = '结题项目'
+      var that = self
+      axios.get(global.baseURL + 'api/user/getbyid?userid=' + res.data.data.userid)
+      .then(function (res) {
+        console.log(res)
+        that.personalMsg = res.data.data
+      })
     })
   },
   methods: {

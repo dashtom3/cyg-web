@@ -77,7 +77,7 @@
 import adm from './adm'
 import axios from 'axios'
 import global from '../global/global'
-import Vue from 'vue'
+// import Vue from 'vue'
 export default {
   name: 'adm-users',
   data () {
@@ -108,18 +108,7 @@ export default {
       .then(function (res) {
         console.log(res)
         if (res.data.callStatus === 'SUCCEED') {
-          alert('删除成功')
           self.isDel = false
-          var that = self
-          Vue.nextTick(function () {
-            axios.post(global.baseURL + 'api/news/getNewsList')
-            .then(function (res) {
-              console.log(res)
-              that.newsLists = res.data.data
-              that.pages = res.data.totalPage
-              res.data.totalPage > 1 ? that.isShow = true : that.isShow = false
-            })
-          })
         }
       })
     },
@@ -141,6 +130,7 @@ export default {
     var self = this
     axios.post(global.baseURL + 'api/user/getUserList')
     .then(function (result) {
+      console.log(result)
       self.userLists = result.data.data
       self.pages = result.data.totalPage
       result.data.totalPage > 1 ? self.isShow = true : self.isShow = false

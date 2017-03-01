@@ -4,9 +4,8 @@
     <v-header></v-header>
 	<div class="banner">
 		<ul class="banner-img">
-			<li></li>
-			<li></li>
-			<li></li>
+      <li class="goJoin"><a href="javascript:;" v-on:click="goJoin">我要加入</a></li>
+      <li class="goPub"><a href="javascript:;" v-on:click="goPub">我要发布</a></li>
 		</ul>
 	</div>
 	<!--新闻中心，项目广场，过往项目-->
@@ -64,27 +63,28 @@ import global from '../global/global'
 export default {
   created () {
     axios.post(global.baseURL + 'api/news/getNewsList').then((res) => {
-      if (res.data.data > 5) {
+      if (res.data.data.length > 5) {
         this.newsList = res.data.data.slice(0, 5)
       } else {
         this.newsList = res.data.data
       }
     })
     axios.post(global.baseURL + 'api/items/getItemsList').then((res) => {
-      if (res.data.data > 5) {
+      if (res.data.data.length > 5) {
         this.projectsList = res.data.data.slice(0, 5)
       } else {
         this.projectsList = res.data.data
       }
-      var self = this
-      // console.log(res)
-      for (let index in res.data.data) {
-        self.keywords.push(JSON.parse(res.data.data[index].keywords))
-        if (!res.data.data[index].type) {
-          self.knotLists.push(res.data.data[index])
-        }
+    })
+    var self = this
+    axios.post(global.baseURL + 'api/items/getItemsList?state=1')
+    .then(function (res) {
+      console.log(res)
+      if (res.data.data.length > 4) {
+        self.knotLists = res.data.data.slice(0, 4)
+      } else {
+        self.knotLists = res.data.data
       }
-      this.keywords = self.keywords
     })
   },
   data () {
@@ -114,6 +114,20 @@ export default {
     },
     goGwfc: function () {
       this.$router.push({ path: '/gwfc' })
+    },
+    goJoin: function () {
+      if (global.user.token) {
+        this.$router.push({ path: '/square' })
+      } else {
+        this.$router.push({ path: '/login' })
+      }
+    },
+    goPub: function () {
+      if (global.user.token) {
+        this.$router.push({ path: '/personal' })
+      } else {
+        this.$router.push({ path: '/login' })
+      }
     }
   },
   components: {
@@ -132,6 +146,26 @@ export default {
 	position:relative;
 	background:url(../img/i2.jpg) no-repeat;
 	background-size:100% 100%;
+}
+.banner-img{
+  height: 100%;
+  background: url(../img/logindex.png) no-repeat;
+  width: 830px;
+  float: right;
+}
+.banner-img li{
+  position: absolute;
+  bottom: 100px;
+  right: 300px;
+}
+.banner-img li:last-child{
+  bottom: 50px;
+}
+.banner-img li a{
+  font-size: 15px;
+  background: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
 }
 /*中间部分*/
 .content{

@@ -23,9 +23,11 @@
        <div class="pages">
            <ul>
              <li>
-                 <a href="javascript:;" v-for="page in pages.totalPage">{{page}}</a>
-                 <a href="javascript:;" v-if="isShow">下一页</a>
-                 <a href="javascript:;" v-if="isShow">尾页</a>
+                 <a href="javascript:;" v-on:click="top">首页</a>
+                 <a href="javascript:;">当前页:{{currentPage}}</a>
+                 <a href="javascript:;" v-on:click="prev">上一页</a>
+                 <a href="javascript:;" v-on:click="next">下一页</a>
+                 <a href="javascript:;" v-on:click="bottom">尾页</a>
              </li>
                <li class="replyNum">
                    <span class="allReply">{{pages.totalNumber}}</span>回复&nbsp;
@@ -33,25 +35,25 @@
                </li>
                <li>
                    <span>跳到</span>
-                   <input type="text" class="num"/>
+                   <input type="text" class="num" v-model="num" />
                    <span>页</span>
-                   <button type="button" class="btn">确定</button>
+                   <button type="button" class="btn" v-on:click="goPage">确定</button>
                </li>
            </ul>
        </div>
        <div class="contentComment">
            <div class="contentComment-header">
                <h2>交流区标题</h2>
-               <ul>
+               <!-- <ul>
                    <li><a href="javascript:;"><button>只看楼主</button></a></li>
                    <li><a href="javascript:;"><button>回复</button></a></li>
-               </ul>
+               </ul> -->
            </div>
            <div class="commentList" v-for="(content, index) in contentsList">
                <div class="comment">
                    <div class="author">
                        <ul>
-                           <li class="icon"><img src="" alt=""/></li>
+                           <!-- <li class="icon"><img src="" alt=""/></li> -->
                            <li class="username">{{content.username}}</li>
                        </ul>
                    </div>
@@ -61,12 +63,15 @@
                        </div>
                        <div class="time">
                            <ul>
-                               <li><a href="javascript:;">回复</a></li>
+                               <!-- <li><a href="javascript:;" v-on:click="postother(content.commentid)">回复</a></li> -->
                                <li>{{content.time | time}}</li>
                                <li><span>{{index + 1}}</span>楼</li>
                            </ul>
+                           <!-- <div v-show="hf"> -->
+                             <!-- <input type="text" name="" style="width:500px" v-model="othercontents">&nbsp;&nbsp; -->
+                           <!-- </div> -->
                        </div>
-                       <div class="otherReply">
+                       <!-- <div class="otherReply">
                            <div class="otherCommentsList">
                                <ul>
                                    <li v-for="other in content.commentReplyEntity">
@@ -79,16 +84,18 @@
                                    </li>
                                </ul>
                            </div>
-                       </div>
+                       </div> -->
                    </div>
                </div>
            </div>
            <div class="pages">
                <ul>
                  <li>
-                     <a href="javascript:;" v-for="page in pages.totalPage">{{page}}</a>
-                     <a href="javascript:;" v-if="isShow">下一页</a>
-                     <a href="javascript:;" v-if="isShow">尾页</a>
+                     <a href="javascript:;" v-on:click="top">首页</a>
+                     <a href="javascript:;">当前页:{{currentPage}}</a>
+                     <a href="javascript:;" v-on:click="prev">上一页</a>
+                     <a href="javascript:;" v-on:click="next">下一页</a>
+                     <a href="javascript:;" v-on:click="bottom">尾页</a>
                  </li>
                    <li class="replyNum">
                        <span class="allReply">{{pages.totalNumber}}</span>回复&nbsp;
@@ -96,17 +103,17 @@
                    </li>
                    <li>
                        <span>跳到</span>
-                       <input type="text" class="num"/>
+                       <input type="text" class="num" v-model="num" />
                        <span>页</span>
-                       <button type="button" class="btn">确定</button>
+                       <button type="button" class="btn" v-on:click="goPage">确定</button>
                    </li>
                </ul>
            </div>
        </div>
        <div class="publishComment">
            <p>发表回复</p>
-           <textarea class="pub"></textarea>
-           <a href="javascript:;">发布</a>
+           <textarea class="pub" v-model="postcon"></textarea>
+           <a href="javascript:;" v-on:click="pubPost">发布</a>
        </div>
    </div>
     <v-footer></v-footer>
@@ -117,6 +124,7 @@
 import axios from 'axios'
 import header from './header'
 import footer from './footer'
+import Vue from 'vue'
 import global from '../global/global'
 export default {
   data () {
@@ -125,7 +133,15 @@ export default {
       postid: this.$route.params.id,
       contentsList: '',
       pages: '',
-      isShow: false
+      currentPage: '',
+      prevShow: false,
+      nextShow: false,
+      isShow: false,
+      num: '',
+      hf: false,
+      othercontents: '',
+      postcon: '',
+      commentid: ''
     }
   },
   components: {
@@ -138,9 +154,13 @@ export default {
     .then(function (res) {
       console.log(res)
       self.contentsList = res.data.data
+      if (res.data.data.length > 10) {
+        self.contentsList = res.data.data.slice(10 * (res.data.currentPage - 1), 10)
+      }
       self.pages = res.data
+      self.currentPage = res.data.currentPage
       if (res.data.totalPage > 1) {
-        self.isShow = true
+        self.nextShow = true
       }
     })
     axios.get(global.baseURL + 'api/communication/getCounts')
@@ -148,6 +168,104 @@ export default {
       // console.log(res)
       self.getCounts = res.data.data
     })
+  },
+  methods: {
+    top: function () {
+      var self = this
+      axios.get(global.baseURL + 'api/comment/getbypostsid?postsid=' + this.postid + '&pagenum=1')
+      .then(function (res) {
+        self.contentsList = res.data.data
+        if (res.data.data.length > 10) {
+          self.contentsList = res.data.data.slice(10 * (res.data.currentPage - 1), 10)
+        }
+      })
+    },
+    prev: function () {
+      if (this.currentPage === 1) {
+        alert('已经是第一页了')
+      } else {
+        Vue.set(this, 'currentPage', this.currentPage - 1)
+        var self = this
+        axios.get(global.baseURL + 'api/comment/getbypostsid?postsid=' + this.postid + '&pagenum=' + this.currentPage)
+        .then(function (res) {
+          console.log(res)
+          self.contentsList = res.data.data
+          if (res.data.data.length > 10) {
+            self.contentsList = res.data.data.slice(10 * (res.data.currentPage - 1), 10)
+          }
+        })
+      }
+    },
+    next: function () {
+      if (this.currentPage === this.pages.totalPage) {
+        alert('已经是最后一页了')
+      } else {
+        Vue.set(this, 'currentPage', this.currentPage + 1)
+        this.prevShow = true
+        var self = this
+        axios.get(global.baseURL + 'api/comment/getbypostsid?postsid=' + this.postid + '&pagenum=' + this.currentPage)
+        .then(function (res) {
+          console.log(res)
+          self.contentsList = res.data.data
+          if (res.data.data.length > 10) {
+            self.contentsList = res.data.data.slice(10 * (res.data.currentPage - 1), 10)
+          }
+        })
+      }
+    },
+    bottom: function () {
+      axios.get(global.baseURL + 'api/comment/getbypostsid?postsid=' + this.postid + '&pagenum=' + this.pages.totalPage)
+      .then(function (res) {
+        self.contentsList = res.data.data
+        if (res.data.data.length > 10) {
+          self.contentsList = res.data.data.slice(10 * (res.data.currentPage - 1), 10)
+        }
+      })
+    },
+    goPage: function () {
+      Vue.set(this, 'currentPage', this.num)
+      console.log(this.currentPage)
+      axios.get(global.baseURL + 'api/comment/getbypostsid?postsid=' + this.postid + '&pagenum=' + this.currentPage)
+      .then(function (res) {
+        self.contentsList = res.data.data
+        if (res.data.data.length > 10) {
+          self.contentsList = res.data.data.slice(10 * (res.data.currentPage - 1), 10)
+        }
+      })
+    },
+    pubPost: function () {
+      var self = this
+      var post = new FormData()
+      post.append('contents', this.postcon)
+      post.append('postsid', this.postid)
+      axios.post(global.baseURL + 'api/comment/add?token=' + global.user.token, post)
+      .then(function (res) {
+        console.log(res)
+        if (res.data.callStatus === 'SUCCEED') {
+          alert('评论成功')
+          location.reload()
+        } else {
+          alert('请先登录')
+          self.$router.push({ path: '/login' })
+        }
+      })
+    },
+    postother: function (id) {
+      // var self = this
+      var postother = new FormData()
+      postother.append('commentid', id)
+      postother.append('contents', this.othercontents)
+      axios.post(global.baseURL + 'api/comment/replyComment?token=' + global.user.token, postother)
+      .then(function (res) {
+        console.log(res)
+        if (res.data.callStatus === 'SUCCEED') {
+          alert('评论成功')
+        } else {
+          alert('请先登录')
+          self.$router.push({ path: '/login' })
+        }
+      })
+    }
   }
 }
 </script>

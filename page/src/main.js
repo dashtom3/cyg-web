@@ -27,6 +27,7 @@ import apply from 'components/Apply'
 import comment from 'components/Comment'
 import management from 'components/Management'
 import admin from 'components/admin'
+import xq from 'components/Xq'
 // import fastclick from 'fastclick'
 import Vuex from 'vuex'
 
@@ -99,7 +100,7 @@ const router = new VueRouter({
     name: 'communicate',
     component: communicate
   }, {
-    path: '/knot',
+    path: '/knot/:id',
     name: 'knot',
     component: knot
   }, {
@@ -119,6 +120,10 @@ const router = new VueRouter({
   }, {
     path: '/admin',
     component: admin
+  }, {
+    path: '/xq/:id',
+    name: 'xq',
+    component: xq
   }]
 })
 new Vue({

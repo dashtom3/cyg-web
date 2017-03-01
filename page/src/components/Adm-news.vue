@@ -83,7 +83,8 @@
           <quill-editor ref="myTextEditor"
               :content="content"
               :config="editorOption"
-              @change="onEditorChange($event)">
+              @change="onEditorChange($event)"
+              v-model="contentss">
             </quill-editor>
       </div>
       <div class="text">
@@ -103,7 +104,7 @@
 <script type="text/javascript">
 import adm from './adm'
 import axios from 'axios'
-import Vue from 'vue'
+// import Vue from 'vue'
 import global from '../global/global'
 import { quillEditor } from 'vue-quill-editor'
 export default {
@@ -115,6 +116,7 @@ export default {
       newsLists: '',
       show: false,
       content: '',
+      contentss: '',
       editorOption: {},
       type: ['不通过', '通过'],
       pages: '',
@@ -146,8 +148,8 @@ export default {
   },
   methods: {
     onEditorChange ({ editor, html, text, img }) {
-      console.log(html, img)
       this.content = html
+      console.log(this.contentss)
     },
     showText: function () {
       this.show = true
@@ -164,6 +166,7 @@ export default {
         if (res.data.callStatus === 'SUCCEED') {
           alert('发布成功')
           self.show = false
+          location.reload()
         }
       })
     },
@@ -184,17 +187,8 @@ export default {
         console.log(res)
         if (res.data.callStatus === 'SUCCEED') {
           self.isDel = false
-          var that = self
           alert('删除成功')
-          Vue.nextTick(function () {
-            axios.post(global.baseURL + 'api/news/getNewsList')
-            .then(function (res) {
-              console.log(res)
-              that.newsLists = res.data.data
-              that.pages = res.data.totalPage
-              that.data.totalPage > 1 ? self.isShow = true : self.isShow = false
-            })
-          })
+          location.reload()
         }
       })
     },
