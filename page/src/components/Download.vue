@@ -11,7 +11,7 @@
             <div style="height:70px"></div>
             <div class="user-downal" v-show="zxshow">
               <span class="username-downal-name">{{msg.username}}</span><br/>
-              <span class="downal-number-fiex">账号:</span><span class="downal-number">{{msg.studentid}}</span>
+              <span class="downal-number-fiex">账号:</span><span class="downal-number">{{msg.studentid}}</span><br>
               <span class="username-personal-name exit" v-on:click="exit">注销</span>
             </div>
           </div>
@@ -77,11 +77,11 @@ export default {
     .then(function (res) {
       console.log(res)
       self.page = res.data
+      for (let i in res.data.data) {
+        res.data.data[i].src = 'http://123.56.220.72:8080/Student' + res.data.data[i].src
+      }
       if (res.data.data > 10) {
         self.downs = res.data.data.slice(10 * (res.data.currentPage - 1), 10)
-      }
-      for (let i in res.data.data) {
-        res.data.data[i].src = 'http://123.56.220.72:8080/Student/' + res.data.data[i].src
       }
       self.downs = res.data.data
     })
@@ -202,28 +202,25 @@ margin-top: 60px;
 font-family: "微软雅黑";
 margin-top: 14px;
 float:left;
-width: 120px;
+width: 160px;
 }
 .user-downal .username-downal-name{
 display:block;
 font-weight: bold;
-float:left;
 color:black;
 font-size: 15px;
 }
 /*登录后账号*/
 .downal-username .downal-number{
-display:block;
-float:left;
+display:inline-block;
 color:black;
 font-size: 14px;
 
 }
 /*账号：*/
 .downal-username .downal-number-fiex{
-display:block;
+display:inline-block;
 color:black;
-float: left;
 font-size: 15px;
 font-weight: bold;
 margin-right: 8px;

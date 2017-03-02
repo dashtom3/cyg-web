@@ -16,6 +16,7 @@
     "vue": "^2.1.10",
     "vue-quill-editor": "^1.1.1",
     "vue-router": "^2.2.0",
+    "vue-summernote": "^1.0.3",
     "vue2-editor": "^1.1.12"
   },
   "devDependencies": {

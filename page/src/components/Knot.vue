@@ -33,7 +33,7 @@
 			<div class="knot-bottom">
 				<div class="knot-cycle">
 					<span>项目周期 :</span>
-					<input type="text" name="" v-model="project.itemcyle" />
+					<input type="text" name="" v-model="project.itemcyle" placeholder="例如30天" />
 				</div>
 				<div class="knot-phone">
 					<span>联系电话&nbsp;:</span>
@@ -83,6 +83,7 @@ export default {
       this.project.imgfile = document.querySelector('.knot-file input').files[0]
     },
     apply: function () {
+      var self = this
       var zipFormData = new FormData()
       zipFormData.append('itemname', this.project.itemname)
       zipFormData.append('itemleader', this.project.itemleader)
@@ -101,12 +102,14 @@ export default {
       zipFormData.append('exitbasicfile', this.project.exitbasicfile)
       zipFormData.append('end', this.project.end)
       zipFormData.append('start', this.project.start)
+      zipFormData.append('type', '0')
       console.log(this.project)
-      axios.post(global.baseURL + 'api/items/add?type=0&token=' + global.user.token, zipFormData)
+      axios.post(global.baseURL + 'api/items/update?itemsid=' + this.id + '&token=' + global.user.token, zipFormData)
       .then(function (res) {
         console.log(res)
         if (res.data.callStatus === 'SUCCEED') {
           alert('结题申请已经提交')
+          self.$router.push({ path: '/management' })
         }
       })
     }

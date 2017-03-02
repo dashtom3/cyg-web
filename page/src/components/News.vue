@@ -5,8 +5,8 @@
 		<div class="news-content" ref="newsContent">
 			<span class="news-title">{{news.title}}</span>
 			<span class="news-date">{{news.time | time}}</span>
-			<span class="news-article">
-				{{news.contents}}
+			<span class="news-article" v-html=news.contents>
+				<!-- {{}} -->
 			</span>
 			</div>
 			<v-footer></v-footer>
@@ -23,7 +23,7 @@ export default {
     var self = this
     axios.get(global.baseURL + 'api/news/getbyid?newsid=' + this.newsId + '&token=')
     .then(function (res) {
-      // console.log(res.data.data)
+      console.log(res.data.data)
       self.news = res.data.data
     })
   },

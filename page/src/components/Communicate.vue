@@ -119,13 +119,14 @@ export default {
   },
   created () {
     var self = this
-    axios.post(global.baseURL + 'api/communication/getCommunicationList')
+    axios.post(global.baseURL + 'api/communication/getCommunicationList?state=1')
     .then(function (res) {
-      // console.log(res)
+      console.log(res)
       self.communicates = res.data.data
     })
     axios.get(global.baseURL + 'api/communication/getCounts')
     .then(function (res) {
+      // console.log(res)
       self.getCounts = res.data.data
     })
     axios.get(global.baseURL + 'api/posts/getPostsList')
@@ -143,7 +144,7 @@ export default {
       var zipFormData = new FormData()
       zipFormData.append('title', this.publishCommunite.title)
       zipFormData.append('contents', this.publishCommunite.contents)
-      axios.post(global.baseURL + 'api/posts/add?token=' + global.user.token, zipFormData)
+      axios.post(global.baseURL + 'api/posts/add?state=0&token=' + global.user.token, zipFormData)
       .then(function (res) {
         if (res.data.callStatus === 'SUCCEED') {
           alert('发布成功')

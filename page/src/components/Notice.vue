@@ -10,7 +10,7 @@
 							<div style="height:70px"></div>
 							<div class="user-notice" v-show="zxshow">
 								<span class="username-notice-name">{{personalMsg.username}}</span><br/>
-								<span class="notice-number-fiex">账号:</span><span class="notice-number">{{personalMsg.studentid}}</span>
+								<span class="notice-number-fiex">账号:</span><span class="notice-number">{{personalMsg.studentid}}</span><br>
                 <span class="username-personal-name exit" v-on:click="exit">注销</span>
 							</div>
 						</div>
@@ -72,7 +72,7 @@ export default {
   },
   created () {
     var self = this
-    axios.post(global.baseURL + 'api/news/getNewsList').then((res) => {
+    axios.post(global.baseURL + 'api/news/getNewsList?state=1').then((res) => {
       console.log(res.data)
       self.page = res.data
       if (res.data.totalPage > 1) {
@@ -218,27 +218,24 @@ margin-top: 60px;
 font-family: "微软雅黑";
 margin-top: 14px;
 float:left;
-width: 120px;
+width: 160px;
 }
 .user-notice .username-notice-name{
-display:block;
+display:inline-block;;
 font-weight: bold;
-float:left;
 color:black;
 font-size: 15px;
 }
 /*登录后账号*/
 .notice-username .notice-number{
-display:block;
-float:left;
+display:inline-block;;
 color:black;
 font-size: 14px;
 
 }
 /*账号：*/
 .notice-username .notice-number-fiex{
-display:block;
-float:left;
+display:inline-block;
 color:black;
 font-size: 15px;
 font-weight: bold;
@@ -269,6 +266,9 @@ height:auto;
 }
 .notice-right-part ul li{
 margin-bottom: 10px;
+}
+.exit{
+  display: block;
 }
 .notice-date{
 margin-right: 20px;

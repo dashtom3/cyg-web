@@ -109,6 +109,16 @@ export default {
         console.log(res)
         if (res.data.callStatus === 'SUCCEED') {
           self.isDel = false
+          var that = self
+          axios.post(global.baseURL + 'api/user/getUserList')
+          .then(function (result) {
+            console.log(result)
+            that.userLists = ''
+            that.pages = ''
+            that.userLists = result.data.data
+            that.pages = result.data.totalPage
+            result.data.totalPage > 1 ? that.isShow = true : that.isShow = false
+          })
         }
       })
     },

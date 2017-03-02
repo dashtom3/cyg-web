@@ -43,6 +43,7 @@
 										<a href="javascript:;" role="button" data-toggle="modal" v-on:click="delUser(projectsList.itemid)">删除</a>
 										<button class="adm-pass" v-on:click="verify(projectsList.itemid)">通过</button>
                     <button class="adm-pass" v-on:click="pass(projectsList.itemid)">不通过</button>
+                    <button class="adm-pass" v-on:click="set(projectsList.itemid)">设为优秀项目</button>
 									</td>
 								</tr>
 							</tbody>
@@ -130,9 +131,17 @@ export default {
       .then(function (res) {
         console.log(res)
         if (res.data.callStatus === 'SUCCEED') {
-          alert('删除成功')
-          location.reload()
           self.isDel = false
+          var that = self
+          axios.post(global.baseURL + 'api/items/getItemsList')
+          .then(function (res) {
+            console.log(res)
+            that.projectsLists = ''
+            that.pages = ''
+            that.projectsLists = res.data.data
+            that.pages = res.data.totalPage
+            res.data.totalPage > 1 ? that.isShow = true : that.isShow = false
+          })
         }
       })
     },
@@ -140,10 +149,36 @@ export default {
       this.isDel = false
     },
     verify: function (id) {
-      global.verify(this.url, 'itemsid', id)
+      global.verify(this.url, 'itemsid', id, '1')
+      var self = this
+      axios.post(global.baseURL + 'api/items/getItemsList')
+      .then(function (res) {
+        console.log(res)
+        self.projectsLists = res.data.data
+        self.pages = res.data.totalPage
+        res.data.totalPage > 1 ? self.isShow = true : self.isShow = false
+      })
     },
     pass: function (id) {
-      global.pass(this.url, 'itemsid', id)
+      global.pass(this.url, 'itemsid', id, '0')
+      var self = this
+      axios.post(global.baseURL + 'api/items/getItemsList')
+      .then(function (res) {
+        console.log(res)
+        self.projectsLists = ''
+        self.pages = ''
+        self.projectsLists = res.data.data
+        self.pages = res.data.totalPage
+        res.data.totalPage > 1 ? self.isShow = true : self.isShow = false
+      })
+    },
+    set: function (id) {
+      axios.get(global.baseURL + 'api/items/verify?itemsid=' + id + '&state=3&token=' + global.user.token)
+      .then(function (res) {
+        if (res.data.callStatus === 'SUCCEED') {
+          alert('操作成功')
+        }
+      })
     }
   },
   components: {

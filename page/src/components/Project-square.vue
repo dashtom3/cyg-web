@@ -72,8 +72,8 @@
 							<span>负责人:</span>&nbsp;
 							<span class="square-responsible-name">{{project.itemleader}}</span>&nbsp;
 							<span class="square-date-right-border">|</span>&nbsp;
-							<span>招募人数: {{project.memberdemand}}</span>
-							<span class="square-state">{{project.nowpeople}}</span>&nbsp;
+							<span>招募人数:</span>
+							<span class="square-state">{{project.nowpeople}}/{{project.allpeople}}</span>&nbsp;
 							<span class="square-date-right-border">|</span><br/>
 							项目类型:&nbsp;&nbsp;<span class="square-source-id">{{type[project.labels]}}</span>&nbsp;
 							<span class="square-date-right-border">|</span>&nbsp;
@@ -196,7 +196,7 @@ export default {
   },
   created () {
     var self = this
-    axios.post(global.baseURL + 'api/items/getItemsList?state=1&pagenum=' + this.pagenum)
+    axios.post(global.baseURL + 'api/items/getItemsList?pagenum=' + this.pagenum)
     .then(function (res) {
       console.log(res)
       self.page = res.data
@@ -294,28 +294,24 @@ export default {
 .user-personal{
 	font-family: "微软雅黑";
 	margin-top: 14px;
-	float:left;
-	width: 120px;
+	width: 160px;
 }
 .user-personal .username-personal-name{
-	display:block;
+	display:inline-block;
 	font-weight: bold;
-	float:left;
 	color:black;
 	font-size: 15px;
 }
 /*登录后账号*/
 .personal-username .personal-number{
-	display:block;
-	float:left;
+	display:inline-block;
 	color:black;
 	font-size: 14px;
 
 }
 /*账号：*/
 .personal-username .personal-number-fiex{
-	display:block;
-	float:left;
+	display:inline-block;
 	color:black;
 	font-size: 15px;
 	font-weight: bold;

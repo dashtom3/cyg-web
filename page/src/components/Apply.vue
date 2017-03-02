@@ -218,7 +218,7 @@ margin:84px auto;
   height: 150px;
   margin: 0 auto;
   font-size: 20px;
-  color: red;
+  color: #fff;
   background: #000;
   border-radius: 10px;
   text-align: center;

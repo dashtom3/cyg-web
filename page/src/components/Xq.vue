@@ -67,14 +67,14 @@
 					<ul class="xq-modify3">
 						<li>
 							<span>联系方式:</span>&nbsp;
-							<span>{{projectMsg.telephone}}</span>
+							<span>{{personalMsg.telephone}}</span>
 						</li>
 						<li>
 							<span>发布有效期 (截止时间) :</span>&nbsp;&nbsp;
 							<span>{{projectMsg.endtime | year}}</span>
 						</li>
 					</ul>
-					<button class="modify-data">修改资料</button>
+					<!-- <button class="modify-data">修改资料</button> -->
 				</div>
 				<div class="xq-content-bottom">
 					<ul class="">
@@ -85,8 +85,8 @@
 					</ul>
 					<div class="xq-bottom-but">
 						<button class="but-left" v-on:click="goKnot(itemsid)">申请结题</button>
-						<button class="but-content">退出项目</button>
-						<button class="but-right">关闭</button>
+						<!-- <button class="but-content">退出项目</button> -->
+						<!-- <button class="but-right">关闭</button> -->
 					</div>
 				</div>
 			</div>
@@ -100,6 +100,7 @@
 import header from './header'
 import footer from './footer'
 import axios from 'axios'
+import Vue from 'vue'
 import global from '../global/global'
 export default {
   name: 'xq',
@@ -117,17 +118,18 @@ export default {
     }
   },
   created () {
+    console.log(this.personalMsg)
     var self = this
     axios.get(global.baseURL + 'api/items/getbyid?itemsid=' + this.itemsid)
     .then(function (res) {
-      console.log(res)
+      // console.log(res)
       self.projectMsg = res.data.data
     })
     axios.get(global.baseURL + 'api/items/getApplicationList?itemsid=' + this.itemsid)
     .then(function (res) {
-      console.log(res)
+      // console.log(res)
       for (let i in res.data.data) {
-        console.log(res.data.data[i].state)
+        // console.log(res.data.data[i].state)
         if (res.data.data[i].state === 1) {
           self.agreepersonal.push(res.data.data[i])
         } else {
@@ -138,6 +140,7 @@ export default {
   },
   methods: {
     agree: function (id) {
+      var self = this
       var agree = new FormData()
       agree.append('applicationid', id)
       agree.append('state', '1')
@@ -146,10 +149,28 @@ export default {
         console.log(res)
         if (res.data.callStatus === 'SUCCEED') {
           alert('录用成功')
+          var that = self
+          Vue.nextTick(function () {
+            axios.get(global.baseURL + 'api/items/getApplicationList?itemsid=' + that.itemsid)
+            .then(function (res) {
+              console.log(res)
+              that.agreepersonal = []
+              that.applypersonals = []
+              for (let i in res.data.data) {
+                console.log(res.data.data[i].state)
+                if (res.data.data[i].state === 1) {
+                  that.agreepersonal.push(res.data.data[i])
+                } else {
+                  that.applypersonals.push(res.data.data[i])
+                }
+              }
+            })
+          })
         }
       })
     },
     del: function (id) {
+      var self = this
       var agree = new FormData()
       agree.append('applicationid', id)
       agree.append('state', '0')
@@ -158,6 +179,23 @@ export default {
         console.log(res)
         if (res.data.callStatus === 'SUCCEED') {
           alert('删除成功')
+          var that = self
+          Vue.nextTick(function () {
+            axios.get(global.baseURL + 'api/items/getApplicationList?itemsid=' + that.itemsid)
+            .then(function (res) {
+              console.log(res)
+              that.agreepersonal = []
+              that.applypersonals = []
+              for (let i in res.data.data) {
+                console.log(res.data.data[i].state)
+                if (res.data.data[i].state === 1) {
+                  that.agreepersonal.push(res.data.data[i])
+                } else {
+                  that.applypersonals.push(res.data.data[i])
+                }
+              }
+            })
+          })
         }
       })
     },
@@ -253,27 +291,24 @@ export default {
 .user-management{
 	font-family: "微软雅黑";
 	margin-top: 14px;
-	float:left;
+  width: 146px;
 }
 .user-management .username-management-name{
 	display:block;
 	font-weight: bold;
-	float:left;
 	color:black;
 	font-size: 15px;
 }
 /*登录后账号*/
 .management-username .management-number{
-	display:block;
-	float:left;
+	display:inline-block;
 	color:black;
 	font-size: 14px;
 
 }
 /*账号：*/
 .management-username .management-number-fiex{
-	display:block;
-	float:left;
+	display:inline-block;
 	color:black;
 	font-size: 15px;
 	font-weight: bold;

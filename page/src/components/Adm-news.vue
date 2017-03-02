@@ -35,8 +35,8 @@
 									<td>{{type[newsList.state]}}</td>
 									<td>
 										<a href="javascript:;" role="button" data-toggle="modal" v-on:click="delUser(newsList.newsid)">删除</a>
-										<button class="adm-pass" v-on:click="verify(newsList.newsid)">通过</button>
-                    <button class="adm-pass" v-on:click="pass(newsList.newsid)">不通过</button>
+										<button class="adm-pass" v-on:click="verify(newsList.newsid)">上线</button>
+                    <button class="adm-pass" v-on:click="pass(newsList.newsid)">下线</button>
 									</td>
 								</tr>
 							</tbody>
@@ -75,22 +75,12 @@
       </div>
       <div class="text">
         <span>新闻内容: </span>
-        <!-- <vue-editor
-            :use-save-button="false"
-            :editor-toolbar="customToolbar"
-            @editor-updated=handleUpdatedContent>
-          </vue-editor> -->
-          <quill-editor ref="myTextEditor"
-              :content="content"
-              :config="editorOption"
-              @change="onEditorChange($event)"
-              v-model="contentss">
-            </quill-editor>
+            <vue-summernote ref="editer" @change="getContents"></vue-summernote>
       </div>
-      <div class="text">
+      <!-- <div class="text">
         <span>新闻作者: </span>
         <input type="text" name="" value="" v-model="newsMsg.autor">
-      </div>
+      </div> -->
       <div class="text">
         <a href="javascript:;" v-on:click="cancel" class="cancel">取消</a>&nbsp;&nbsp;&nbsp;&nbsp;
         <a href="javascript:;" name="save-content"
@@ -105,6 +95,21 @@
 import adm from './adm'
 import axios from 'axios'
 // import Vue from 'vue'
+import VueSummernote from 'vue-summernote'
+import Vue from 'vue'
+
+// 载入bootstrap.js
+require('bootstrap')
+// 载入bootstrap以及summernote的样式
+// 这里需要你的脚手架工具具有加载css的能力
+require('bootstrap/dist/css/bootstrap.min.css')
+require('summernote/dist/summernote.css')
+
+// 这里设置summernote的初始化选项
+// 可参考 http://summernote.org/deep-dive/#initialization-options
+Vue.use(VueSummernote, {
+  dialogsFade: true
+})
 import global from '../global/global'
 import { quillEditor } from 'vue-quill-editor'
 export default {
@@ -116,10 +121,10 @@ export default {
       newsLists: '',
       show: false,
       content: '',
-      contentss: '',
       editorOption: {},
-      type: ['不通过', '通过'],
+      type: ['未上线', '已上线'],
       pages: '',
+      src: '',
       newsId: '',
       verifyShow: false,
       isDel: false,
@@ -128,8 +133,7 @@ export default {
       newsMsg: {
         title: '',
         autor: ''
-      },
-      url: 'api/news/verify?token='
+      }
     }
   },
   created () {
@@ -147,9 +151,8 @@ export default {
     quillEditor
   },
   methods: {
-    onEditorChange ({ editor, html, text, img }) {
-      this.content = html
-      console.log(this.contentss)
+    getContents (contents) {
+      console.log(contents)
     },
     showText: function () {
       this.show = true
@@ -157,16 +160,25 @@ export default {
     saveTheContent: function () {
       var self = this
       var pubNews = new FormData()
-      pubNews.append('name', this.newsMsg.title)
-      pubNews.append('file', this.content)
+      pubNews.append('title', this.newsMsg.title)
+      pubNews.append('contents', this.content)
       console.log(this.content.img)
-      axios.post(global.baseURL + 'api/file/materialUpload?token=' + global.user.token, pubNews)
+      axios.post(global.baseURL + 'api/news/add?token=' + global.user.token, pubNews)
       .then(function (res) {
         console.log(res)
         if (res.data.callStatus === 'SUCCEED') {
           alert('发布成功')
           self.show = false
-          location.reload()
+          var that = self
+          axios.post(global.baseURL + 'api/news/getNewsList')
+          .then(function (res) {
+            // console.log(res)
+            that.newsLists = ''
+            that.pages = ''
+            that.newsLists = res.data.data
+            that.pages = res.data.totalPage
+            res.data.totalPage > 1 ? that.isShow = true : that.isShow = false
+          })
         }
       })
     },
@@ -180,15 +192,22 @@ export default {
     },
     del: function () {
       var self = this
-      var userMsg = new FormData()
-      userMsg.append('userid', this.userid)
-      axios.post(global.baseURL + 'api/news/delete?token=' + global.user.token, userMsg)
+      axios.get(global.baseURL + 'api/news/delete?token=' + global.user.token + '&newsid=' + this.userid)
       .then(function (res) {
         console.log(res)
         if (res.data.callStatus === 'SUCCEED') {
           self.isDel = false
           alert('删除成功')
-          location.reload()
+          var that = self
+          axios.post(global.baseURL + 'api/news/getNewsList')
+          .then(function (res) {
+            // console.log(res)
+            that.newsLists = ''
+            that.pages = ''
+            that.newsLists = res.data.data
+            that.pages = res.data.totalPage
+            res.data.totalPage > 1 ? that.isShow = true : that.isShow = false
+          })
         }
       })
     },
@@ -196,10 +215,44 @@ export default {
       this.isDel = false
     },
     verify: function (id) {
-      global.verify(this.url, 'newsid', id)
+      var self = this
+      axios.get(global.baseURL + 'api/news/verify?token=' + global.user.token + '&newsid=' + id + '&state=1')
+      .then(function (res) {
+        // console.log(res)
+        if (res.data.callStatus === 'SUCCEED') {
+          alert('操作成功')
+          var that = self
+          axios.post(global.baseURL + 'api/news/getNewsList')
+          .then(function (res) {
+            console.log(res)
+            that.newsLists = ''
+            that.pages = ''
+            that.newsLists = res.data.data
+            that.pages = res.data.totalPage
+            res.data.totalPage > 1 ? that.isShow = true : that.isShow = false
+          })
+        }
+      })
     },
     pass: function (id) {
-      global.pass(this.url, 'newsid', id)
+      var self = this
+      axios.get(global.baseURL + 'api/news/verify?token=' + global.user.token + '&newsid=' + id + '&state=0')
+      .then(function (res) {
+        // console.log(res)
+        if (res.data.callStatus === 'SUCCEED') {
+          alert('操作成功')
+          var that = self
+          axios.post(global.baseURL + 'api/news/getNewsList')
+          .then(function (res) {
+            console.log(res)
+            that.newsLists = ''
+            that.pages = ''
+            that.newsLists = res.data.data
+            that.pages = res.data.totalPage
+            res.data.totalPage > 1 ? that.isShow = true : that.isShow = false
+          })
+        }
+      })
     }
   },
   mounted () {
@@ -208,6 +261,25 @@ export default {
     if (admContent.offsetHeight < wh - 71) {
       admContent.style.height = wh - 77 + 'px'
     }
+    const self = this
+    const editer = self.$refs.editer
+    editer.$on('onImageUpload', function (files) {
+      console.log(files[0])
+      var tu = new FormData()
+      tu.append('file', files[0])
+      var that = self
+      axios.post('http://123.56.220.72:8080/Student/api/file/upload?token=' + global.user.token, tu)
+      .then(function (res) {
+        that.src = res.data.data
+        editer.run('insertImage', 'http://123.56.220.72:8080/Student' + res.data.data)
+      })
+      console.log()
+      // 这里做上传图片的操作，上传成功之后便可以用到下面这句将图片插入到编辑框中
+    })
+    editer.$on('onChange', function (contents) {
+      // console.log('onChange:', contents)
+      self.content = contents
+    })
   }
 }
 </script>
@@ -340,5 +412,8 @@ padding-top: 30px;
 }
 .queren div a:last-child{
   background: green;
+}
+.note-editor .modal{
+  left: 50%!important;
 }
 </style>

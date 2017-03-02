@@ -5,21 +5,13 @@
 				<ul class="nav pull-right">
 					<li id="fat-menu" class="dropdown">
 						<a href="#" role="button" class="dropdown-toggle" data-toggle="dropdown">
-							<i class="icon-user"></i> Jack Smith
+							<i class="icon-user"></i> Admin
 							<i class="icon-caret-down"></i>
 						</a>
 
 						<ul class="dropdown-menu">
 							<li>
-								<a tabindex="-1" href="#">My Account</a>
-							</li>
-							<li class="divider"></li>
-							<li>
-								<a tabindex="-1" class="visible-phone" href="#">Settings</a>
-							</li>
-							<li class="divider visible-phone"></li>
-							<li>
-								<a tabindex="-1" href="sign-in.html">Logout</a>
+								<a tabindex="-1" href="javascript:;" v-on:click="exit">退出</a>
 							</li>
 						</ul>
 					</li>
@@ -41,6 +33,7 @@
 </template>
 
 <script>
+import global from '../global/global'
 export default {
   name: 'adm-news',
   data () {
@@ -51,6 +44,10 @@ export default {
   methods: {
     del: function (item) {
       console.log(item)
+    },
+    exit: function () {
+      global.user.token = ''
+      this.$router.push({ path: '/admin' })
     }
   }
 }

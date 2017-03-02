@@ -78,7 +78,7 @@
 							</div>
 							<div class="details-type-bottom">
 								<ul>
-									<li>{{type[project.innovate]}}</li>
+									<li>{{type[project.labels]}}</li>
 								</ul>
 							</div>
 						</div>
@@ -145,6 +145,7 @@ export default {
       this.$router.push({ path: '/gwfc' })
     },
     joinProject: function () {
+      var self = this
       var personalMsg = new FormData()
       personalMsg.append('itemsid', this.projectId)
       personalMsg.append('token', global.user.token)
@@ -153,6 +154,10 @@ export default {
         console.log(res)
         if (res.data.callStatus === 'SUCCEED') {
           alert('加入成功')
+          self.$router.push({ path: '/square' })
+        } else {
+          alert('请先登录')
+          self.$router.push({ path: '/login' })
         }
       })
     }

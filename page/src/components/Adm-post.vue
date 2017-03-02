@@ -21,6 +21,7 @@
 									<th>主题</th>
 									<th>标题</th>
 									<th>发表者</th>
+                  <th>状态</th>
                   <th>操作</th>
 								</tr>
 							</thead>
@@ -30,6 +31,7 @@
 									<td>{{comment.theme}}</td>
 									<td>{{comment.title}}</td>
 									<td>{{comment.username}}</td>
+                  <td>{{type[comment.state]}}</td>
 									<td>
 										<a href="javascript:;" role="button" data-toggle="modal" v-on:click="delUser(comment.postsid)">删除</a>
 										<button class="adm-pass" v-on:click="verify(comment.postsid)">通过</button>
@@ -81,6 +83,7 @@ export default {
       isShow: false,
       isDel: false,
       verifyShow: false,
+      type: ['未通过', '通过'],
       url: 'api/posts/verify?token='
     }
   },
@@ -102,14 +105,21 @@ export default {
     },
     del: function () {
       var self = this
-      var userMsg = new FormData()
-      userMsg.append('userid', this.userid)
-      axios.post(global.baseURL + 'api/posts/delete?token=' + global.user.token, userMsg)
+      axios.get(global.baseURL + 'api/posts/delete?token=' + global.user.token + '&postid=' + this.userid)
       .then(function (res) {
         console.log(res)
         if (res.data.callStatus === 'SUCCEED') {
-          alert('删除成功')
           self.isDel = false
+          var that = self
+          axios.post(global.baseURL + 'api/posts/getPostsList')
+          .then(function (res) {
+            console.log(res)
+            that.comments = ''
+            that.pages = ''
+            that.comments = res.data.data
+            that.pages = res.data.totalPage
+            res.data.totalPage > 1 ? that.isShow = true : that.isShow = false
+          })
         }
       })
     },
@@ -117,10 +127,44 @@ export default {
       this.isDel = false
     },
     verify: function (id) {
-      global.verify(this.url, 'postsid', id)
+      var self = this
+      axios.get(global.baseURL + 'api/posts/verify?token=' + global.user.token + '&postsid=' + id + '&state=1')
+      .then(function (res) {
+        // console.log(res)
+        if (res.data.callStatus === 'SUCCEED') {
+          alert('操作成功')
+          var that = self
+          axios.get(global.baseURL + 'api/posts/getPostsList')
+          .then(function (res) {
+            console.log(res)
+            that.comments = ''
+            that.pages = ''
+            that.comments = res.data.data
+            that.pages = res.data.totalPage
+            res.data.totalPage > 1 ? that.isShow = true : that.isShow = false
+          })
+        }
+      })
     },
     pass: function (id) {
-      global.pass(this.url, 'postsid', id)
+      var self = this
+      axios.get(global.baseURL + 'api/posts/verify?token=' + global.user.token + '&postsid=' + id + '&state=0')
+      .then(function (res) {
+        // console.log(res)
+        if (res.data.callStatus === 'SUCCEED') {
+          alert('操作成功')
+          var that = self
+          axios.get(global.baseURL + 'api/posts/getPostsList')
+          .then(function (res) {
+            console.log(res)
+            that.comments = ''
+            that.pages = ''
+            that.comments = res.data.data
+            that.pages = res.data.totalPage
+            res.data.totalPage > 1 ? that.isShow = true : that.isShow = false
+          })
+        }
+      })
     }
   },
   components: {

@@ -48,19 +48,11 @@ export default{
       self.projects = res.data.data
     })
   },
-  verify: function (url, kind, id) {
-    axios.get(this.baseURL + url + this.user.token + '&' + kind + '=' + id + '&state=1')
+  verify: function (url, kind, id, state) {
+    console.log(state)
+    axios.get(this.baseURL + url + this.user.token + '&' + kind + '=' + id + '&state=' + state)
     .then(function (res) {
-      console.log(res)
-      if (res.data.callStatus === 'SUCCEED') {
-        alert('操作成功')
-      }
-    })
-  },
-  pass: function (url, kind, id) {
-    axios.get(this.baseURL + url + this.user.token + '&' + kind + '=' + id + '&state=0')
-    .then(function (res) {
-      console.log(res)
+      // console.log(res)
       if (res.data.callStatus === 'SUCCEED') {
         alert('操作成功')
       }

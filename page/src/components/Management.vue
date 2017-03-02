@@ -189,28 +189,24 @@ export default {
 .user-management{
 	font-family: "微软雅黑";
 	margin-top: 14px;
-	float:left;
-  width: 100px;
+  width: 160px;
 }
 .user-management .username-management-name{
 	display:block;
 	font-weight: bold;
-	float:left;
 	color:black;
 	font-size: 15px;
 }
 /*登录后账号*/
 .management-username .management-number{
-	display:block;
-	float:left;
+	display:inline-block;;
 	color:black;
 	font-size: 14px;
 
 }
 /*账号：*/
 .management-username .management-number-fiex{
-	display:block;
-	float:left;
+	display:inline-block;;
 	color:black;
 	font-size: 15px;
 	font-weight: bold;

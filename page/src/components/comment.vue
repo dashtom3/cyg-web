@@ -43,7 +43,7 @@
        </div>
        <div class="contentComment">
            <div class="contentComment-header">
-               <h2>交流区标题</h2>
+               <h2>{{itemcontent.title}}</h2>
                <!-- <ul>
                    <li><a href="javascript:;"><button>只看楼主</button></a></li>
                    <li><a href="javascript:;"><button>回复</button></a></li>
@@ -141,7 +141,8 @@ export default {
       hf: false,
       othercontents: '',
       postcon: '',
-      commentid: ''
+      commentid: '',
+      itemcontent: ''
     }
   },
   components: {
@@ -152,7 +153,7 @@ export default {
     var self = this
     axios.get(global.baseURL + 'api/comment/getbypostsid?postsid=' + this.postid)
     .then(function (res) {
-      console.log(res)
+      // console.log(res)
       self.contentsList = res.data.data
       if (res.data.data.length > 10) {
         self.contentsList = res.data.data.slice(10 * (res.data.currentPage - 1), 10)
@@ -167,6 +168,11 @@ export default {
     .then(function (res) {
       // console.log(res)
       self.getCounts = res.data.data
+    })
+    axios.get(global.baseURL + 'api/posts/getbyid?postsid=' + this.postid)
+    .then(function (res) {
+      console.log(res)
+      self.itemcontent = res.data.data
     })
   },
   methods: {
@@ -243,7 +249,30 @@ export default {
         console.log(res)
         if (res.data.callStatus === 'SUCCEED') {
           alert('评论成功')
-          location.reload()
+          Vue.nextTick(function () {
+            var that = self
+            axios.get(global.baseURL + 'api/comment/getbypostsid?postsid=' + that.postid)
+            .then(function (res) {
+              console.log(res)
+              that.contentsList = ''
+              that.contentsList = res.data.data
+              if (res.data.data.length > 10) {
+                that.contentsList = res.data.data.slice(10 * (res.data.currentPage - 1), 10)
+              }
+              that.pages = ''
+              that.currentPage = ''
+              that.pages = res.data
+              that.currentPage = res.data.currentPage
+              if (res.data.totalPage > 1) {
+                that.nextShow = true
+              }
+            })
+            axios.get(global.baseURL + 'api/communication/getCounts')
+            .then(function (res) {
+              // console.log(res)
+              self.getCounts = res.data.data
+            })
+          })
         } else {
           alert('请先登录')
           self.$router.push({ path: '/login' })
@@ -422,7 +451,7 @@ text-decoration: none
   padding: 40px 0;
 }
 .contentComment-header{
-height: 50px;
+height: 70px;
 line-height: 50px;
 border-bottom: 1px solid #BBBDBF;
 border-left: 1px solid #E5E5E5;

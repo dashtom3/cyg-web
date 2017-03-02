@@ -181,27 +181,24 @@ export default {
 	font-family: "微软雅黑";
 	margin-top: 80px;
 	float:left;
-  width: 120px;
+  width: 160px;
 }
 .user-personal .username-personal-name{
-	display:block;
+  text-align: left;
 	font-weight: bold;
-	float:left;
 	color:black;
 	font-size: 15px;
 }
 /*登录后账号*/
 .personal-username .personal-number{
-	display:block;
-	float:left;
+	display:inline-block;;
 	color:black;
 	font-size: 14px;
 
 }
 /*账号：*/
 .personal-username .personal-number-fiex{
-	display:block;
-	float:left;
+	display:inline-block;;
 	color:black;
 	font-size: 15px;
 	font-weight: bold;

@@ -41,7 +41,7 @@
 			<span class="bt3">过往项目</span>
 			<ul>
 				<li v-for='knotList in knotLists'>
-					<img src="../img/main_9_9.jpg" class="project-pic"/>
+					<img :src=knotList.imgfilesrc>
 					<div class="project-bottom">
 						<a href="javascript:;"><span class="project">{{knotList.itemname}}</span></a>
 						<a href="javascript:;"><span class="project-mean">{{knotList.itembrief}}</span></a>
@@ -62,7 +62,7 @@ import footer from './footer'
 import global from '../global/global'
 export default {
   created () {
-    axios.post(global.baseURL + 'api/news/getNewsList').then((res) => {
+    axios.post(global.baseURL + 'api/news/getNewsList?state=1').then((res) => {
       if (res.data.data.length > 5) {
         this.newsList = res.data.data.slice(0, 5)
       } else {
@@ -77,9 +77,12 @@ export default {
       }
     })
     var self = this
-    axios.post(global.baseURL + 'api/items/getItemsList?state=1')
+    axios.post(global.baseURL + 'api/items/getItemsList?type=0&state=1')
     .then(function (res) {
       console.log(res)
+      for (let i in res.data.data) {
+        res.data.data[i].src = 'http://123.56.220.72:8080/Student' + res.data.data[i].src
+      }
       if (res.data.data.length > 4) {
         self.knotLists = res.data.data.slice(0, 4)
       } else {
@@ -152,6 +155,8 @@ export default {
   background: url(../img/logindex.png) no-repeat;
   width: 830px;
   float: right;
+  position: relative;
+  top: -11px;
 }
 .banner-img li{
   position: absolute;

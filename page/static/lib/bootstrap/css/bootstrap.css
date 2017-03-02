@@ -3789,6 +3789,12 @@ a.thumbnail:hover {
 }
 .modal.fade.in {
   top: 50%;
+  left:50%;
+  height: 305px!important;
+  width: 700px!important;
+}
+.form-group.note-group-image-url{
+  display: none!important;
 }
 .modal-header {
   padding: 9px 15px;
@@ -3926,6 +3932,12 @@ a.thumbnail:hover {
   background-image: linear-gradient(to bottom, #0088cc, #0077b3);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0088cc', endColorstr='#ff0077b3', GradientType=0);
+}
+.tab-item a:hover,.nav-right span a{
+  color: #fff!important;
+}
+.banner-img li a:hover{
+  color: red!important;
 }
 .dropdown-menu .active > a,
 .dropdown-menu .active > a:hover {

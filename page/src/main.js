@@ -28,6 +28,7 @@ import comment from 'components/Comment'
 import management from 'components/Management'
 import admin from 'components/admin'
 import xq from 'components/Xq'
+import text from 'components/text'
 // import fastclick from 'fastclick'
 import Vuex from 'vuex'
 
@@ -124,6 +125,9 @@ const router = new VueRouter({
     path: '/xq/:id',
     name: 'xq',
     component: xq
+  }, {
+    path: '/text',
+    component: text
   }]
 })
 new Vue({
