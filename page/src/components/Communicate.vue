@@ -295,6 +295,9 @@ export default {
   margin-left: 96px;
   margin-top: 13px;
   }
+  tr:hover{
+    cursor: pointer;
+  }
   .communicate-select1,.communicate-select2{
   float:left;
   width:115px;

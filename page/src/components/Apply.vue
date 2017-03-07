@@ -163,33 +163,37 @@ export default {
       this.$router.push({ path: '/square' })
     },
     aply: function () {
-      var self = this
-      var projectMsg = new FormData()
-      projectMsg.append('labels', this.applyProject.labels)
-      projectMsg.append('projectdirection', this.applyProject.projectdirection)
-      projectMsg.append('allpeople', this.applyProject.allpeople)
-      projectMsg.append('itemname', this.applyProject.itemname)
-      projectMsg.append('itemleader', this.applyProject.itemleader)
-      projectMsg.append('teacher', this.applyProject.teacher)
-      projectMsg.append('keywords', this.applyProject.keywords)
-      projectMsg.append('itembrief', this.applyProject.itembrief)
-      projectMsg.append('exitbasic', this.applyProject.exitbasic)
-      projectMsg.append('exitbasicfile', this.applyProject.exitbasicfile)
-      projectMsg.append('end', this.applyProject.end)
-      projectMsg.append('start', this.applyProject.start)
-      projectMsg.append('memberdemandfile', this.applyProject.memberdemandfile)
-      axios.post(global.baseURL + 'api/items/add?type=1&token=' + global.user.token, projectMsg)
-      .then(function (res) {
-        console.log(res)
-        if (res.data.callStatus === 'SUCCEED') {
-          self.success = true
-          var that = self
-          setTimeout(function () {
-            that.success = false
-            that.$router.push({ path: '/management' })
-          }, 1000)
-        }
-      })
+      if (this.applyProject.start === '' && this.applyProject.end === '') {
+        alert('项目起止时间不能为空')
+      } else {
+        var self = this
+        var projectMsg = new FormData()
+        projectMsg.append('labels', this.applyProject.labels)
+        projectMsg.append('projectdirection', this.applyProject.projectdirection)
+        projectMsg.append('allpeople', this.applyProject.allpeople)
+        projectMsg.append('itemname', this.applyProject.itemname)
+        projectMsg.append('itemleader', this.applyProject.itemleader)
+        projectMsg.append('teacher', this.applyProject.teacher)
+        projectMsg.append('keywords', this.applyProject.keywords)
+        projectMsg.append('itembrief', this.applyProject.itembrief)
+        projectMsg.append('exitbasic', this.applyProject.exitbasic)
+        projectMsg.append('exitbasicfile', this.applyProject.exitbasicfile)
+        projectMsg.append('end', this.applyProject.end)
+        projectMsg.append('start', this.applyProject.start)
+        projectMsg.append('memberdemandfile', this.applyProject.memberdemandfile)
+        axios.post(global.baseURL + 'api/items/add?type=1&token=' + global.user.token, projectMsg)
+        .then(function (res) {
+          console.log(res)
+          if (res.data.callStatus === 'SUCCEED') {
+            self.success = true
+            var that = self
+            setTimeout(function () {
+              that.success = false
+              that.$router.push({ path: '/management' })
+            }, 1000)
+          }
+        })
+      }
     }
   }
 }

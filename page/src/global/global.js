@@ -19,9 +19,14 @@ export default{
   setHeight: function (value) {
     var wh = document.body.clientHeight
     var dh = value
-    // console.log(value)
+    console.log(wh)
+    console.log(dh.offsetHeight)
     if (dh.offsetHeight < wh - 247) {
       dh.style.height = wh - 247 + 'px'
+    } else if (dh.offsetHeight === wh - 247) {
+      console.log(11111)
+      dh.style.minHeight = wh - 247 + 'px'
+      dh.style.height = 'auto'
     }
   },
   go: function (obj, token) {

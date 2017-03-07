@@ -31,8 +31,8 @@
 		<div class="content-fc-right">
 			<div class="excllent">
 				<span class="exc-t">优秀项目</span>
-				<div class="exc-img1" v-for="excellent in excellents">
-					<!-- <img :src={{excellent.src}} /> -->
+				<div class="exc-img1" v-for="(excellent, index) in excellents">
+					<img :src=imgs[index] />
 					<a href="javascript:;"><span class="exc-words1">{{excellent.itemname}}</span></a>
 				</div>
 			</div>
@@ -72,6 +72,8 @@ import axios from 'axios'
 import header from './header'
 import footer from './footer'
 import Vue from 'vue'
+import img1 from '../img/project1.jpg'
+import img2 from '../img/project2.jpg'
 import global from '../global/global'
 export default {
   name: 'gwfc',
@@ -88,6 +90,7 @@ export default {
       pageList: '',
       keywords: [],
       knotLists: [],
+      imgs: [img1, img2],
       zxshow: false,
       url: 'api/items/getItemsList?pagenum='
     }
@@ -98,7 +101,7 @@ export default {
   },
   created () {
     var self = this
-    axios.post(global.baseURL + 'api/items/getItemsList?state=1')
+    axios.post(global.baseURL + 'api/items/getItemsList?state=1&type=0')
     .then(function (res) {
       // console.log(res)
       self.page = res.data

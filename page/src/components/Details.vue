@@ -85,7 +85,7 @@
 					</div>
 					<!--右边文字部分-->
 					<div class="details-words">
-						<span class="detail-basic-title">这里是我们的已有基础</span>
+						<!-- <span class="detail-basic-title">这里是我们的已有基础</span> -->
 						<p>
 							{{project.exitbasic}}
 						</p>
@@ -418,7 +418,6 @@ font-size: 14px;
 }
 .details-words{
 overflow: hidden;
-background:gainsboro;
 margin-top: 70px;
 margin-left: 61px;
 float:left;

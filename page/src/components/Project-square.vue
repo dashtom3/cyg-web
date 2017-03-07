@@ -196,7 +196,7 @@ export default {
   },
   created () {
     var self = this
-    axios.post(global.baseURL + 'api/items/getItemsList?pagenum=' + this.pagenum)
+    axios.post(global.baseURL + 'api/items/getItemsList?state=1&pagenum=' + this.pagenum)
     .then(function (res) {
       console.log(res)
       self.page = res.data
@@ -217,7 +217,7 @@ export default {
 <style scoped>
 .square-content{
 	width:960px;
-	height:899px;
+	height:950px;
 	margin:0 auto;
 }
 .square-right ul li:hover{
